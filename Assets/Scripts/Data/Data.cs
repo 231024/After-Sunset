@@ -7,21 +7,21 @@ public sealed class Data : ScriptableObject
     [SerializeField] private string _playerDataPath;
     [SerializeField] private string _enemyDataPath;
     //[SerializeField] private string _interactiveObjectDataPath;
-    private PlayerData _player;
+    private CharacterDatas _character;
     private EnemyData _enemy;
     //private InteractiveObjectData _interactiveObject;
     
 
-    public PlayerData Player
+    public CharacterDatas Character
     {
         get
         {
-            if (_player == null)
+            if (_character == null)
             {
-                _player = Load<PlayerData>("Data/" + _playerDataPath);
+                _character = Load<CharacterDatas>("Data/" + _playerDataPath);
             }
 
-            return _player;
+            return _character;
         }
     }
     

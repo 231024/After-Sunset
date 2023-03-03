@@ -5,8 +5,9 @@ internal sealed class GameInitialization
     public GameInitialization(Controllers controllers, Data data)
     {
         Camera camera = Camera.main;
-        var playerFactory = new PlayerFactory(data.Player);
-        var playerInitialization = new PlayerInitialization(playerFactory, data.Player.Position);
+        var characterData = data.Character.GetCharacter(CharacterType.PoliceOfficer);
+        var playerFactory = new PlayerFactory(characterData);
+        var playerInitialization = new PlayerInitialization(playerFactory, characterData.TransformSpawn.position);
         if (camera != null)
             controllers.Add(new CameraController(playerInitialization.GetPlayer().transform, camera.transform));
     }

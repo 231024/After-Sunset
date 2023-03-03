@@ -16,7 +16,7 @@ public sealed class EnemyData : ScriptableObject
     {
         public EnemyType Type;
         public EnemyProvider EnemyPrefab;
-        public Vector3 Position;
+        public Transform Transform;
     }
 
     public EnemyProvider GetEnemy(EnemyType type)

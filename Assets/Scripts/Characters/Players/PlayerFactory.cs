@@ -2,16 +2,16 @@
 
 public sealed class PlayerFactory : IPlayerFactory
 {
-    private readonly PlayerData _playerData;
+    private readonly CharacterData _characterData;
 
-    public PlayerFactory(PlayerData playerData)
+    public PlayerFactory(CharacterData characterData)
     {
-        _playerData = playerData;
+        _characterData = characterData;
     }
 
     public Transform CreatePlayer()
     {
-        return new GameObject("Player").AddUnit(_playerData).
-            AddRigidbody(_playerData.Mass, _playerData.AngularDrag, _playerData.IsGravity, _playerData.IsFreeze).transform;
+        return new GameObject("Player").AddUnit(_characterData).
+            AddRigidbody(_characterData.Mass, _characterData.AngularDrag, _characterData.IsGravity, _characterData.IsFreeze).transform;
     }
 }

@@ -40,9 +40,9 @@ public static class BuilderExtension
             return gameObject;
         }
         
-        public static GameObject AddUnit(this GameObject gameObject, PlayerData player)
+        public static GameObject AddUnit(this GameObject gameObject, CharacterData character)
         {
-            gameObject = Object.Instantiate(player.Player, player.Position, Quaternion.identity);
+            gameObject = Object.Instantiate(character.Player, character.TransformSpawn.position, Quaternion.identity);
             return gameObject;
         }
 
