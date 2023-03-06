@@ -12,7 +12,7 @@ public sealed class EnemyProvider : MonoBehaviour, IEnemy
     //private Rigidbody _rigidbody;
     private NavMeshAgent _navMeshAgent;
     private Animator _animator;
-    //private Transform _transform;
+    private Transform _transform;
     private IView _view;
     protected IHealth _health;
 
@@ -22,23 +22,25 @@ public sealed class EnemyProvider : MonoBehaviour, IEnemy
         _navMeshAgent = GetComponent<NavMeshAgent>();
         _navMeshAgent.updateRotation = false;
         // _rigidbody = GetComponent<Rigidbody>();
-        // _transform = transform;
+        _transform = transform;
     }
 
     public void Move(Vector3 point)
     {
-        transform.rotation = Quaternion.LookRotation(_navMeshAgent.velocity.normalized);
-        _navMeshAgent.SetDestination(point);
+        
+        //_navMeshAgent.SetDestination(point);
+        if ((_transform.localPosition - point).sqrMagnitude >= _stopDistance * _stopDistance)
+        {
+            var dir = (point - _transform.localPosition).normalized;
+            _navMeshAgent.velocity = dir * _speed;
+        }
+        else
+        {
+            _navMeshAgent.velocity = Vector3.zero;
+        }
+        
         _animator.SetFloat("speed", _navMeshAgent.velocity.magnitude);
-        // if ((_transform.localPosition - point).sqrMagnitude >= _stopDistance * _stopDistance)
-        // {
-        //     var dir = (point - _transform.localPosition).normalized;
-        //     _navMeshAgent.velocity = dir * _speed;
-        // }
-        // else
-        // {
-        //     _navMeshAgent.velocity = Vector3.zero;
-        // }
+        transform.rotation = Quaternion.LookRotation(_navMeshAgent.velocity.normalized);
     }
 
     private void OnTriggerEnter(Collider other)
