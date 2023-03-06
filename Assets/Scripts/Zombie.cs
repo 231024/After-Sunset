@@ -16,6 +16,6 @@ public class Zombie : MonoBehaviour
 
     void Update()
     {
-        navMeshAgent.SetDestination(player.transform.position);
+        //navMeshAgent.SetDestination(player.transform.position);
     }
 }
