@@ -46,6 +46,12 @@ public static class BuilderExtension
             return gameObject;
         }
 
+        public static GameObject AddCursor(this GameObject gameObject, CursorData cursor)
+        {
+            gameObject = Object.Instantiate(cursor.Cursor, cursor.Cursor.transform.position, Quaternion.identity);
+            return gameObject;
+        }
+
         public static GameObject AddTrailRenderer(this GameObject gameObject)
         {
             var componentInChildren = gameObject.GetComponentInChildren<TrailRenderer>();

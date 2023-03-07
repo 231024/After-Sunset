@@ -14,3 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _playerDataPath: CharacterSettings.asset
   _enemyDataPath: EnemySettings.asset
+  _cursorDataPath: CursorSettings.asset

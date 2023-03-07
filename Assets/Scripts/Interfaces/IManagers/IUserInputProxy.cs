@@ -1,7 +1,7 @@
 ﻿using System;
 
-public interface IUserInputProxy
+public interface IUserInputProxy<T>
 {
-    event Action<float> AxisOnChange;
+    event Action<T> AxisOnChange;
     void GetAxis();
 }

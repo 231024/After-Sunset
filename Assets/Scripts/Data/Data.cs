@@ -7,9 +7,13 @@ public sealed class Data : ScriptableObject
     [SerializeField] private string _playerDataPath;
     [SerializeField] private string _enemyDataPath;
     //[SerializeField] private string _interactiveObjectDataPath;
+    [SerializeField] private string _cursorDataPath;
+    
+    
     private CharacterDatas _character;
     private EnemyData _enemy;
     //private InteractiveObjectData _interactiveObject;
+    private CursorData _cursor;
     
 
     public CharacterDatas Character
@@ -38,7 +42,20 @@ public sealed class Data : ScriptableObject
             return _enemy;
         }
     }
-        
+
+    public CursorData Cursor
+    {
+        get
+        {
+            if (_cursor == null)
+            {
+                _cursor = Load<CursorData>("Data/" + _cursorDataPath);
+            }
+
+            return _cursor;
+        }
+    }
+
     // public InteractiveObjectData InteractiveObject
     // {
     //     get

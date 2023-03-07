@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-public sealed class PCInputRotation : IUserInputProxy
+public sealed class PCInputRotation : IUserInputProxy<float>
 {
     public event Action<float> AxisOnChange = delegate {  };
         

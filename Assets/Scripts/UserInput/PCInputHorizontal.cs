@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-public sealed class PCInputHorizontal : IUserInputProxy
+public sealed class PCInputHorizontal : IUserInputProxy<float>
 {
     public event Action<float> AxisOnChange = delegate {  };
         

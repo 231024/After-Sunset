@@ -2,9 +2,10 @@
 
 internal sealed class InputInitialization : IInitialization
 {
-    private IUserInputProxy _pcInputHorizontal;
-    private IUserInputProxy _pcInputVertical;
-    private IUserInputProxy _pcInputRotation;
+    private IUserInputProxy<float> _pcInputHorizontal;
+    private IUserInputProxy<float> _pcInputVertical;
+    private IUserInputProxy<float> _pcInputRotation;
+    private readonly IUserInputProxy<Vector3> _pcInputMousePosition;
 
     public InputInitialization()
     {
@@ -15,16 +16,20 @@ internal sealed class InputInitialization : IInitialization
         _pcInputHorizontal = new PCInputHorizontal();
         _pcInputVertical = new PCInputVertical();
         _pcInputRotation = new PCInputRotation();
+        _pcInputMousePosition = new PCInputMousePosition();
+
     }
         
     public void Initialization()
     {
     }
 
-    public (IUserInputProxy inputHorizontal, IUserInputProxy inputVertical, IUserInputProxy inputRotation) GetInput()
+    public (IUserInputProxy<float> inputHorizontal, IUserInputProxy<float> inputVertical, 
+        IUserInputProxy<float> inputRotation, IUserInputProxy<Vector3> inputMousePosition) GetInput()
     {
-        (IUserInputProxy inputHorizontal, IUserInputProxy inputVertical, IUserInputProxy inputRotation) result = 
-            (_pcInputHorizontal, _pcInputVertical, _pcInputRotation);
+        (IUserInputProxy<float> inputHorizontal, IUserInputProxy<float> inputVertical, 
+            IUserInputProxy<float> inputRotation, IUserInputProxy<Vector3> inputMousePosition) result = 
+            (_pcInputHorizontal, _pcInputVertical, _pcInputRotation, _pcInputMousePosition);
         return result;
     }
 }
