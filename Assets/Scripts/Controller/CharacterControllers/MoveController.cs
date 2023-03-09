@@ -24,10 +24,10 @@ public sealed class MoveController : IExecute, ICleanup
 
 
         public MoveController((IUserInputProxy<float> inputHorizontal, IUserInputProxy<float> inputVertical, 
-                IUserInputProxy<float> inputRotation) input, Transform unit, IUnit unitData, Transform cursor)//, IAlive isAlive)
+                IUserInputProxy<float> inputRotation) input, Transform unit, IUnit unitData)//, IAlive isAlive)
         {
             _unit = unit;
-            _cursor = cursor;
+            _cursor = unit.Find(SupportObjectType.Cursor.ToString());
             _unitData = unitData;
             _horizontalInputProxy = input.inputHorizontal;
             _verticalInputProxy = input.inputVertical;

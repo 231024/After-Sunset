@@ -15,3 +15,4 @@ MonoBehaviour:
   _playerDataPath: CharacterSettings.asset
   _enemyDataPath: EnemySettings.asset
   _cursorDataPath: CursorSettings.asset
+  _supportObjectDataPath: SupportObjectSettings.asset

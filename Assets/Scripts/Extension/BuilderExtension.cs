@@ -42,13 +42,13 @@ public static class BuilderExtension
         
         public static GameObject AddUnit(this GameObject gameObject, CharacterData character)
         {
-            gameObject = Object.Instantiate(character.Player, character.TransformSpawn.position, Quaternion.identity);
+            gameObject = Object.Instantiate(character.Player, character.TransformSpawn.position, Quaternion.identity, gameObject.transform);
             return gameObject;
         }
 
-        public static GameObject AddCursor(this GameObject gameObject, CursorData cursor)
+        public static GameObject AddSupportObject(this GameObject gameObject, GameObject supportObject)
         {
-            gameObject = Object.Instantiate(cursor.Cursor, cursor.Cursor.transform.position, Quaternion.identity);
+            gameObject = Object.Instantiate(supportObject, supportObject.transform.position, Quaternion.identity, gameObject.transform);
             return gameObject;
         }
 

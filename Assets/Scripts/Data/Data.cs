@@ -8,12 +8,14 @@ public sealed class Data : ScriptableObject
     [SerializeField] private string _enemyDataPath;
     //[SerializeField] private string _interactiveObjectDataPath;
     [SerializeField] private string _cursorDataPath;
+    [SerializeField] private string _supportObjectDataPath;
     
     
     private CharacterDatas _character;
     private EnemyData _enemy;
     //private InteractiveObjectData _interactiveObject;
     private CursorData _cursor;
+    private SupportObjectData _supportObject;
     
 
     public CharacterDatas Character
@@ -53,6 +55,19 @@ public sealed class Data : ScriptableObject
             }
 
             return _cursor;
+        }
+    }
+    
+    public SupportObjectData SupportObject
+    {
+        get
+        {
+            if (_supportObject == null)
+            {
+                _supportObject = Load<SupportObjectData>("Data/" + _supportObjectDataPath);
+            }
+
+            return _supportObject;
         }
     }
 

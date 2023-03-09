@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 33000010507463410}
   - component: {fileID: 23000014252982834}
   - component: {fileID: 64000012935496406}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Road_set_v1_s_tile_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -32,7 +32,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &33000010507463410
 MeshFilter:

@@ -14,10 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Player: {fileID: 3960971418310363289, guid: 900099c85eb00dc40ac1ded77bbc65cd, type: 3}
   _transformSpawn: {fileID: 6356817762478361724, guid: 8ac2025263a89fd48b0f835dfebfb538, type: 3}
-  _speed: 800
-  _mouseSensitivity: 550
+  _speed: 1000
+  _mouseSensitivity: 800
   _dataRidgidbody:
     _mass: 75
-    _angularDrag: 5
+    _angularDrag: 10
     _isGravity: 1
     _isFreeze: 1
