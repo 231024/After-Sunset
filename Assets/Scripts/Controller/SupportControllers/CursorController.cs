@@ -2,7 +2,7 @@
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class CursorController : IExecute, ICleanup
+public sealed class CursorController : IExecute, ICleanup
 {
     private readonly Camera _camera;
     private readonly IUserInputProxy<Vector3> _pcInputMousePosition;
@@ -11,19 +11,18 @@ public class CursorController : IExecute, ICleanup
     private SpriteRenderer _spriteRenderer;
     private int _layerMask;
     
-    public CursorController(Camera mainCamera, IUserInputProxy<Vector3> inputMousePosition, SupportObjectInitialization supportObjects)
+    public CursorController(Camera mainCamera, IUserInputProxy<Vector3> inputMousePosition)
     {
         _camera = mainCamera;
         _pcInputMousePosition = inputMousePosition;
-        
-        foreach (var supportObject in supportObjects.SupportObjects)
-        {
-            if (supportObject.SupportGameObject.GetComponent<Cursor>())
-            {
-                _cursor = supportObject.SupportGameObject;
-            }
-        }
-        
+        _cursor = GameObject.Find(SupportObjectType.Cursor.ToString());
+        // foreach (var supportObject in supportObjects.SupportObjects)
+        // {
+        //     if (supportObject.SupportGameObject.GetComponent<Cursor>())
+        //     {
+        //         _cursor = supportObject.SupportGameObject;
+        //     }
+        // }
         _spriteRenderer = _cursor.GetComponent<SpriteRenderer>();
         _pcInputMousePosition.AxisOnChange += MousePositionOnAxisOnChange;
         _layerMask = LayerMask.GetMask("Ground");

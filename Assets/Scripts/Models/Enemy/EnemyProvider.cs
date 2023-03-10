@@ -12,12 +12,16 @@ public sealed class EnemyProvider : MonoBehaviour, IEnemy
     //private Rigidbody _rigidbody;
     private NavMeshAgent _navMeshAgent;
     private Animator _animator;
+    private CapsuleCollider _capsuleCollider;
     private Transform _transform;
     private IView _view;
     protected IHealth _health;
+    private bool _dead;
+    private static readonly int Died = Animator.StringToHash("died");
 
     private void Start()
     {
+        _capsuleCollider = GetComponent<CapsuleCollider>();
         _animator = GetComponentInChildren<Animator>();
         _navMeshAgent = GetComponent<NavMeshAgent>();
         _navMeshAgent.updateRotation = false;
@@ -27,6 +31,7 @@ public sealed class EnemyProvider : MonoBehaviour, IEnemy
 
     public void Move(Vector3 point)
     {
+        if (_dead) return;
         
         //_navMeshAgent.SetDestination(point);
         if ((_transform.localPosition - point).sqrMagnitude >= _stopDistance * _stopDistance)
@@ -57,5 +62,17 @@ public sealed class EnemyProvider : MonoBehaviour, IEnemy
     {
         _view = view;
         _health = health;
+    }
+    
+    public void Kill()
+    {
+        if (!_dead) {
+            _dead = true;
+            Destroy(_capsuleCollider);
+            Destroy(_navMeshAgent);
+            GetComponentInChildren<ParticleSystem>().Play();
+            _animator.SetTrigger(Died);
+            Destroy(gameObject, 5);
+        }
     }
 }

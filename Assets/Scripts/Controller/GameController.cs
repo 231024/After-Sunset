@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public sealed class GameController : MonoBehaviour
@@ -16,6 +17,12 @@ public sealed class GameController : MonoBehaviour
     {
         var deltaTime = Time.deltaTime;
         _controllers.Execute(deltaTime);
+    }
+
+    private void FixedUpdate()
+    {
+        var deltaTime = Time.deltaTime;
+        _controllers.FixedExecute(deltaTime);;
     }
 
     private void LateUpdate()

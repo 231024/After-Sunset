@@ -15,7 +15,7 @@ MonoBehaviour:
   _supportObjectInfos:
   - Type: 1
     SupportObjectPrefab: {fileID: 8769941873533310276, guid: 457793bb787857b42935f24f5d72abde, type: 3}
-    _position: {fileID: 6356817762478361724, guid: c7451f692df55674098a8f3d2dbc55d8, type: 3}
+    Position: {fileID: 6356817762478361724, guid: c7451f692df55674098a8f3d2dbc55d8, type: 3}
   - Type: 2
     SupportObjectPrefab: {fileID: 711732965080758481, guid: fc241434a4112e345b7a10c8dc5a1558, type: 3}
-    _position: {fileID: 6356817762478361724, guid: c7451f692df55674098a8f3d2dbc55d8, type: 3}
+    Position: {fileID: 6356817762478361724, guid: c7451f692df55674098a8f3d2dbc55d8, type: 3}

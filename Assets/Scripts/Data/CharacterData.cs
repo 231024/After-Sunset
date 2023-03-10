@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 
 [CreateAssetMenu(fileName = "UnitSettings", menuName = "Data/Unit/UnitSettings")]
@@ -10,11 +11,13 @@ public sealed class CharacterData : ScriptableObject, IUnit
     [SerializeField, Range(0, 1000)] private float _speed;
     [SerializeField, Range(500, 1000)] private float _mouseSensitivity;
     [SerializeField] private DataRidgidbody _dataRidgidbody;
-        
-        
+    [SerializeField] private Transform _gunBarrelPosition;
+
+
+    public Transform TransformSpawn => _transformSpawn;
+    public Transform GunBarrelPosition => _gunBarrelPosition;
     public float Speed => _speed;
     public float MouseSensitivity => _mouseSensitivity;
-    public Transform TransformSpawn => _transformSpawn;
     public float Mass => _dataRidgidbody._mass;
     public float AngularDrag => _dataRidgidbody._angularDrag;
     public bool IsGravity => _dataRidgidbody._isGravity;

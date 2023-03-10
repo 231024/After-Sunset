@@ -2,5 +2,5 @@
 {
     None  = 0,
     Cursor = 1,
-    LineRenderer = 2,
+    Shot = 2,
 }
