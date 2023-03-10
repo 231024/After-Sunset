@@ -11,17 +11,17 @@ internal sealed class GameInitialization
         var playerFactory = new PlayerFactory(characterData);
         var playerInitialization = new PlayerInitialization(playerFactory, characterData.TransformSpawn.position);
         var supportObjectFactory = new SupportObjectFactory(data.SupportObject);
-        var cursorInitialization = new SupportObjectInitialization(supportObjectFactory);
+        var supportObjectInitialization = new SupportObjectInitialization(supportObjectFactory);
         var enemyFactory = new EnemyFactory(data.Enemy);
         var enemyInitialization = new EnemyInitialization(enemyFactory);
 
         controllers.Add(inputInitialization);
         controllers.Add(playerInitialization);
-        controllers.Add(cursorInitialization);
+        controllers.Add(supportObjectInitialization);
         controllers.Add(enemyInitialization);
 
         controllers.Add(new InputController(inputInitialization.GetInput()));
-        controllers.Add(new CursorController(camera, input.inputMousePosition));
+        controllers.Add(new CursorController(camera, input.inputMousePosition, supportObjectInitialization));
         controllers.Add(new MoveController((input.inputHorizontal, input.inputVertical, input.inputRotation), playerInitialization.GetPlayer().transform, characterData));
         controllers.Add(new EnemyMoveController(enemyInitialization.GetMoveEnemies(), playerInitialization.GetPlayer().transform));
         if (camera != null) controllers.Add(new CameraController(playerInitialization.GetPlayer().transform, camera.transform));

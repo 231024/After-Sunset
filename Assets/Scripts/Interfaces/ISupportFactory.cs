@@ -3,5 +3,5 @@
 public interface ISupportFactory
 {
     public SupportObjectData Data { get; }
-    Transform CreateSupportObject(SupportObjectType type);
+    ISupportObject CreateSupportObject(SupportObjectType type);
 }

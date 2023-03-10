@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.AI;
 
 public sealed class MoveController : IExecute, ICleanup
@@ -8,7 +9,7 @@ public sealed class MoveController : IExecute, ICleanup
         public float _moveSpeed;
         
         private readonly Transform _unit;
-        private readonly Transform _cursor;
+        private GameObject _cursor;
         private readonly IUnit _unitData;
         private float _horizontal;
         private float _vertical;
@@ -16,6 +17,7 @@ public sealed class MoveController : IExecute, ICleanup
         private Vector3 _mousePosition;
         private Vector3 _move;
         private Vector3 _angelRotation;
+        private List<ISupportObject> _supportObjects;
         private IUserInputProxy<float> _horizontalInputProxy;
         private IUserInputProxy<float> _verticalInputProxy;
         private IUserInputProxy<float> _rotationInputProxy;
@@ -27,8 +29,8 @@ public sealed class MoveController : IExecute, ICleanup
                 IUserInputProxy<float> inputRotation) input, Transform unit, IUnit unitData)//, IAlive isAlive)
         {
             _unit = unit;
-            _cursor = unit.Find(SupportObjectType.Cursor.ToString());
             _unitData = unitData;
+            _cursor = GameObject.Find(SupportObjectType.Cursor.ToString());
             _horizontalInputProxy = input.inputHorizontal;
             _verticalInputProxy = input.inputVertical;
             _rotationInputProxy = input.inputRotation;
@@ -44,18 +46,23 @@ public sealed class MoveController : IExecute, ICleanup
 
         public void Execute(float deltaTime)
         {
+            Vector3 forward;
             // if (_rotation != 0 && _isAlive)
             // {
             //     var sensitivity = _unitData.MouseSensitivity * deltaTime;
             //     _angelRotation.Set(0f, _rotation * sensitivity, 0f);
             //     _unit.transform.Rotate(_angelRotation);
             // }
+            
             var speed = deltaTime * _unitData.Speed;
             _move.Set(_horizontal, 0.0f, _vertical);
             _navMeshAgent.velocity = _move.normalized * speed;
             _animator.SetFloat(GameConstants.ANIMATION_SPEED, _navMeshAgent.velocity.magnitude);
-            Vector3 forward = _cursor.transform.position - _unit.transform.position;
-            _unit.transform.rotation = Quaternion.LookRotation(new Vector3(forward.x, 0, forward.z));
+            if (_cursor != null)
+            {
+                forward = _cursor.transform.position - _unit.position;
+                _unit.transform.rotation = Quaternion.LookRotation(new Vector3(forward.x, 0, forward.z));
+            }
 
 
         }

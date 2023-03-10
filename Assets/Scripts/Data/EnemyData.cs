@@ -24,4 +24,10 @@ public sealed class EnemyData : ScriptableObject
         var enemyInfo = _enemyInfos.First(info => info.Type == type);
         return enemyInfo.EnemyPrefab;
     }
+
+    public Transform GetEnemyTransform(EnemyType type)
+    {
+        var enemyInfo = _enemyInfos.First(info => info.Type == type);
+        return enemyInfo.Transform;
+    }
 }

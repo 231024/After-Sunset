@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 [CreateAssetMenu(fileName = "SupportObjectSettings", menuName = "Data/Unit/SupportObjectSettings")]
 public sealed class SupportObjectData : ScriptableObject
@@ -14,11 +15,11 @@ public sealed class SupportObjectData : ScriptableObject
     public struct SupportObjectInfo
     {
         public SupportObjectType Type;
-        public GameObject SupportObjectPrefab;
-        public Transform _position;
+        public SupportObjectProvider SupportObjectPrefab;
+        public Transform Position;
     }
 
-    public GameObject GetSupportObject(SupportObjectType type)
+    public SupportObjectProvider GetSupportObject(SupportObjectType type)
     {
         var interactiveObjectInfo = _supportObjectInfos.First(info => info.Type == type);
         return interactiveObjectInfo.SupportObjectPrefab;

@@ -9,9 +9,10 @@ public sealed class SupportObjectFactory : ISupportFactory
         Data = data;
     }
     
-    public Transform CreateSupportObject(SupportObjectType type)
+    public ISupportObject CreateSupportObject(SupportObjectType type)
     {
         var supportObject = Data.GetSupportObject(type);
-        return new GameObject(type.ToString()).AddSupportObject(supportObject).transform;
+        return Object.Instantiate(supportObject);
+        //return new GameObject(type.ToString()).AddSupportObject(supportObject);
     }
 }

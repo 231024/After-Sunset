@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Unity.VisualScripting;
+using UnityEngine;
 
 public sealed class EnemyFactory : IEnemyFactory
 {
@@ -12,6 +13,7 @@ public sealed class EnemyFactory : IEnemyFactory
     public IEnemy CreateEnemy(EnemyType type)
     {
         var enemyProvider = Data.GetEnemy(type);
-        return Object.Instantiate(enemyProvider);
+        var enemyTransform = Data.GetEnemyTransform(type);
+        return Object.Instantiate(enemyProvider, enemyTransform.position, Quaternion.identity);
     }
 }

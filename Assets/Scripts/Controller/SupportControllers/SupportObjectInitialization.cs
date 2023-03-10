@@ -1,21 +1,33 @@
-﻿using Quaternion = UnityEngine.Quaternion;
-using Vector3 = UnityEngine.Vector3;
+﻿using System.Collections.Generic;
 
 public class SupportObjectInitialization : IInitialization
 {
     private readonly ISupportFactory _supportFactory;
     private readonly SupportObjectData _data;
+    private List<ISupportObject> _supportObjects;
+
+    public List<ISupportObject> SupportObjects => _supportObjects;
 
     public SupportObjectInitialization(ISupportFactory supportFactory)
     {
         _supportFactory = supportFactory;
-        _data = _supportFactory.Data;
+        _data = supportFactory.Data;
+        _supportObjects = new List<ISupportObject>();
         foreach (var dataListSupportObjectInfo in _data.ListSupportObjectInfos)
         {
             var supportObject = 
                 _supportFactory.CreateSupportObject(dataListSupportObjectInfo.Type);
-            supportObject.SetPositionAndRotation(new Vector3(0.0f, 0.01f, 0.0f), 
-                Quaternion.Euler(90.0f, 0.0f, 0.0f));
+            supportObject.Initialization(_data);
+            supportObject.SupportGameObject.name = dataListSupportObjectInfo.Type.ToString();
+            _supportObjects.Add(supportObject);
+        }
+    }
+
+    public IEnumerable<ISupportObject> GetSupportObject()
+    {
+        foreach (var supportObject in _supportObjects)
+        {
+            yield return supportObject;
         }
     }
 

@@ -46,9 +46,9 @@ public static class BuilderExtension
             return gameObject;
         }
 
-        public static GameObject AddSupportObject(this GameObject gameObject, GameObject supportObject)
+        public static GameObject AddSupportObject(this GameObject gameObject, SupportObjectProvider supportObject)
         {
-            gameObject = Object.Instantiate(supportObject, supportObject.transform.position, Quaternion.identity, gameObject.transform);
+            gameObject = Object.Instantiate(supportObject.SupportGameObject.gameObject, supportObject.transform.position, Quaternion.identity, gameObject.transform);
             return gameObject;
         }
 
