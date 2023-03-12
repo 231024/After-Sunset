@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Security.Cryptography;
 using UnityEngine;
 using UnityEngine.AI;
 using Random = UnityEngine.Random;
@@ -39,8 +40,8 @@ public sealed class EnemyProvider : MonoBehaviour, IEnemy
     private static readonly string SpeedState = GameConstants.ANIMATION_SPEED;
 
     private float _randomPointRadius;
-    //private float _nearPointRadius = 5.0f;
-    private float _visibleRadius = 15.0f;
+    private float _nearPointRadius = 20.0f;
+    private float _visibleRadius = 25.0f;
 
     private void Start()
     {
@@ -67,44 +68,42 @@ public sealed class EnemyProvider : MonoBehaviour, IEnemy
         _ray_blocked = NavMesh.Raycast(_transform.position, point,
             out _navMeshHit, NavMesh.AllAreas);
 
-        if ((vectorDirection <= _visibleRadius * _visibleRadius && !_ray_blocked))
-
-        //|| (vectorDirection <= _visibleRadius * _visibleRadius && _ray_blocked))
+        if ((vectorDirection <= _visibleRadius * _visibleRadius && !_ray_blocked)
+            || (vectorDirection <= _visibleRadius * _visibleRadius && _ray_blocked))
         {
             _islost = false;
             _pathComplete = false;
             
-            //Vector3 target = point;
-            // var nearVectorDirection = (_nearPlayerPoint.position - point).magnitude;
-            // if (nearVectorDirection > _nearPointRadius)
-            // {
-            //     _nearPlayerPoint.gameObject.SetActive(true);
-            //     var getCorrectPoint = false;
-            //     while (!getCorrectPoint)
-            //     {
-            //         NavMeshHit navMeshHit;
-            //         NavMesh.SamplePosition(Random.insideUnitSphere * _nearPointRadius + point,
-            //             out navMeshHit, _nearPointRadius, NavMesh.AllAreas);
-            //         _randomPoint = navMeshHit.position;
-            //
-            //         if (_navMeshPath.status == NavMeshPathStatus.PathComplete)
-            //         {
-            //             getCorrectPoint = true;
-            //         }
-            //     }
-            // }
-            // else
-            // {
-            //     _nearPlayerPoint.gameObject.SetActive(false);
-            //     target = point;
-            // }
+            Vector3 target = Vector3.zero;
+             var nearVectorDirection = (target - point).magnitude;
+             if (nearVectorDirection > _nearPointRadius * _nearPointRadius)
+             {
+                 var getCorrectPoint = false;
+                 while (!getCorrectPoint)
+                 {
+                     NavMeshHit navMeshHit;
+                     NavMesh.SamplePosition(Random.insideUnitSphere * _nearPointRadius + point,
+                         out navMeshHit, _nearPointRadius, NavMesh.AllAreas);
+                     target = navMeshHit.position;
+            
+                     _navMeshAgent.CalculatePath(target, _navMeshPath);
+                     if (_navMeshPath.status == NavMeshPathStatus.PathComplete && !_ray_blocked)
+                     {
+                         getCorrectPoint = true;
+                     }
+                 }
+             }
+             else
+             {
+                 target = point;
+                 _navMeshAgent.CalculatePath(target, _navMeshPath);
+             }
             //var dir = (point - _transform.localPosition).normalized;
             
             
             _navMeshAgent.speed = Random.Range(_maxSpeedRun - 1, _maxSpeedRun);
             _navMeshAgent.avoidancePriority = Random.Range(40, 50);
-            _navMeshAgent.CalculatePath(point, _navMeshPath);
-            _navMeshAgent.SetDestination(point);
+            _navMeshAgent.SetDestination(target);
             _animator.SetInteger(StateMove, 2);
             _animator.SetFloat(SpeedState, _navMeshAgent.velocity.magnitude);
         }
@@ -136,13 +135,14 @@ public sealed class EnemyProvider : MonoBehaviour, IEnemy
                 out navMeshHit, _randomPointRadius, NavMesh.AllAreas);
             _randomPoint = navMeshHit.position;
 
+            _navMeshAgent.CalculatePath(_randomPoint, _navMeshPath);
             if (_navMeshPath.status == NavMeshPathStatus.PathComplete)
             {
                 getCorrectPoint = true;
             }
         }
+
         _navMeshAgent.speed = Random.Range(_maxSpeedWalk - 1, _maxSpeedWalk);
-        _navMeshAgent.CalculatePath(_randomPoint, _navMeshPath);
         _navMeshAgent.SetDestination(_randomPoint);
         _animator.SetInteger(StateMove, 1);
         _animator.SetFloat(SpeedState, _navMeshAgent.velocity.magnitude);
