@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 6213606267524102678}
   - component: {fileID: 3431794633498486488}
   m_Layer: 0
-  m_Name: Zombie
+  m_Name: ZombieBig
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -71,7 +71,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _maxSpeedWalk: 2
-  _maxSpeedRun: 4
+  _maxSpeedRun: 4.5
   _stopDistance: 1.5
   _takeDamage: 10
 --- !u!136 &3431794633498486488
@@ -84,10 +84,10 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_Enabled: 1
-  m_Radius: 0.5
-  m_Height: 2.249394
+  m_Radius: 0.34
+  m_Height: 2.0162349
   m_Direction: 1
-  m_Center: {x: 0, y: 0.62469697, z: 0}
+  m_Center: {x: 0, y: 0.9969001, z: 0}
 --- !u!1 &4087269580268846604
 GameObject:
   m_ObjectHideFlags: 0
@@ -4917,6 +4917,18 @@ PrefabInstance:
     - target: {fileID: 400166, guid: f88c8301226fd194cbbc64e25b20d567, type: 3}
       propertyPath: m_RootOrder
       value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 400166, guid: f88c8301226fd194cbbc64e25b20d567, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 400166, guid: f88c8301226fd194cbbc64e25b20d567, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 400166, guid: f88c8301226fd194cbbc64e25b20d567, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1.2
       objectReference: {fileID: 0}
     - target: {fileID: 400166, guid: f88c8301226fd194cbbc64e25b20d567, type: 3}
       propertyPath: m_LocalPosition.x

@@ -1,5 +1,7 @@
-﻿public interface IEnemyFactory
+﻿using UnityEngine;
+
+public interface IEnemyFactory
 {
     public EnemyData Data { get; }
-    IEnemy CreateEnemy(EnemyType type);
+    IEnemy CreateEnemy(EnemyType type, Vector3 spawnPosition);
 }

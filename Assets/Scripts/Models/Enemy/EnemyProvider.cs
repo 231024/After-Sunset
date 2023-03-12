@@ -1,23 +1,46 @@
 ﻿using System;
+using System.IO;
 using UnityEngine;
 using UnityEngine.AI;
+using Random = UnityEngine.Random;
+
+//using Random = System.Random;
 
 public sealed class EnemyProvider : MonoBehaviour, IEnemy
 {
     public event Action<int> OnTriggerEnterChange;
+    public EnemyProvider Unit => this;
 
-    [SerializeField] private float _speed;
+    [SerializeField] private float _maxSpeedWalk;
+    [SerializeField] private float _maxSpeedRun;
     [SerializeField] private float _stopDistance;
-    private int _takeDamage = 10;
-    //private Rigidbody _rigidbody;
+    [SerializeField] private int _takeDamage = 10;
+
     private NavMeshAgent _navMeshAgent;
+    private NavMeshPath _navMeshPath;
+    private NavMeshHit _navMeshHit;
     private Animator _animator;
     private CapsuleCollider _capsuleCollider;
     private Transform _transform;
+    //private Transform _nearPlayerPoint;
+    private Transform _patrolZoneCenter;
+    private Vector3 _randomPoint;
+
     private IView _view;
     protected IHealth _health;
+
     private bool _dead;
-    private static readonly int Died = Animator.StringToHash("died");
+    private bool _pathComplete = false;
+    private bool _ray_blocked = false;
+    private bool _islost = true;
+    
+    private static readonly int DiedState = Animator.StringToHash(GameConstants.ANIMATION_DIED);
+    private static readonly int StateMove = Animator.StringToHash(GameConstants.ANIMATION_STATE_MOVE);
+    private static readonly string SpeedState = GameConstants.ANIMATION_SPEED;
+
+    private float _randomPointRadius;
+    //private float _nearPointRadius = 5.0f;
+    private float _visibleRadius = 15.0f;
 
     private void Start()
     {
@@ -25,27 +48,104 @@ public sealed class EnemyProvider : MonoBehaviour, IEnemy
         _animator = GetComponentInChildren<Animator>();
         _navMeshAgent = GetComponent<NavMeshAgent>();
         _navMeshAgent.updateRotation = false;
-        // _rigidbody = GetComponent<Rigidbody>();
+        _navMeshPath = new NavMeshPath();
         _transform = transform;
+        //_nearPlayerPoint = Instantiate(new GameObject(), Vector3.zero, Quaternion.identity).transform;
+    }
+
+    public void Initialization(IView view, IHealth health)
+    {
+        _view = view;
+        _health = health;
     }
 
     public void Move(Vector3 point)
     {
         if (_dead) return;
-        
-        //_navMeshAgent.SetDestination(point);
-        if ((_transform.localPosition - point).sqrMagnitude >= _stopDistance * _stopDistance)
+
+        var vectorDirection = (_transform.localPosition - point).sqrMagnitude;
+        _ray_blocked = NavMesh.Raycast(_transform.position, point,
+            out _navMeshHit, NavMesh.AllAreas);
+
+        if ((vectorDirection <= _visibleRadius * _visibleRadius && !_ray_blocked))
+
+        //|| (vectorDirection <= _visibleRadius * _visibleRadius && _ray_blocked))
         {
-            var dir = (point - _transform.localPosition).normalized;
-            _navMeshAgent.velocity = dir * _speed;
+            _islost = false;
+            _pathComplete = false;
+            
+            //Vector3 target = point;
+            // var nearVectorDirection = (_nearPlayerPoint.position - point).magnitude;
+            // if (nearVectorDirection > _nearPointRadius)
+            // {
+            //     _nearPlayerPoint.gameObject.SetActive(true);
+            //     var getCorrectPoint = false;
+            //     while (!getCorrectPoint)
+            //     {
+            //         NavMeshHit navMeshHit;
+            //         NavMesh.SamplePosition(Random.insideUnitSphere * _nearPointRadius + point,
+            //             out navMeshHit, _nearPointRadius, NavMesh.AllAreas);
+            //         _randomPoint = navMeshHit.position;
+            //
+            //         if (_navMeshPath.status == NavMeshPathStatus.PathComplete)
+            //         {
+            //             getCorrectPoint = true;
+            //         }
+            //     }
+            // }
+            // else
+            // {
+            //     _nearPlayerPoint.gameObject.SetActive(false);
+            //     target = point;
+            // }
+            //var dir = (point - _transform.localPosition).normalized;
+            
+            
+            _navMeshAgent.speed = Random.Range(_maxSpeedRun - 1, _maxSpeedRun);
+            _navMeshAgent.avoidancePriority = Random.Range(40, 50);
+            _navMeshAgent.CalculatePath(point, _navMeshPath);
+            _navMeshAgent.SetDestination(point);
+            _animator.SetInteger(StateMove, 2);
+            _animator.SetFloat(SpeedState, _navMeshAgent.velocity.magnitude);
         }
-        else
+        else if((_transform.localPosition - _randomPoint).magnitude <= 0.1f && _pathComplete)
         {
-            _navMeshAgent.velocity = Vector3.zero;
+            NavMeshRandomPoint();
+            _pathComplete = true;
+        }
+        else if (!_pathComplete && _islost)
+        {
+            NavMeshRandomPoint();
+            _pathComplete = true;
+        }
+        else if (vectorDirection >= _visibleRadius * _visibleRadius)
+        {
+            _islost = true;
         }
         
-        _animator.SetFloat(GameConstants.ANIMATION_SPEED, _navMeshAgent.velocity.magnitude);
         transform.rotation = Quaternion.LookRotation(_navMeshAgent.velocity.normalized);
+    }
+
+    private void NavMeshRandomPoint()
+    {
+        var getCorrectPoint = false;
+        while (!getCorrectPoint)
+        {
+            NavMeshHit navMeshHit;
+            NavMesh.SamplePosition(Random.insideUnitSphere * _randomPointRadius + _patrolZoneCenter.position,
+                out navMeshHit, _randomPointRadius, NavMesh.AllAreas);
+            _randomPoint = navMeshHit.position;
+
+            if (_navMeshPath.status == NavMeshPathStatus.PathComplete)
+            {
+                getCorrectPoint = true;
+            }
+        }
+        _navMeshAgent.speed = Random.Range(_maxSpeedWalk - 1, _maxSpeedWalk);
+        _navMeshAgent.CalculatePath(_randomPoint, _navMeshPath);
+        _navMeshAgent.SetDestination(_randomPoint);
+        _animator.SetInteger(StateMove, 1);
+        _animator.SetFloat(SpeedState, _navMeshAgent.velocity.magnitude);
     }
 
     private void OnTriggerEnter(Collider other)
@@ -57,11 +157,11 @@ public sealed class EnemyProvider : MonoBehaviour, IEnemy
         OnTriggerEnterChange?.Invoke(_takeDamage);
         //_view.Display(_view.FirstKeyText, _health.PlayerHealth, _view.FirstText);
     }
-        
-    public void Initialization(IView view, IHealth health)
+
+    public void SetPatrolZone(EnemyData enemyData)
     {
-        _view = view;
-        _health = health;
+        _patrolZoneCenter = enemyData.PatrolZoneCenter;
+        _randomPointRadius = enemyData.RandomPointRadius;
     }
     
     public void Kill()
@@ -71,7 +171,7 @@ public sealed class EnemyProvider : MonoBehaviour, IEnemy
             Destroy(_capsuleCollider);
             Destroy(_navMeshAgent);
             GetComponentInChildren<ParticleSystem>().Play();
-            _animator.SetTrigger(Died);
+            _animator.SetTrigger(DiedState);
             Destroy(gameObject, 5);
         }
     }

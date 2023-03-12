@@ -13,12 +13,17 @@ MonoBehaviour:
   m_Name: EnemySettings
   m_EditorClassIdentifier: 
   _enemyInfos:
+  - Type: 1
+    EnemyPrefab: {fileID: 6213606267524102678, guid: 63864ee6e3450ce48a62040514b0f684, type: 3}
+    Health: 1
   - Type: 2
     EnemyPrefab: {fileID: 6213606267524102678, guid: e08fa7b2086d64744925cc337d871558, type: 3}
-    Transform: {fileID: 604639283375567137, guid: 0b5c4b5456c98264e8ff41dc68511aa3, type: 3}
-  - Type: 1
-    EnemyPrefab: {fileID: 6213606267524102678, guid: e08fa7b2086d64744925cc337d871558, type: 3}
-    Transform: {fileID: 6143327150100119458, guid: 7c176596ca1c663448f2d634463d1da0, type: 3}
-  - Type: 1
-    EnemyPrefab: {fileID: 6213606267524102678, guid: e08fa7b2086d64744925cc337d871558, type: 3}
-    Transform: {fileID: 2999558717705684686, guid: e67d443efaeb7854d985f1baf742866a, type: 3}
+    Health: 2
+  - Type: 3
+    EnemyPrefab: {fileID: 6213606267524102678, guid: f637c695c2e31df42beb6c23c69ada7c, type: 3}
+    Health: 3
+  _spawnDelay: 500
+  _spawnInitializationCount: 15
+  _spawnRadius: 3.5
+  _patrolZoneCenter: {fileID: 7662183044729403351, guid: 77c369f39bbca8b42b21b9d5ada5df0a, type: 3}
+  _randomPointRadius: 40
