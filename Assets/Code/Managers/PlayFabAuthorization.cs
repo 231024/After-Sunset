@@ -13,7 +13,7 @@ using Random = UnityEngine.Random;
 public class PlayFabAuthorization  : MonoBehaviour
 {
     [Header("Text")] 
-    [SerializeField] private TMP_Text _buttonSignInText;
+    [SerializeField] private TMP_Text _textButtonSignIn;
     [SerializeField] private TMP_Text _textStatus;
     
     [Header("Buttons")] 
@@ -28,11 +28,14 @@ public class PlayFabAuthorization  : MonoBehaviour
 
     private string _username;
 
-    private const string AUTH_KEY = "player-unique-id";
+    private const string UNIQUE_AUTH_KEY = "player-unique-id";
+    private const string IS_NOT_REGISTRED_TEXT = "Register";
+    private const string IS_REGISTRED_TEXT = "Sign in";
+    private const string LOADING_LOBBY_SCENE = "Lobby";
 
     private void Start()
     {
-        _signInButton.onClick.AddListener(TryLogin);
+        _signInButton.onClick.AddListener(CheckIdAndLogin);
         _deleteAccountButton.onClick.AddListener(DeleteAccount);
         _quitButton.onClick.AddListener(Quit);
         CheckAccount();
@@ -40,13 +43,13 @@ public class PlayFabAuthorization  : MonoBehaviour
 
     private void CheckAccount()
     {
-        if (PlayerPrefs.HasKey(AUTH_KEY))
+        if (PlayerPrefs.HasKey(UNIQUE_AUTH_KEY))
         {
-            _buttonSignInText.text = "Sign in";
+            _textButtonSignIn.text = IS_REGISTRED_TEXT;
         }
         else
         {
-            _buttonSignInText.text = "Register";
+            _textButtonSignIn.text = IS_NOT_REGISTRED_TEXT;
         }
     }
 
@@ -55,62 +58,64 @@ public class PlayFabAuthorization  : MonoBehaviour
         _username = username;
     }
 
-    private void TryLogin()
+    private void CheckIdAndLogin()
     {
         if (string.IsNullOrEmpty(PlayFabSettings.staticSettings.TitleId))
         {
             PlayFabSettings.staticSettings.TitleId = "2885B";
-            Debug.Log("Successfully set the title ID.");
         }
-
-        var needCreation = !PlayerPrefs.HasKey(AUTH_KEY);
-        Debug.Log($"needCreation: {needCreation}");
         
-        var id = PlayerPrefs.GetString(AUTH_KEY, Guid.NewGuid().ToString());
-        Debug.Log($"id: {id}");
+        var creationAccount = !PlayerPrefs.HasKey(UNIQUE_AUTH_KEY);
+        var id = PlayerPrefs.GetString(UNIQUE_AUTH_KEY, Guid.NewGuid().ToString());
         
-        var request = new LoginWithCustomIDRequest { CustomId = id, CreateAccount = needCreation };
-        PlayFabClientAPI.LoginWithCustomID(request, result =>
+        var loginWithCustomIDRequest = new LoginWithCustomIDRequest 
+            { 
+                CustomId = id, 
+                CreateAccount = creationAccount 
+            };
+        
+        PlayFabClientAPI.LoginWithCustomID(loginWithCustomIDRequest, 
+            result =>
         {
-            var message = "PlayFab Success";
-            _textStatus.text = message;
+            _textStatus.text = "PlayFab connection - Success";
             _textStatus.color = _colorSuccess;
-            PlayerPrefs.SetString(AUTH_KEY, id);
-            Debug.Log(message);
+            PlayerPrefs.SetString(UNIQUE_AUTH_KEY, id);
             OnLoginSuccess(result);
-            if (needCreation)
+            if (creationAccount)
             {
-                CreateInitialUsername();
+                SetPlayerUsername();
             }
             else
             {
-                SceneManager.LoadScene("MainProfile");
+                SceneManager.LoadScene(LOADING_LOBBY_SCENE);
             }
-        }, OnLoginFail);
+        }, OnLoginError);
         
         _textStatus.text = "Signing in...";
         _textStatus.color = _colorLoading;
     }
 
-    private void CreateInitialUsername()
+    private void SetPlayerUsername()
     {
-        PlayFabClientAPI.UpdateUserTitleDisplayName(new UpdateUserTitleDisplayNameRequest { DisplayName = $"Player {Random.Range(1000, 10000)}" },
+        PlayFabClientAPI.UpdateUserTitleDisplayName(new UpdateUserTitleDisplayNameRequest
+            {
+                DisplayName = $"Player {Random.Range(1000, 9999)}"
+            },
             result =>
             {
-                SceneManager.LoadScene("MainProfile");
+                SceneManager.LoadScene(LOADING_LOBBY_SCENE);
             }, Debug.LogError);
     }
 
     private void DeleteAccount()
     {
-        PlayerPrefs.DeleteKey(AUTH_KEY);
+        PlayerPrefs.DeleteKey(UNIQUE_AUTH_KEY);
         CheckAccount();
     }
 
     private void OnLoginSuccess(LoginResult result)
     {
-        var message = "Successfully logged in PlayFab.";
-        _textStatus.text = message;
+        _textStatus.text = "Successfully logged in PlayFab.";
         _textStatus.color = _colorSuccess;
         TryGetData();
     }
@@ -120,36 +125,40 @@ public class PlayFabAuthorization  : MonoBehaviour
         PlayFabClientAPI.GetUserData(new GetUserDataRequest()
             {
                 Keys = new List<string>
-                    { GameConstants.SCORE_ID, GameConstants.TOTAL_SCORE_ID, GameConstants.LEVEL_ID }
+                {
+                    GameConstants.SCORE_ID, 
+                    GameConstants.TOTAL_SCORE_ID, 
+                    GameConstants.LEVEL_ID
+                }
             }, GotUserData, Debug.LogError
         );
     }
 
     private void GotUserData(GetUserDataResult result)
     {
-        var dataToWrite = new Dictionary<string, string>();
+        var updatedData = new Dictionary<string, string>();
         var data = result.Data;
 
         if (!data.ContainsKey(GameConstants.SCORE_ID))
         {
-            dataToWrite.Add(GameConstants.SCORE_ID, 0.ToString());
+            updatedData.Add(GameConstants.SCORE_ID, 0.ToString());
         }
         
         if (!data.ContainsKey(GameConstants.TOTAL_SCORE_ID))
         {
-            dataToWrite.Add(GameConstants.TOTAL_SCORE_ID, 0.ToString());
+            updatedData.Add(GameConstants.TOTAL_SCORE_ID, 0.ToString());
         }
         
         if (!data.ContainsKey(GameConstants.LEVEL_ID))
         {
-            dataToWrite.Add(GameConstants.LEVEL_ID, 0.ToString());
+            updatedData.Add(GameConstants.LEVEL_ID, 0.ToString());
         }
 
-        if (dataToWrite.Count > 0)
+        if (updatedData.Count > 0)
         {
             PlayFabClientAPI.UpdateUserData(new UpdateUserDataRequest()
                 {
-                    Data = dataToWrite
+                    Data = updatedData
                 }, dataResult =>
                 {
                     Debug.Log($"Created initial user data");
@@ -158,7 +167,7 @@ public class PlayFabAuthorization  : MonoBehaviour
         }
     }
 
-    private void OnLoginFail(PlayFabError error)
+    private void OnLoginError(PlayFabError error)
     {
         var message = "<color=red>Failed to log into PlayFab</color>!";
         _textStatus.text = message;
@@ -173,7 +182,7 @@ public class PlayFabAuthorization  : MonoBehaviour
 
     private void OnDestroy()
     {
-        _signInButton.onClick.RemoveListener(TryLogin);
+        _signInButton.onClick.RemoveListener(CheckIdAndLogin);
         _deleteAccountButton.onClick.RemoveListener(DeleteAccount);
         _quitButton.onClick.RemoveListener(Quit);
     }
