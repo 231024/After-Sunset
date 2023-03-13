@@ -2,12 +2,12 @@
 using UnityEngine;
 
 
-public sealed class PCInputMousePosition : IUserInputProxy<Vector3>
+public sealed class PCInputMousePosition : IUserInputPosition
 {
-    public event Action<Vector3> AxisOnChange = delegate {  };
-        
-    public void GetAxis()
+    public event Action<Vector3> OnPositionChanged = delegate {  };
+
+    public void GetPosition()
     {
-        AxisOnChange.Invoke(Input.mousePosition);
+        OnPositionChanged.Invoke(Input.mousePosition);
     }
 }

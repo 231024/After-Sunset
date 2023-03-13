@@ -74,6 +74,7 @@ MonoBehaviour:
   _maxSpeedRun: 4
   _stopDistance: 1.5
   _takeDamage: 10
+  _startHealth: 2
 --- !u!136 &3431794633498486488
 CapsuleCollider:
   m_ObjectHideFlags: 0

@@ -16,6 +16,7 @@ public sealed class EnemyProvider : MonoBehaviour, IEnemy
     [SerializeField] private float _maxSpeedRun;
     [SerializeField] private float _stopDistance;
     [SerializeField] private int _takeDamage = 10;
+    [SerializeField] private float _startHealth;
 
     private NavMeshAgent _navMeshAgent;
     private NavMeshPath _navMeshPath;
@@ -51,7 +52,6 @@ public sealed class EnemyProvider : MonoBehaviour, IEnemy
         _navMeshAgent.updateRotation = false;
         _navMeshPath = new NavMeshPath();
         _transform = transform;
-        //_nearPlayerPoint = Instantiate(new GameObject(), Vector3.zero, Quaternion.identity).transform;
     }
 
     public void Initialization(IView view, IHealth health)
@@ -98,9 +98,7 @@ public sealed class EnemyProvider : MonoBehaviour, IEnemy
                  target = point;
                  _navMeshAgent.CalculatePath(target, _navMeshPath);
              }
-            //var dir = (point - _transform.localPosition).normalized;
-            
-            
+
             _navMeshAgent.speed = Random.Range(_maxSpeedRun - 1, _maxSpeedRun);
             _navMeshAgent.avoidancePriority = Random.Range(40, 50);
             _navMeshAgent.SetDestination(target);
@@ -163,14 +161,25 @@ public sealed class EnemyProvider : MonoBehaviour, IEnemy
         _patrolZoneCenter = enemyData.PatrolZoneCenter;
         _randomPointRadius = enemyData.RandomPointRadius;
     }
+
+    public void TakeDamage(float amountDamage)
+    {
+        _startHealth -= amountDamage;
+        GetComponentInChildren<ParticleSystem>().Play();
+
+        if (_startHealth <= 0)
+        {
+            Kill();
+        }
+    }
     
     public void Kill()
     {
-        if (!_dead) {
+        if (!_dead) 
+        {
             _dead = true;
             Destroy(_capsuleCollider);
             Destroy(_navMeshAgent);
-            GetComponentInChildren<ParticleSystem>().Play();
             _animator.SetTrigger(DiedState);
             Destroy(gameObject, 5);
         }

@@ -12,6 +12,13 @@ public sealed class CharacterData : ScriptableObject, IUnit
     [SerializeField, Range(500, 1000)] private float _mouseSensitivity;
     [SerializeField] private DataRidgidbody _dataRidgidbody;
     [SerializeField] private Transform _gunBarrelPosition;
+    [SerializeField] private float _startHealth;
+    [SerializeField] private float _maxHealth;
+    [SerializeField] private float _respawnTime;
+    [SerializeField] private string[] _deathMessages;
+    [SerializeField] private int _playerLayerId;
+    [SerializeField] private int _scoreForKill;
+    [SerializeField] private int _scoreForDeath;
 
 
     public Transform TransformSpawn => _transformSpawn;
@@ -22,6 +29,13 @@ public sealed class CharacterData : ScriptableObject, IUnit
     public float AngularDrag => _dataRidgidbody._angularDrag;
     public bool IsGravity => _dataRidgidbody._isGravity;
     public bool IsFreeze => _dataRidgidbody._isFreeze;
+    public float StartHealth => _startHealth;
+    public float MaxHealth => _maxHealth;
+    public float RespawnTime => _respawnTime;
+    public string[] DeathMessages => _deathMessages;
+    public int PlayerLayerId => _playerLayerId;
+    public int ScoreForKill => _scoreForKill;
+    public int ScoreForDeath => _scoreForDeath;
 }
     
 [Serializable]

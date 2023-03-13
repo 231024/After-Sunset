@@ -5,16 +5,16 @@ using UnityEngine;
 public sealed class CursorController : IExecute, ICleanup
 {
     private readonly Camera _camera;
-    private readonly IUserInputProxy<Vector3> _pcInputMousePosition;
+    private readonly IUserInputPosition _pcInputMousePosition;
     private GameObject _cursor;
     private Vector3 _mousePosition;
     private SpriteRenderer _spriteRenderer;
     private int _layerMask;
     
-    public CursorController(Camera mainCamera, IUserInputProxy<Vector3> inputMousePosition)
+    public CursorController(Camera camera, InputUserModel inputModel)
     {
-        _camera = mainCamera;
-        _pcInputMousePosition = inputMousePosition;
+        _camera = camera;
+        _pcInputMousePosition = inputModel.MousePosition;
         _cursor = GameObject.Find(SupportObjectType.Cursor.ToString());
         // foreach (var supportObject in supportObjects.SupportObjects)
         // {
@@ -24,7 +24,7 @@ public sealed class CursorController : IExecute, ICleanup
         //     }
         // }
         _spriteRenderer = _cursor.GetComponent<SpriteRenderer>();
-        _pcInputMousePosition.AxisOnChange += MousePositionOnAxisOnChange;
+        _pcInputMousePosition.OnPositionChanged += MousePositionOnAxisOnChange;
         _layerMask = LayerMask.GetMask("Ground");
     }
     
@@ -49,6 +49,6 @@ public sealed class CursorController : IExecute, ICleanup
 
     public void Cleanup()
     {
-        _pcInputMousePosition.AxisOnChange -= MousePositionOnAxisOnChange;
+        _pcInputMousePosition.OnPositionChanged -= MousePositionOnAxisOnChange;
     }
 }

@@ -9,6 +9,7 @@ public sealed class Data : ScriptableObject
     //[SerializeField] private string _interactiveObjectDataPath;
     [SerializeField] private string _cursorDataPath;
     [SerializeField] private string _supportObjectDataPath;
+    [SerializeField] private string _inputDataPath;
     
     
     private CharacterDatas _character;
@@ -16,6 +17,7 @@ public sealed class Data : ScriptableObject
     //private InteractiveObjectData _interactiveObject;
     private CursorData _cursor;
     private SupportObjectData _supportObject;
+    private InputData _inputData;
     
 
     public CharacterDatas Character
@@ -68,6 +70,19 @@ public sealed class Data : ScriptableObject
             }
 
             return _supportObject;
+        }
+    }
+    
+    public InputData InputData
+    {
+        get
+        {
+            if (_inputData == null)
+            {
+                _inputData = Load<InputData>("Data/" + _inputDataPath);
+            }
+
+            return _inputData;
         }
     }
 

@@ -13,31 +13,23 @@ public sealed class MoveController : IExecute, ICleanup
         private readonly IUnit _unitData;
         private float _horizontal;
         private float _vertical;
-        private float _rotation;
-        private Vector3 _mousePosition;
         private Vector3 _move;
         private Vector3 _angelRotation;
         private List<ISupportObject> _supportObjects;
-        private IUserInputProxy<float> _horizontalInputProxy;
-        private IUserInputProxy<float> _verticalInputProxy;
-        private IUserInputProxy<float> _rotationInputProxy;
-        private IUserInputProxy<Vector3> _pcInputMousePosition;
+        private IUserInputAxis _horizontalInputProxy;
+        private IUserInputAxis _verticalInputProxy;
         private bool _isAlive;
 
 
-        public MoveController((IUserInputProxy<float> inputHorizontal, IUserInputProxy<float> inputVertical, 
-                IUserInputProxy<float> inputRotation) input, Transform unit, IUnit unitData)//, IAlive isAlive)
+        public MoveController(InputUserModel input, Transform unit, IUnit unitData)//, IAlive isAlive)
         {
             _unit = unit;
             _unitData = unitData;
             _cursor = GameObject.Find(SupportObjectType.Cursor.ToString());
-            _horizontalInputProxy = input.inputHorizontal;
-            _verticalInputProxy = input.inputVertical;
-            _rotationInputProxy = input.inputRotation;
-            _horizontalInputProxy.AxisOnChange += HorizontalOnAxisOnChange;
-            _verticalInputProxy.AxisOnChange += VerticalOnAxisOnChange;
-            _rotationInputProxy.AxisOnChange += RotationOnAxisOnChange;
-            if (_pcInputMousePosition != null) _pcInputMousePosition.AxisOnChange += MousePositionOnAxisOnChange;
+            _horizontalInputProxy = input.Horizontal;
+            _verticalInputProxy = input.Vertical;
+            _horizontalInputProxy.OnAxisChanged += HorizontalOnAxisOnChange;
+            _verticalInputProxy.OnAxisChanged += VerticalOnAxisOnChange;
             //_isAlive = isAlive.IsAlive;
             _navMeshAgent = _unit.GetComponentInParent<NavMeshAgent>();
             _navMeshAgent.updateRotation = false;
@@ -67,11 +59,6 @@ public sealed class MoveController : IExecute, ICleanup
 
         }
 
-        private void MousePositionOnAxisOnChange(Vector3 value)
-        {
-            _mousePosition = value;
-        }
-
         private void VerticalOnAxisOnChange(float value)
         {
             _vertical = value;
@@ -82,15 +69,9 @@ public sealed class MoveController : IExecute, ICleanup
             _horizontal = value;
         }
 
-        private void RotationOnAxisOnChange(float value)
-        {
-            _rotation = value;
-        }
-
         public void Cleanup()
         {
-            _horizontalInputProxy.AxisOnChange -= HorizontalOnAxisOnChange;
-            _verticalInputProxy.AxisOnChange -= VerticalOnAxisOnChange;
-            _rotationInputProxy.AxisOnChange -= RotationOnAxisOnChange;
+            _horizontalInputProxy.OnAxisChanged -= HorizontalOnAxisOnChange;
+            _verticalInputProxy.OnAxisChanged -= VerticalOnAxisOnChange;
         }
     }

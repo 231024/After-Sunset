@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Player: {fileID: 3960971418310363289, guid: 900099c85eb00dc40ac1ded77bbc65cd, type: 3}
   _transformSpawn: {fileID: 6356817762478361724, guid: 8ac2025263a89fd48b0f835dfebfb538, type: 3}
-  _speed: 750
+  _speed: 500
   _mouseSensitivity: 800
   _dataRidgidbody:
     _mass: 75
@@ -22,3 +22,20 @@ MonoBehaviour:
     _isGravity: 1
     _isFreeze: 1
   _gunBarrelPosition: {fileID: 0}
+  _startHealth: 100
+  _maxHealth: 100
+  _respawnTime: 3
+  _deathMessages:
+  - YOU ARE DEAD
+  - YOU DIED
+  - YOU DIEDED
+  - YOU ARE DED
+  - DED
+  - DEAD INSIDE
+  - POTRACHENO
+  - WASTED
+  - DEATH
+  - SMERT'
+  _playerLayerId: 1
+  _scoreForKill: 50
+  _scoreForDeath: -5

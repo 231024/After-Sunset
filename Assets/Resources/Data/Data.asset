@@ -16,3 +16,4 @@ MonoBehaviour:
   _enemyDataPath: EnemySettings.asset
   _cursorDataPath: CursorSettings.asset
   _supportObjectDataPath: SupportObjectSettings.asset
+  _inputDataPath: InputData.asset
