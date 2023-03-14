@@ -12,14 +12,14 @@ using Random = UnityEngine.Random;
 
 public class PlayFabAuthorization  : MonoBehaviour
 {
+    [FormerlySerializedAs("_textButtonSignIn")]
     [Header("Text")] 
-    [SerializeField] private TMP_Text _textButtonSignIn;
+    [SerializeField] private TMP_Text _textButtonSignInAnonimous;
     [SerializeField] private TMP_Text _textStatus;
     
     [Header("Buttons")] 
     [SerializeField] private Button _signInButton;
     [SerializeField] private Button _deleteAccountButton;
-    [SerializeField] private Button _quitButton;
     
     [Header("StatusColor")] 
     [SerializeField] private Color _colorLoading;
@@ -37,7 +37,6 @@ public class PlayFabAuthorization  : MonoBehaviour
     {
         _signInButton.onClick.AddListener(CheckIdAndLogin);
         _deleteAccountButton.onClick.AddListener(DeleteAccount);
-        _quitButton.onClick.AddListener(Quit);
         CheckAccount();
     }
 
@@ -45,11 +44,11 @@ public class PlayFabAuthorization  : MonoBehaviour
     {
         if (PlayerPrefs.HasKey(UNIQUE_AUTH_KEY))
         {
-            _textButtonSignIn.text = IS_REGISTRED_TEXT;
+            _textButtonSignInAnonimous.text = IS_REGISTRED_TEXT;
         }
         else
         {
-            _textButtonSignIn.text = IS_NOT_REGISTRED_TEXT;
+            _textButtonSignInAnonimous.text = IS_NOT_REGISTRED_TEXT;
         }
     }
 
@@ -184,6 +183,5 @@ public class PlayFabAuthorization  : MonoBehaviour
     {
         _signInButton.onClick.RemoveListener(CheckIdAndLogin);
         _deleteAccountButton.onClick.RemoveListener(DeleteAccount);
-        _quitButton.onClick.RemoveListener(Quit);
     }
 }
