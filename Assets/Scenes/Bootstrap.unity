@@ -8789,7 +8789,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
   m_LocalRotation: {x: 0.14642076, y: -0, z: -0, w: 0.9892224}
-  m_LocalPosition: {x: 22.7, y: 1.16, z: -0.18}
+  m_LocalPosition: {x: 22.15, y: 1.59, z: -0.05}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -14373,7 +14373,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 300}
+  m_AnchoredPosition: {x: 0, y: -345}
   m_SizeDelta: {x: 0, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1621630174
@@ -16272,7 +16272,7 @@ MonoBehaviour:
   _createAccountButton: {fileID: 1429509672}
   _signInBackButton: {fileID: 1010775078}
   _createAccountBackButton: {fileID: 927188996}
-  _quitButton: {fileID: 0}
+  _quitButton: {fileID: 6755129855342490591}
   _enterInGameCanvas: {fileID: 517917264}
   _createAccountCanvas: {fileID: 1955543136}
   _signInCanvas: {fileID: 1315838729}
@@ -17476,7 +17476,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Play without login
+  m_text: Play without logining
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 639625e4f037d624da0ffb46952fe74d, type: 2}
   m_sharedMaterial: {fileID: -474298603886595255, guid: 639625e4f037d624da0ffb46952fe74d, type: 2}
@@ -20633,3 +20633,14 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 2794559516995377311, guid: c91e04c4763530b438af390c729ce95a, type: 3}
   m_PrefabInstance: {fileID: 6755129855342490588}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &6755129855342490591 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 25294065750633564, guid: c91e04c4763530b438af390c729ce95a, type: 3}
+  m_PrefabInstance: {fileID: 6755129855342490588}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

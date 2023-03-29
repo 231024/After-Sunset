@@ -174,11 +174,6 @@ public class PlayFabAuthorization  : MonoBehaviour
         Debug.LogError($"{message} {error}");
     }
 
-    private void Quit()
-    {
-        Application.Quit();
-    }
-
     private void OnDestroy()
     {
         _signInButton.onClick.RemoveListener(CheckIdAndLogin);
