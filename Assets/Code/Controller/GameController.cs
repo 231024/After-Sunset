@@ -5,11 +5,16 @@ public sealed class GameController : MonoBehaviour
 {
     [SerializeField] private Data _data;
     private Controllers _controllers;
-        
+
+    private void Awake()
+    {
+        DontDestroyOnLoad(this);
+    }
+
     private void Start()
     {
         _controllers = new Controllers();
-        new GameInitialization(_controllers, _data);
+        //new GameInitialization(_controllers, _data);
         _controllers.Initialization();
     }
 
@@ -34,5 +39,6 @@ public sealed class GameController : MonoBehaviour
     private void OnDestroy()
     {
         _controllers.Cleanup();
+        Destroy(this);
     }
 }

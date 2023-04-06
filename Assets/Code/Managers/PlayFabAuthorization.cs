@@ -12,7 +12,6 @@ using Random = UnityEngine.Random;
 
 public class PlayFabAuthorization  : MonoBehaviour
 {
-    [FormerlySerializedAs("_textButtonSignIn")]
     [Header("Text")] 
     [SerializeField] private TMP_Text _textButtonSignInAnonimous;
     [SerializeField] private TMP_Text _textStatus;
