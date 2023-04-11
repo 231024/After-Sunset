@@ -1,36 +1,38 @@
-﻿using Photon.Pun;
-using Photon.Realtime;
+﻿using System;
+using System.Collections.Generic;
+using PlayFab;
+using PlayFab.ClientModels;
 using TMPro;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using Image = UnityEngine.UI.Image;
 
-public class AccountDataWindowBase : MonoBehaviourPunCallbacks, IInitialization
+internal class AccountDataWindowBase : IInitialization, ICleanup
 {
-    [Header("PhotonServerSettings")] 
-    [SerializeField] private ServerSettings _serverSettings;
-    
-    [Header("TextLebels")] 
-    [SerializeField] private TMP_Text _textButtonSignInAnonimous;
-    [SerializeField] private TMP_Text _textStatus;
-    
-    [SerializeField] private InputField _usernameField;
-    [SerializeField] private InputField _passwordField;
-    [SerializeField] private Image _bgConnection;
-    [SerializeField] private TMP_Text _textProcess;
+    private InputField _usernameField;
+    private InputField _passwordField;
 
+    protected Color _colorLoading;
+    protected Color _colorSuccess;
+    protected Color _colorFailure;
+    
+    protected TMP_Text _textStatus;
+
+    protected const string UNIQUE_AUTH_KEY = "player-unique-id";
+    protected const string IS_NOT_REGISTRED_TEXT = "Register";
+    protected const string IS_REGISTRED_TEXT = "Play without logining";
+    protected const string LOADING_LOBBY_SCENE = "Lobby";
+
+    protected string _id;
     protected string _username;
     protected string _password;
     protected string _connecting = "Connecting...";
-    protected string gameVersion = "1";
 
-    private TypedLobby _sqlLobby = new TypedLobby("CustomSqlLobby", LobbyType.SqlLobby);
-    
-    private const string UNIQUE_AUTH_KEY = "player-unique-id";
-    private const string IS_NOT_REGISTRED_TEXT = "Register";
-    private const string IS_REGISTRED_TEXT = "Sign in";
-    private const string LOADING_LOBBY_SCENE = "Lobby";
+    protected bool _creationAccount;
+
+    public AccountDataWindowBase(ColorView colorView)
+    {
+        SetColor(colorView);
+    }
 
     public void Initialization()
     {
@@ -43,16 +45,133 @@ public class AccountDataWindowBase : MonoBehaviourPunCallbacks, IInitialization
         _passwordField.onValueChanged.AddListener(UpdatePassword);
     }
     
-    private void CheckAccount()
+    protected virtual void UnSubscriptionsElementsUi()
     {
-        if (PlayerPrefs.HasKey(UNIQUE_AUTH_KEY))
+        _usernameField.onValueChanged.RemoveListener(UpdateUsername);
+        _passwordField.onValueChanged.RemoveListener(UpdatePassword);
+    }
+
+    protected void SetColor(ColorView colorView)
+    {
+        _colorLoading = colorView.ColorLoading;
+        _colorSuccess = colorView.ColorSuccess;
+        _colorFailure = colorView.ColorFailure;
+    }
+
+    protected virtual void CheckAccount()
+    {
+        _creationAccount = !PlayerPrefs.HasKey(UNIQUE_AUTH_KEY);
+        _id = PlayerPrefs.GetString(UNIQUE_AUTH_KEY, Guid.NewGuid().ToString());
+    }
+    
+    protected void Login()
+    {
+        if (string.IsNullOrEmpty(PlayFabSettings.staticSettings.TitleId))
         {
-            _textButtonSignInAnonimous.text = IS_REGISTRED_TEXT;
+            PlayFabSettings.staticSettings.TitleId = "2885B";
+            Debug.Log("Successfully set the title ID.");
         }
-        else
+        
+        var loginWithCustomIDRequest = new LoginWithCustomIDRequest 
+        { 
+            CustomId = _id, 
+            CreateAccount = _creationAccount 
+        };
+        
+        PlayFabClientAPI.LoginWithCustomID(loginWithCustomIDRequest, 
+            result =>
+            {
+                _textStatus.text = "PlayFab connection - Success";
+                _textStatus.color = _colorSuccess;
+                PlayerPrefs.SetString(UNIQUE_AUTH_KEY, _id);
+                OnLoginSuccess(result);
+                if (_creationAccount)
+                {
+                    SetPlayerUsername(_username);
+                }
+                else
+                {
+                    
+                    //SceneManager.LoadScene(LOADING_LOBBY_SCENE);
+                }
+            }, OnLoginError);
+        
+        _textStatus.text = "Signing in...";
+        _textStatus.color = _colorLoading;
+    }
+    
+    protected void SetPlayerUsername(String displayName)
+    {
+        PlayFabClientAPI.UpdateUserTitleDisplayName(new UpdateUserTitleDisplayNameRequest
+            {
+                DisplayName = displayName
+            },
+            result =>
+            {
+               //SceneManager.LoadScene(LOADING_LOBBY_SCENE);
+            }, Debug.LogError);
+    }
+    
+    protected void OnLoginSuccess(LoginResult result)
+    {
+        _textStatus.text = "Successfully logged in PlayFab.";
+        _textStatus.color = _colorSuccess;
+        TryGetData();
+    }
+    
+    protected void TryGetData()
+    {
+        PlayFabClientAPI.GetUserData(new GetUserDataRequest()
+            {
+                Keys = new List<string>
+                {
+                    GameConstants.SCORE_ID, 
+                    GameConstants.TOTAL_SCORE_ID, 
+                    GameConstants.LEVEL_ID
+                }
+            }, GotUserData, Debug.LogError
+        );
+    }
+    
+    protected void GotUserData(GetUserDataResult result)
+    {
+        var updatedData = new Dictionary<string, string>();
+        var data = result.Data;
+
+        if (!data.ContainsKey(GameConstants.SCORE_ID))
         {
-            _textButtonSignInAnonimous.text = IS_NOT_REGISTRED_TEXT;
+            updatedData.Add(GameConstants.SCORE_ID, 0.ToString());
         }
+        
+        if (!data.ContainsKey(GameConstants.TOTAL_SCORE_ID))
+        {
+            updatedData.Add(GameConstants.TOTAL_SCORE_ID, 0.ToString());
+        }
+        
+        if (!data.ContainsKey(GameConstants.LEVEL_ID))
+        {
+            updatedData.Add(GameConstants.LEVEL_ID, 0.ToString());
+        }
+
+        if (updatedData.Count > 0)
+        {
+            PlayFabClientAPI.UpdateUserData(new UpdateUserDataRequest()
+                {
+                    Data = updatedData
+                }, dataResult =>
+                {
+                    Debug.Log($"Created initial user data");
+                },
+                Debug.LogError);
+        }
+    }
+    
+    protected void OnLoginError(PlayFabError error)
+    {
+        var message = "<color=red>Failed to log into PlayFab</color>!";
+        _textStatus.text = message;
+        _textStatus.color = _colorFailure;
+        Debug.LogError($"{message} {error}");
     }
 
     private void UpdateUsername(string username)
@@ -72,49 +191,8 @@ public class AccountDataWindowBase : MonoBehaviourPunCallbacks, IInitialization
         //GetInventory();
     }
 
-    protected void ConnectionInfo(bool enable, string message, Color color)
+    public void Cleanup()
     {
-        _bgConnection.enabled = enable;
-        _textProcess.text = message;
-        _textProcess.color = color;
-    }
-
-    public void Connect()
-    {
-        _textProcess.text = "";
-        
-        if (PhotonNetwork.IsConnected)
-        {
-            LogFeedback("Joining Room...");
-            PhotonNetwork.JoinLobby();
-        }else{
-            LogFeedback("Connecting...");
-            PhotonNetwork.ConnectUsingSettings(_serverSettings.AppSettings);
-            PhotonNetwork.GameVersion = this.gameVersion;
-        }
-    }
-
-    void LogFeedback(string message)
-    {
-        if (_textProcess == null) {
-            return;
-        }
-        _textProcess.text += System.Environment.NewLine+message;
-    }
-
-    public override void OnConnectedToMaster()
-    {
-        if (PhotonNetwork.IsConnected)
-        {
-            PhotonNetwork.JoinLobby(_sqlLobby);
-            Debug.LogWarning("OnConnectedToMaster: Next -> try to Join Lobby");
-        }
-    }
-
-    public override void OnJoinedLobby()
-    {
-        LogFeedback("OnJoinedLobby: Next -> try to LoadScene(1)");
-        Debug.LogWarning("OnJoinedLobby");
-        SceneManager.LoadScene(1);
+        UnSubscriptionsElementsUi();
     }
 }

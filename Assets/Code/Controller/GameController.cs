@@ -4,6 +4,7 @@ using UnityEngine;
 public sealed class GameController : MonoBehaviour
 {
     [SerializeField] private Data _data;
+    [SerializeField] private GeneralViews _views;
     private Controllers _controllers;
 
     private void Awake()
@@ -14,6 +15,7 @@ public sealed class GameController : MonoBehaviour
     private void Start()
     {
         _controllers = new Controllers();
+        new BootstrapInitialization(_controllers, _views);
         //new GameInitialization(_controllers, _data);
         _controllers.Initialization();
     }
