@@ -1,4 +1,6 @@
-﻿using TMPro;
+﻿using PlayFab;
+using PlayFab.ClientModels;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
@@ -26,9 +28,7 @@ internal sealed class AnonymousAuthorization  : AccountDataWindowBase
     {
         _signInButton.onClick.RemoveListener(Login);
     }
-    
-    
-    
+
     protected override void CheckAccount()
     {
         base.CheckAccount();
@@ -42,5 +42,41 @@ internal sealed class AnonymousAuthorization  : AccountDataWindowBase
         {
             _textButtonSignInAnonimous.text = IS_NOT_REGISTRED_TEXT;
         }
+    }
+    
+    private void Login()
+    {
+        if (string.IsNullOrEmpty(PlayFabSettings.staticSettings.TitleId))
+        {
+            PlayFabSettings.staticSettings.TitleId = "2885B";
+            Debug.Log("Successfully set the title ID.");
+        }
+        
+        var loginWithCustomIDRequest = new LoginWithCustomIDRequest 
+        { 
+            CustomId = _id, 
+            CreateAccount = _creationAccount 
+        };
+        
+        PlayFabClientAPI.LoginWithCustomID(loginWithCustomIDRequest, 
+            result =>
+            {
+                _textStatus.text = "PlayFab connection - Success";
+                _textStatus.color = _colorSuccess;
+                PlayerPrefs.SetString(UNIQUE_AUTH_KEY, _id);
+                OnLoginSuccess();
+                if (_creationAccount)
+                {
+                    SetPlayerUsername(_username);
+                }
+                else
+                {
+                    
+                    //SceneManager.LoadScene(LOADING_LOBBY_SCENE);
+                }
+            }, OnLoginError);
+        
+        _textStatus.text = "Signing in...";
+        _textStatus.color = _colorLoading;
     }
 }

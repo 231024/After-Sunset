@@ -8,8 +8,8 @@ using UnityEngine.UI;
 
 internal class AccountDataWindowBase : IInitialization, ICleanup
 {
-    private InputField _usernameField;
-    private InputField _passwordField;
+    protected InputField _usernameField;
+    protected InputField _passwordField;
 
     protected Color _colorLoading;
     protected Color _colorSuccess;
@@ -64,42 +64,6 @@ internal class AccountDataWindowBase : IInitialization, ICleanup
         _id = PlayerPrefs.GetString(UNIQUE_AUTH_KEY, Guid.NewGuid().ToString());
     }
     
-    protected void Login()
-    {
-        if (string.IsNullOrEmpty(PlayFabSettings.staticSettings.TitleId))
-        {
-            PlayFabSettings.staticSettings.TitleId = "2885B";
-            Debug.Log("Successfully set the title ID.");
-        }
-        
-        var loginWithCustomIDRequest = new LoginWithCustomIDRequest 
-        { 
-            CustomId = _id, 
-            CreateAccount = _creationAccount 
-        };
-        
-        PlayFabClientAPI.LoginWithCustomID(loginWithCustomIDRequest, 
-            result =>
-            {
-                _textStatus.text = "PlayFab connection - Success";
-                _textStatus.color = _colorSuccess;
-                PlayerPrefs.SetString(UNIQUE_AUTH_KEY, _id);
-                OnLoginSuccess(result);
-                if (_creationAccount)
-                {
-                    SetPlayerUsername(_username);
-                }
-                else
-                {
-                    
-                    //SceneManager.LoadScene(LOADING_LOBBY_SCENE);
-                }
-            }, OnLoginError);
-        
-        _textStatus.text = "Signing in...";
-        _textStatus.color = _colorLoading;
-    }
-    
     protected void SetPlayerUsername(String displayName)
     {
         PlayFabClientAPI.UpdateUserTitleDisplayName(new UpdateUserTitleDisplayNameRequest
@@ -112,7 +76,7 @@ internal class AccountDataWindowBase : IInitialization, ICleanup
             }, Debug.LogError);
     }
     
-    protected void OnLoginSuccess(LoginResult result)
+    protected void OnLoginSuccess()
     {
         _textStatus.text = "Successfully logged in PlayFab.";
         _textStatus.color = _colorSuccess;

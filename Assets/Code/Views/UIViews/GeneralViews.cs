@@ -10,8 +10,12 @@ internal sealed class GeneralViews : MonoBehaviour
     [Header("Views")] 
     [SerializeField] private ColorView _colorView;
     [SerializeField] private AnonymousLoginView _anonymousLoginView;
+    [SerializeField] private SignInAccountView _signInAccountView;
+    [SerializeField] private CreateAccountView _createAccountView;
 
     public TMP_Text TextStatus => _textStatus;
     public ColorView ColorView => _colorView;
     public AnonymousLoginView AnonymousLoginView => _anonymousLoginView;
+    public SignInAccountView SignInAccountView => _signInAccountView;
+    public CreateAccountView CreateAccountView => _createAccountView;
 }

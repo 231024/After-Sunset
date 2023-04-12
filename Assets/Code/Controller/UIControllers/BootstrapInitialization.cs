@@ -2,8 +2,10 @@
 {
     public BootstrapInitialization(Controllers controllers, GeneralViews views)
     {
-        var anonymousAuthorization = new AnonymousAuthorization(views);
+        //var anonymousAuthorization = new AnonymousAuthorization(views);
 
-        controllers.Add(anonymousAuthorization);
+        controllers.Add(new AnonymousAuthorization(views));
+        controllers.Add(new SignInAccountAuthorization(views));
+        controllers.Add(new CreateAccountAuthorization(views));
     }
 }
