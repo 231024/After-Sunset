@@ -11,7 +11,7 @@ internal sealed class AnonymousAuthorization  : AccountDataWindowBase
     private TMP_Text _textButtonSignInAnonimous;
     private Button _signInButton;
 
-    public AnonymousAuthorization(GeneralViews generalViews) : base(generalViews.ColorView)
+    public AnonymousAuthorization(GeneralViews generalViews) : base(generalViews)
     {
         _textStatus = generalViews.TextStatus;
         _signInButton = generalViews.AnonymousLoginView.SignInButton;

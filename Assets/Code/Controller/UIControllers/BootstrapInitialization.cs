@@ -4,6 +4,7 @@
     {
         //var anonymousAuthorization = new AnonymousAuthorization(views);
 
+        controllers.Add(new ManagerLoginWindow(views.ManagerLoginWindowView));
         controllers.Add(new AnonymousAuthorization(views));
         controllers.Add(new SignInAccountAuthorization(views));
         controllers.Add(new CreateAccountAuthorization(views));

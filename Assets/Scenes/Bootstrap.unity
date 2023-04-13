@@ -10703,6 +10703,7 @@ MonoBehaviour:
   _anonymousLoginView: {fileID: 1426636463}
   _signInAccountView: {fileID: 1315838732}
   _createAccountView: {fileID: 1955543137}
+  _managerLoginWindowView: {fileID: 1786913817}
 --- !u!114 &1146654651
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19078,7 +19079,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1786913816}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 031665a9d1264731884d037cf1e0d7c7, type: 3}
+  m_Script: {fileID: 11500000, guid: b7ba28b627424b23a01b291196845b65, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _signInButton: {fileID: 818527475}
@@ -19089,6 +19090,7 @@ MonoBehaviour:
   _enterInGameCanvas: {fileID: 517917264}
   _createAccountCanvas: {fileID: 1955543136}
   _signInCanvas: {fileID: 1315838729}
+  _authorizationCanvas: {fileID: 0}
 --- !u!1001 &1787240531
 PrefabInstance:
   m_ObjectHideFlags: 0

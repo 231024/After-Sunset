@@ -7,7 +7,7 @@ internal sealed class SignInAccountAuthorization : AccountDataWindowBase
 {
     private Button _signInButton;
     
-    public SignInAccountAuthorization(GeneralViews generalViews) : base(generalViews.ColorView)
+    public SignInAccountAuthorization(GeneralViews generalViews) : base(generalViews)
     {
         _usernameField = generalViews.SignInAccountView.UsernameField;
         _passwordField = generalViews.SignInAccountView.PasswordField;

@@ -9,7 +9,7 @@ internal sealed class CreateAccountAuthorization : AccountDataWindowBase
     
     private string _mail;
     
-    public CreateAccountAuthorization(GeneralViews generalViews) : base(generalViews.ColorView)
+    public CreateAccountAuthorization(GeneralViews generalViews) : base(generalViews)
     {
         _usernameField = generalViews.CreateAccountView.UsernameField;
         _passwordField = generalViews.CreateAccountView.PasswordField;

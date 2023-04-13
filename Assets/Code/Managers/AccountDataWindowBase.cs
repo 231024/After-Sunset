@@ -10,6 +10,11 @@ internal class AccountDataWindowBase : IInitialization, ICleanup
 {
     protected InputField _usernameField;
     protected InputField _passwordField;
+    
+    private Canvas _enterInGameCanvas;
+    private Canvas _createAccountCanvas;
+    private Canvas _signInCanvas;
+    private Canvas _authorizationCanvas;
 
     protected Color _colorLoading;
     protected Color _colorSuccess;
@@ -29,14 +34,19 @@ internal class AccountDataWindowBase : IInitialization, ICleanup
 
     protected bool _creationAccount;
 
-    public AccountDataWindowBase(ColorView colorView)
+    public AccountDataWindowBase(GeneralViews generalViews)
     {
-        SetColor(colorView);
+        SetColor(generalViews.ColorView);
+        _enterInGameCanvas = generalViews.ManagerLoginWindowView.EnterInGameCanvas;
+        _createAccountCanvas = generalViews.ManagerLoginWindowView.CreateAccountCanvas;
+        _signInCanvas = generalViews.ManagerLoginWindowView.SignInCanvas;
+        _authorizationCanvas = generalViews.ManagerLoginWindowView.AuthorizationCanvas;
     }
 
     public void Initialization()
     {
         SubscriptionsElementsUi();
+        BeginningAuthorized();
     }
 
     protected virtual void SubscriptionsElementsUi()
@@ -146,6 +156,20 @@ internal class AccountDataWindowBase : IInitialization, ICleanup
     private void UpdatePassword(string password)
     {
         _password = password;
+    }
+
+    public void BeginningAuthorized()
+    {
+        _authorizationCanvas.enabled = true;
+        _enterInGameCanvas.enabled = true;
+    }
+
+    protected void DisabledAllCanvas()
+    {
+        _enterInGameCanvas.enabled = false;
+        _createAccountCanvas.enabled = false;
+        _signInCanvas.enabled = false;
+        _authorizationCanvas.enabled = false;
     }
 
     protected void EnterInGameScene(string playFabId)

@@ -1,21 +1,32 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 
-public class ManagerLoginWindow : MonoBehaviour
+internal sealed class ManagerLoginWindow : IInitialization, ICleanup
 {
-    [SerializeField] private Button _signInButton;
-    [SerializeField] private Button _createAccountButton;
-    [SerializeField] private Button _signInBackButton;
-    [SerializeField] private Button _createAccountBackButton;
-    [SerializeField] private Button _quitButton;
+    private Button _signInButton;
+    private Button _createAccountButton;
+    private Button _signInBackButton;
+    private Button _createAccountBackButton;
+    private Button _quitButton;
 
-    [SerializeField] private Canvas _enterInGameCanvas;
-    [SerializeField] private Canvas _createAccountCanvas;
-    [SerializeField] private Canvas _signInCanvas;
+    private Canvas _enterInGameCanvas;
+    private Canvas _createAccountCanvas;
+    private Canvas _signInCanvas;
 
-    private void Start()
+    public ManagerLoginWindow(ManagerLoginWindowView view)
+    {
+        _signInButton = view.SignInButton;
+        _createAccountButton = view.CreateAccountButton;
+        _signInBackButton = view.SignInBackButton;
+        _createAccountBackButton = view.CreateAccountBackButton;
+        _quitButton = view.QuitButton;
+        _enterInGameCanvas = view.EnterInGameCanvas;
+        _createAccountCanvas = view.CreateAccountCanvas;
+        _signInCanvas = view.SignInCanvas;
+    }
+
+    public void Initialization()
     {
         _signInButton.onClick.AddListener(OpenSignInWindow);
         _createAccountButton.onClick.AddListener(OpenCreateAccountWindow);
@@ -53,7 +64,7 @@ public class ManagerLoginWindow : MonoBehaviour
         Application.Quit();
     }
 
-    private void OnDestroy()
+    public void Cleanup()
     {
         _signInButton.onClick.RemoveListener(OpenSignInWindow);
         _createAccountButton.onClick.RemoveListener(OpenCreateAccountWindow);
