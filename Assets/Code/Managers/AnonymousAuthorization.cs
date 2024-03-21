@@ -2,6 +2,7 @@
 using PlayFab.ClientModels;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
@@ -72,7 +73,7 @@ internal sealed class AnonymousAuthorization  : AccountDataWindowBase
                 else
                 {
                     
-                    //SceneManager.LoadScene(LOADING_LOBBY_SCENE);
+                    SceneManager.LoadScene(LOADING_LOBBY_SCENE);
                 }
             }, OnLoginError);
         

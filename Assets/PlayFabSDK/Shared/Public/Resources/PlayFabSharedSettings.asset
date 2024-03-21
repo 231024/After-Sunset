@@ -15,11 +15,13 @@ MonoBehaviour:
   TitleId: 2885B
   DeveloperSecretKey: W8HMCM4ZIBY3S5MUDZMTFTZ7C4WU6JNRMT5BDWMRS8CGCXSE96
   ProductionEnvironmentUrl: 
-  RequestType: 2
+  RequestType: 0
   DisableDeviceInfo: 0
   DisableFocusTimeCollection: 0
   RequestTimeout: 2000
   RequestKeepAlive: 1
+  CompressResponses: 0
+  DecompressWithDownloadHandler: 1
   LogLevel: 12
   LoggerHost: 
   LoggerPort: 0

@@ -4,6 +4,7 @@ using PlayFab;
 using PlayFab.ClientModels;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 internal class AccountDataWindowBase : IInitialization, ICleanup
@@ -82,7 +83,7 @@ internal class AccountDataWindowBase : IInitialization, ICleanup
             },
             result =>
             {
-               //SceneManager.LoadScene(LOADING_LOBBY_SCENE);
+               SceneManager.LoadScene(LOADING_LOBBY_SCENE);
             }, Debug.LogError);
     }
     
