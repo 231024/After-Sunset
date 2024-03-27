@@ -1,13 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using MessagePipe;
 using PlayFab;
 using PlayFab.ClientModels;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using VContainer;
+using VContainer.Unity;
 
-internal class AccountDataWindowBase : IInitialization, ICleanup
+internal class AccountDataWindowBase : IStartable, IDisposable
 {
     protected InputField _usernameField;
     protected InputField _passwordField;
@@ -35,6 +38,13 @@ internal class AccountDataWindowBase : IInitialization, ICleanup
 
     protected bool _creationAccount;
 
+    protected GeneralViews _generalViews;
+    protected PhotonController _photonController;
+    
+    [Inject] private readonly ISubscriber<string, GeneralViews> _subscriberView;
+    [Inject] private readonly ISubscriber<string, PhotonController> _subscriberPhoton;
+
+
     public AccountDataWindowBase(GeneralViews generalViews)
     {
         SetColor(generalViews.ColorView);
@@ -44,10 +54,29 @@ internal class AccountDataWindowBase : IInitialization, ICleanup
         _authorizationCanvas = generalViews.ManagerLoginWindowView.AuthorizationCanvas;
     }
 
-    public void Initialization()
+    public void Start()
     {
+        _subscriberView.Subscribe("GeneralView", SetGeneralView);
+        _subscriberPhoton.Subscribe("PhotonController", SetPhotonController);
+        
+        SetColor(_generalViews.ColorView);
+        _enterInGameCanvas = _generalViews.ManagerLoginWindowView.EnterInGameCanvas;
+        _createAccountCanvas = _generalViews.ManagerLoginWindowView.CreateAccountCanvas;
+        _signInCanvas = _generalViews.ManagerLoginWindowView.SignInCanvas;
+        _authorizationCanvas = _generalViews.ManagerLoginWindowView.AuthorizationCanvas;
+        
         SubscriptionsElementsUi();
         BeginningAuthorized();
+    }
+
+    protected void SetGeneralView(GeneralViews view)
+    {
+        _generalViews = view;
+    }
+    
+    protected void SetPhotonController(PhotonController photon)
+    {
+        _photonController = photon;
     }
 
     protected virtual void SubscriptionsElementsUi()
@@ -84,6 +113,7 @@ internal class AccountDataWindowBase : IInitialization, ICleanup
             result =>
             {
                SceneManager.LoadScene(LOADING_LOBBY_SCENE);
+               _photonController.Connect();
             }, Debug.LogError);
     }
     
@@ -180,7 +210,7 @@ internal class AccountDataWindowBase : IInitialization, ICleanup
         //GetInventory();
     }
 
-    public void Cleanup()
+    public void Dispose()
     {
         UnSubscriptionsElementsUi();
     }

@@ -3252,6 +3252,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -4216859302048453862, guid: 3c7d5dece75cf9845ad850601668e7d8, type: 3}
   m_PrefabInstance: {fileID: 1686154427}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &397848564 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6220200694013333125, guid: a1ff0ff24c9530343afe84ae172b6c30, type: 3}
+  m_PrefabInstance: {fileID: 1491954930}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &400924117
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9958,6 +9969,8 @@ MonoBehaviour:
     TypeName: 
   autoRun: 1
   autoInjectGameObjects: []
+  _view: {fileID: 0}
+  _photon: {fileID: 0}
 --- !u!4 &1147588733 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -4216859302048453862, guid: bdd8b59fd28ade14d951aeeb4c9644d0, type: 3}
@@ -13489,7 +13502,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7351052863591862731, guid: a1ff0ff24c9530343afe84ae172b6c30, type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7351052863591862732, guid: a1ff0ff24c9530343afe84ae172b6c30, type: 3}
       propertyPath: m_Name
@@ -14625,6 +14638,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 900099c85eb00dc40ac1ded77bbc65cd, type: 3}
+--- !u!114 &1589012335 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7351052862885900609, guid: a1ff0ff24c9530343afe84ae172b6c30, type: 3}
+  m_PrefabInstance: {fileID: 1491954930}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1591646985 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -927199367670048503, guid: bdd8b59fd28ade14d951aeeb4c9644d0, type: 3}
@@ -19106,8 +19130,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1996566768}
+  - component: {fileID: 1996566769}
   m_Layer: 0
-  m_Name: PlayFabLogin
+  m_Name: Photon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -19128,6 +19153,21 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1996566769
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1996566767}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0162a749660d412d8f6dad8527e83d07, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _serverSettings: {fileID: 11400000, guid: 896b9b11090a02043af9bf3b78bf612d, type: 2}
+  _textProcess: {fileID: 1589012335}
+  _bgConnection: {fileID: 397848564}
 --- !u!1 &2000705198
 GameObject:
   m_ObjectHideFlags: 0
@@ -20533,7 +20573,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7263193346492972010, guid: 3fc883ed063efea4cb6447d34f0b33b0, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7263193346492972010, guid: 3fc883ed063efea4cb6447d34f0b33b0, type: 3}
       propertyPath: m_AdditionalShaderChannelsFlag
