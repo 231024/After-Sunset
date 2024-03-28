@@ -38,45 +38,47 @@ internal class AccountDataWindowBase : IStartable, IDisposable
 
     protected bool _creationAccount;
 
-    protected GeneralViews _generalViews;
-    protected PhotonController _photonController;
+    [Inject] protected GeneralViews _generalViews;
+    [Inject] protected PhotonController _photonController;
     
-    [Inject] private readonly ISubscriber<string, GeneralViews> _subscriberView;
-    [Inject] private readonly ISubscriber<string, PhotonController> _subscriberPhoton;
+    // [Inject] private readonly ISubscriber<string, GeneralViews> _subscriberView;
+    // [Inject] private readonly ISubscriber<string, PhotonController> _subscriberPhoton;
 
 
-    public AccountDataWindowBase(GeneralViews generalViews)
+    public AccountDataWindowBase(GeneralViews generalViews, PhotonController photonController)
     {
-        SetColor(generalViews.ColorView);
-        _enterInGameCanvas = generalViews.ManagerLoginWindowView.EnterInGameCanvas;
-        _createAccountCanvas = generalViews.ManagerLoginWindowView.CreateAccountCanvas;
-        _signInCanvas = generalViews.ManagerLoginWindowView.SignInCanvas;
-        _authorizationCanvas = generalViews.ManagerLoginWindowView.AuthorizationCanvas;
-    }
-
-    public void Start()
-    {
-        _subscriberView.Subscribe("GeneralView", SetGeneralView);
-        _subscriberPhoton.Subscribe("PhotonController", SetPhotonController);
+        _generalViews = generalViews;
+        _photonController = photonController;
         
         SetColor(_generalViews.ColorView);
         _enterInGameCanvas = _generalViews.ManagerLoginWindowView.EnterInGameCanvas;
         _createAccountCanvas = _generalViews.ManagerLoginWindowView.CreateAccountCanvas;
         _signInCanvas = _generalViews.ManagerLoginWindowView.SignInCanvas;
         _authorizationCanvas = _generalViews.ManagerLoginWindowView.AuthorizationCanvas;
+    }
+    
+    // public AccountDataWindowBase()
+    // {
+    //     SetColor(_generalViews.ColorView);
+    //     _enterInGameCanvas = _generalViews.ManagerLoginWindowView.EnterInGameCanvas;
+    //     _createAccountCanvas = _generalViews.ManagerLoginWindowView.CreateAccountCanvas;
+    //     _signInCanvas = _generalViews.ManagerLoginWindowView.SignInCanvas;
+    //     _authorizationCanvas = _generalViews.ManagerLoginWindowView.AuthorizationCanvas;
+    // }
+
+    public void Start()
+    {
+        // _subscriberView.Subscribe("GeneralView", SetGeneralView);
+        // _subscriberPhoton.Subscribe("PhotonController", SetPhotonController);
+        
+        // SetColor(_generalViews.ColorView);
+        // _enterInGameCanvas = _generalViews.ManagerLoginWindowView.EnterInGameCanvas;
+        // _createAccountCanvas = _generalViews.ManagerLoginWindowView.CreateAccountCanvas;
+        // _signInCanvas = _generalViews.ManagerLoginWindowView.SignInCanvas;
+        // _authorizationCanvas = _generalViews.ManagerLoginWindowView.AuthorizationCanvas;
         
         SubscriptionsElementsUi();
         BeginningAuthorized();
-    }
-
-    protected void SetGeneralView(GeneralViews view)
-    {
-        _generalViews = view;
-    }
-    
-    protected void SetPhotonController(PhotonController photon)
-    {
-        _photonController = photon;
     }
 
     protected virtual void SubscriptionsElementsUi()
@@ -112,8 +114,8 @@ internal class AccountDataWindowBase : IStartable, IDisposable
             },
             result =>
             {
+                _photonController.Connect();
                SceneManager.LoadScene(LOADING_LOBBY_SCENE);
-               _photonController.Connect();
             }, Debug.LogError);
     }
     

@@ -23,12 +23,14 @@ public class PhotonController : MonoBehaviourPunCallbacks
     public void Connect()
     {
         _textProcess.text = "";
-        
+        Debug.LogError("Enter Connect");
         if (PhotonNetwork.IsConnected)
         {
+            Debug.LogError("Joining Room...");
             LogFeedback("Joining Room...");
             PhotonNetwork.JoinLobby();
         }else{
+            Debug.LogError("Connecting...");
             LogFeedback("Connecting...");
             PhotonNetwork.ConnectUsingSettings(_serverSettings.AppSettings);
             PhotonNetwork.GameVersion = this.gameVersion;
@@ -49,6 +51,7 @@ public class PhotonController : MonoBehaviourPunCallbacks
             return;
         }
         _textProcess.text += System.Environment.NewLine+message;
+        Debug.LogError(message);
     }
 
     public override void OnConnectedToMaster()

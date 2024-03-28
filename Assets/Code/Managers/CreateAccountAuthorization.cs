@@ -6,18 +6,28 @@ internal sealed class CreateAccountAuthorization : AccountDataWindowBase
 {
     private InputField _mailField;
     private Button _createAccountButton;
-    
+
     private string _mail;
-    
-    public CreateAccountAuthorization(GeneralViews generalViews) : base(generalViews)
+
+    public CreateAccountAuthorization(GeneralViews generalViews, PhotonController photonController) : base(generalViews, photonController)
     {
-        _usernameField = generalViews.CreateAccountView.UsernameField;
-        _passwordField = generalViews.CreateAccountView.PasswordField;
-        _mailField = generalViews.CreateAccountView.MailField;
-        _textStatus = generalViews.TextStatus;
-        _createAccountButton = generalViews.CreateAccountView.CreateInButton;
+        _usernameField = _generalViews.CreateAccountView.UsernameField;
+        _passwordField = _generalViews.CreateAccountView.PasswordField;
+        _mailField = _generalViews.CreateAccountView.MailField;
+        _textStatus = _generalViews.TextStatus;
+        _createAccountButton = _generalViews.CreateAccountView.CreateInButton;
     }
-    
+
+    // public override void Start()
+    // {
+    //     base.Start();
+    //     _usernameField = _generalViews.CreateAccountView.UsernameField;
+    //     _passwordField = _generalViews.CreateAccountView.PasswordField;
+    //     _mailField = _generalViews.CreateAccountView.MailField;
+    //     _textStatus = _generalViews.TextStatus;
+    //     _createAccountButton = _generalViews.CreateAccountView.CreateInButton;
+    // }
+
     protected override void SubscriptionsElementsUi()
     {
         base.SubscriptionsElementsUi();
@@ -25,7 +35,7 @@ internal sealed class CreateAccountAuthorization : AccountDataWindowBase
         _mailField.onValueChanged.AddListener(UpdateMail);
         _createAccountButton.onClick.AddListener(CreateAccount);
     }
-    
+
     private void CreateAccount()
     {
         PlayFabClientAPI.RegisterPlayFabUser(new RegisterPlayFabUserRequest
@@ -43,7 +53,7 @@ internal sealed class CreateAccountAuthorization : AccountDataWindowBase
             //EnterInGameScene(result.PlayFabId);
         }, OnLoginError);
     }
-    
+
     private void UpdateMail(string mail)
     {
         _mail = mail;

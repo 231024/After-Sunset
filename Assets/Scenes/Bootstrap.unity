@@ -9969,8 +9969,8 @@ MonoBehaviour:
     TypeName: 
   autoRun: 1
   autoInjectGameObjects: []
-  _view: {fileID: 0}
-  _photon: {fileID: 0}
+  _view: {fileID: 1146654650}
+  _photon: {fileID: 1996566769}
 --- !u!4 &1147588733 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -4216859302048453862, guid: bdd8b59fd28ade14d951aeeb4c9644d0, type: 3}
@@ -14638,17 +14638,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 900099c85eb00dc40ac1ded77bbc65cd, type: 3}
---- !u!114 &1589012335 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7351052862885900609, guid: a1ff0ff24c9530343afe84ae172b6c30, type: 3}
-  m_PrefabInstance: {fileID: 1491954930}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1591646985 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -927199367670048503, guid: bdd8b59fd28ade14d951aeeb4c9644d0, type: 3}
@@ -19166,7 +19155,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _serverSettings: {fileID: 11400000, guid: 896b9b11090a02043af9bf3b78bf612d, type: 2}
-  _textProcess: {fileID: 1589012335}
+  _textProcess: {fileID: 1621630174}
   _bgConnection: {fileID: 397848564}
 --- !u!1 &2000705198
 GameObject:

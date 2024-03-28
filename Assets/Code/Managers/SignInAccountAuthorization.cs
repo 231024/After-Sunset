@@ -2,19 +2,29 @@
 using PlayFab.ClientModels;
 using UnityEngine;
 using UnityEngine.UI;
+using VContainer;
 
 internal sealed class SignInAccountAuthorization : AccountDataWindowBase
 {
     private Button _signInButton;
-    
-    public SignInAccountAuthorization(GeneralViews generalViews) : base(generalViews)
+
+    public SignInAccountAuthorization(GeneralViews generalViews, PhotonController photonController) : base(generalViews, photonController)
     {
-        _usernameField = generalViews.SignInAccountView.UsernameField;
-        _passwordField = generalViews.SignInAccountView.PasswordField;
-        _textStatus = generalViews.TextStatus;
-        _signInButton = generalViews.SignInAccountView.SignInButton;
+        _usernameField = _generalViews.SignInAccountView.UsernameField;
+        _passwordField = _generalViews.SignInAccountView.PasswordField;
+        _textStatus = _generalViews.TextStatus;
+        _signInButton = _generalViews.SignInAccountView.SignInButton;
     }
-    
+
+    // public override void Start()
+    // {
+    //     base.Start();
+    //     _usernameField = _generalViews.SignInAccountView.UsernameField;
+    //     _passwordField = _generalViews.SignInAccountView.PasswordField;
+    //     _textStatus = _generalViews.TextStatus;
+    //     _signInButton = _generalViews.SignInAccountView.SignInButton;
+    // }
+
     protected override void SubscriptionsElementsUi()
     {
         base.SubscriptionsElementsUi();

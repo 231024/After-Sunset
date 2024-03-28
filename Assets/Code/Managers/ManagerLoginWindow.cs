@@ -1,8 +1,11 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.UI;
+using VContainer;
+using VContainer.Unity;
 
 
-internal sealed class ManagerLoginWindow : IInitialization, ICleanup
+internal sealed class ManagerLoginWindow : IStartable, IDisposable
 {
     private Button _signInButton;
     private Button _createAccountButton;
@@ -14,16 +17,23 @@ internal sealed class ManagerLoginWindow : IInitialization, ICleanup
     private Canvas _createAccountCanvas;
     private Canvas _signInCanvas;
 
-    public ManagerLoginWindow(ManagerLoginWindowView view)
+    [Inject] public GeneralViews _generalViews;
+
+    public ManagerLoginWindow(GeneralViews generalViews)
     {
-        _signInButton = view.SignInButton;
-        _createAccountButton = view.CreateAccountButton;
-        _signInBackButton = view.SignInBackButton;
-        _createAccountBackButton = view.CreateAccountBackButton;
-        _quitButton = view.QuitButton;
-        _enterInGameCanvas = view.EnterInGameCanvas;
-        _createAccountCanvas = view.CreateAccountCanvas;
-        _signInCanvas = view.SignInCanvas;
+        _generalViews = generalViews;
+    }
+    
+    public void Start()
+    {
+        _signInButton = _generalViews.ManagerLoginWindowView.SignInButton;
+        _createAccountButton = _generalViews.ManagerLoginWindowView.CreateAccountButton;
+        _signInBackButton = _generalViews.ManagerLoginWindowView.SignInBackButton;
+        _createAccountBackButton = _generalViews.ManagerLoginWindowView.CreateAccountBackButton;
+        _quitButton = _generalViews.ManagerLoginWindowView.QuitButton;
+        _enterInGameCanvas = _generalViews.ManagerLoginWindowView.EnterInGameCanvas;
+        _createAccountCanvas = _generalViews.ManagerLoginWindowView.CreateAccountCanvas;
+        _signInCanvas = _generalViews.ManagerLoginWindowView.SignInCanvas;
     }
 
     public void Initialization()
@@ -64,7 +74,7 @@ internal sealed class ManagerLoginWindow : IInitialization, ICleanup
         Application.Quit();
     }
 
-    public void Cleanup()
+    public void Dispose()
     {
         _signInButton.onClick.RemoveListener(OpenSignInWindow);
         _createAccountButton.onClick.RemoveListener(OpenCreateAccountWindow);

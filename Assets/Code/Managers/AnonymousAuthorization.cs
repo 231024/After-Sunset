@@ -4,6 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using VContainer;
 using Random = UnityEngine.Random;
 
 
@@ -11,14 +12,29 @@ internal sealed class AnonymousAuthorization  : AccountDataWindowBase
 {
     private TMP_Text _textButtonSignInAnonimous;
     private Button _signInButton;
+    
+    // public AnonymousAuthorization()
+    // {
+    //     _textStatus = _generalViews.TextStatus;
+    //     _signInButton = _generalViews.AnonymousLoginView.SignInButton;
+    //     _textButtonSignInAnonimous = _signInButton.GetComponentInChildren<TMP_Text>();
+    // }
 
-    public AnonymousAuthorization(GeneralViews generalViews) : base(generalViews)
+    public AnonymousAuthorization(GeneralViews generalViews, PhotonController photonController) : base(generalViews, photonController)
     {
-        _textStatus = generalViews.TextStatus;
-        _signInButton = generalViews.AnonymousLoginView.SignInButton;
+        _textStatus = _generalViews.TextStatus;
+        _signInButton = _generalViews.AnonymousLoginView.SignInButton;
         _textButtonSignInAnonimous = _signInButton.GetComponentInChildren<TMP_Text>();
     }
-    
+
+    // public override void Start()
+    // {
+    //     base.Start();
+    //     _textStatus = _generalViews.TextStatus;
+    //     _signInButton = _generalViews.AnonymousLoginView.SignInButton;
+    //     _textButtonSignInAnonimous = _signInButton.GetComponentInChildren<TMP_Text>();
+    // }
+
     protected override void SubscriptionsElementsUi()
     {
         _signInButton.onClick.AddListener(Login);
@@ -44,7 +60,7 @@ internal sealed class AnonymousAuthorization  : AccountDataWindowBase
             _textButtonSignInAnonimous.text = IS_NOT_REGISTRED_TEXT;
         }
     }
-    
+
     private void Login()
     {
         if (string.IsNullOrEmpty(PlayFabSettings.staticSettings.TitleId))
