@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 55cefa6d08064ada98b35dc0644278bd, type: 3}
+  m_Name: EnemySettings
+  m_EditorClassIdentifier: 
+  _enemyInfos:
+  - Type: 1
+    EnemyPrefab: {fileID: 6213606267524102678, guid: 63864ee6e3450ce48a62040514b0f684, type: 3}
+    Health: 1
+  - Type: 2
+    EnemyPrefab: {fileID: 6213606267524102678, guid: e08fa7b2086d64744925cc337d871558, type: 3}
+    Health: 2
+  - Type: 3
+    EnemyPrefab: {fileID: 6213606267524102678, guid: f637c695c2e31df42beb6c23c69ada7c, type: 3}
+    Health: 3
+  _spawnDelay: 500
+  _spawnInitializationCount: 15
+  _spawnRadius: 3.5
+  _patrolZoneCenter: {fileID: 7662183044729403351, guid: 77c369f39bbca8b42b21b9d5ada5df0a, type: 3}
+  _randomPointRadius: 40
