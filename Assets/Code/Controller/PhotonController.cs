@@ -9,12 +9,10 @@ public class PhotonController : MonoBehaviourPunCallbacks
 {
     [Header("PhotonServerSettings")] 
     [SerializeField] private ServerSettings _serverSettings; 
-    
-    
     [SerializeField] private TMP_Text _textProcess;
     [SerializeField] private Image _bgConnection;
     
-    
+    protected const string LOADING_LOBBY_SCENE = "Lobby";
     protected string gameVersion = "1";
     
     private TypedLobby _sqlLobby = new TypedLobby("CustomSqlLobby", LobbyType.SqlLobby);
@@ -23,14 +21,12 @@ public class PhotonController : MonoBehaviourPunCallbacks
     public void Connect()
     {
         _textProcess.text = "";
-        Debug.LogError("Enter Connect");
+        
         if (PhotonNetwork.IsConnected)
         {
-            Debug.LogError("Joining Room...");
             LogFeedback("Joining Room...");
             PhotonNetwork.JoinLobby();
         }else{
-            Debug.LogError("Connecting...");
             LogFeedback("Connecting...");
             PhotonNetwork.ConnectUsingSettings(_serverSettings.AppSettings);
             PhotonNetwork.GameVersion = this.gameVersion;
@@ -67,6 +63,7 @@ public class PhotonController : MonoBehaviourPunCallbacks
     {
         LogFeedback("OnJoinedLobby: Next -> try to LoadScene(1)");
         Debug.LogWarning("OnJoinedLobby");
-        SceneManager.LoadScene(1);
+        SceneManager.LoadScene(LOADING_LOBBY_SCENE);
+        //SceneManager.LoadScene(1);
     }
 }

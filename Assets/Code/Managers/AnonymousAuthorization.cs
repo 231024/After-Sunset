@@ -88,8 +88,7 @@ internal sealed class AnonymousAuthorization  : AccountDataWindowBase
                 }
                 else
                 {
-                    
-                    SceneManager.LoadScene(LOADING_LOBBY_SCENE);
+                    _photonController.Connect();
                 }
             }, OnLoginError);
         

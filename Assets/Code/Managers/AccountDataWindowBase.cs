@@ -29,7 +29,6 @@ internal class AccountDataWindowBase : IStartable, IDisposable
     protected const string UNIQUE_AUTH_KEY = "player-unique-id";
     protected const string IS_NOT_REGISTRED_TEXT = "Register";
     protected const string IS_REGISTRED_TEXT = "Play without logining";
-    protected const string LOADING_LOBBY_SCENE = "Lobby";
 
     protected string _id;
     protected string _username;
@@ -113,9 +112,8 @@ internal class AccountDataWindowBase : IStartable, IDisposable
                 DisplayName = displayName
             },
             result =>
-            {
+            { 
                 _photonController.Connect();
-               SceneManager.LoadScene(LOADING_LOBBY_SCENE);
             }, Debug.LogError);
     }
     
