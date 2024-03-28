@@ -55,15 +55,11 @@ public class PhotonController : MonoBehaviourPunCallbacks
         if (PhotonNetwork.IsConnected)
         {
             PhotonNetwork.JoinLobby(_sqlLobby);
-            Debug.LogWarning("OnConnectedToMaster: Next -> try to Join Lobby");
         }
     }
 
     public override void OnJoinedLobby()
     {
-        LogFeedback("OnJoinedLobby: Next -> try to LoadScene(1)");
-        Debug.LogWarning("OnJoinedLobby");
         SceneManager.LoadScene(LOADING_LOBBY_SCENE);
-        //SceneManager.LoadScene(1);
     }
 }

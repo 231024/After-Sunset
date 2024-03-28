@@ -15,10 +15,6 @@ public class MainLifetimeScope : LifetimeScope
         builder.RegisterComponent(_view);
         builder.RegisterComponent(_photon);
 
-        
-        builder.RegisterEntryPoint<ManagerLoginWindow>();
-        builder.RegisterEntryPoint<AnonymousAuthorization>();
-        builder.RegisterEntryPoint<SignInAccountAuthorization>();
-        builder.RegisterEntryPoint<CreateAccountAuthorization>();
+        new BootstrapInitialization(builder);
     }
 }

@@ -3,7 +3,7 @@ using VContainer.Unity;
 
 internal sealed class BootstrapInitialization 
 {
-    public BootstrapInitialization(IContainerBuilder builder, GeneralViews views, PhotonController photon)
+    public BootstrapInitialization(IContainerBuilder builder)
     {
         builder.RegisterEntryPoint<ManagerLoginWindow>();
         builder.RegisterEntryPoint<AnonymousAuthorization>();

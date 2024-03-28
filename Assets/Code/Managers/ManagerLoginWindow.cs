@@ -22,6 +22,7 @@ internal sealed class ManagerLoginWindow : IStartable, IDisposable
     public ManagerLoginWindow(GeneralViews generalViews)
     {
         _generalViews = generalViews;
+        
     }
     
     public void Start()
@@ -34,16 +35,23 @@ internal sealed class ManagerLoginWindow : IStartable, IDisposable
         _enterInGameCanvas = _generalViews.ManagerLoginWindowView.EnterInGameCanvas;
         _createAccountCanvas = _generalViews.ManagerLoginWindowView.CreateAccountCanvas;
         _signInCanvas = _generalViews.ManagerLoginWindowView.SignInCanvas;
-    }
-
-    public void Initialization()
-    {
+        
+        
         _signInButton.onClick.AddListener(OpenSignInWindow);
         _createAccountButton.onClick.AddListener(OpenCreateAccountWindow);
         _signInBackButton.onClick.AddListener(CloseSignInWindow);
         _createAccountBackButton.onClick.AddListener(CloseCreateAccountWindow);
         _quitButton.onClick.AddListener(Quit);
     }
+
+    // public void Initialization()
+    // {
+    //     _signInButton.onClick.AddListener(OpenSignInWindow);
+    //     _createAccountButton.onClick.AddListener(OpenCreateAccountWindow);
+    //     _signInBackButton.onClick.AddListener(CloseSignInWindow);
+    //     _createAccountBackButton.onClick.AddListener(CloseCreateAccountWindow);
+    //     _quitButton.onClick.AddListener(Quit);
+    // }
 
     private void OpenSignInWindow()
     {
