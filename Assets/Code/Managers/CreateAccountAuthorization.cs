@@ -9,12 +9,12 @@ internal sealed class CreateAccountAuthorization : AccountDataWindowBase
 
     private string _mail;
 
-    public CreateAccountAuthorization(GeneralViews generalViews, PhotonController photonController) : base(generalViews, photonController)
+    public CreateAccountAuthorization(MainGeneralViews mainGeneralViews, PhotonController photonController) : base(mainGeneralViews, photonController)
     {
-        _usernameField = _generalViews.CreateAccountView.UsernameField;
-        _passwordField = _generalViews.CreateAccountView.PasswordField;
-        _mailField = _generalViews.CreateAccountView.MailField;
-        _createAccountButton = _generalViews.CreateAccountView.CreateInButton;
+        _usernameField = _mainGeneralViews.CreateAccountView.UsernameField;
+        _passwordField = _mainGeneralViews.CreateAccountView.PasswordField;
+        _mailField = _mainGeneralViews.CreateAccountView.MailField;
+        _createAccountButton = _mainGeneralViews.CreateAccountView.CreateInButton;
     }
 
     // public override void Start()

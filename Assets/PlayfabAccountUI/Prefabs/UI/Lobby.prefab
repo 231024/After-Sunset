@@ -4122,7 +4122,7 @@ RectTransform:
   m_Children:
   - {fileID: 7351052862528478338}
   - {fileID: 7985945580955966563}
-  m_Father: {fileID: 7351052863520339144}
+  m_Father: {fileID: 7213783920643664298}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
@@ -6215,7 +6215,6 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 7351052862966599780}
   - {fileID: 7351052863913406732}
   - {fileID: 7351052863887690423}
   - {fileID: 7351052863786050767}
@@ -6737,10 +6736,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 7351052863887690423}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0}
-  m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 28.1541, y: 16}
-  m_SizeDelta: {x: 1136.3081, y: 96}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 96}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!222 &7351052863655883017
 CanvasRenderer:
@@ -6833,7 +6832,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 760.1587, y: 0, z: 2.1657715, w: 0}
+  m_margin: {x: 15.805542, y: 0, z: 2.1657715, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -7543,7 +7542,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -32, y: 128}
+  m_AnchoredPosition: {x: -60, y: 40}
   m_SizeDelta: {x: 256, y: 64}
   m_Pivot: {x: 1, y: 0}
 --- !u!222 &7351052863786050762
@@ -7990,8 +7989,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 1257.5869, y: 1080}
+  m_AnchoredPosition: {x: 0, y: 17.4824}
+  m_SizeDelta: {x: 1266.4958, y: 793.9545}
   m_Pivot: {x: 1, y: 0.5}
 --- !u!222 &7351052863887690418
 CanvasRenderer:
@@ -11593,6 +11592,7 @@ RectTransform:
   - {fileID: 7351052862863902699}
   - {fileID: 7351052863420948745}
   - {fileID: 7351052863913862235}
+  - {fileID: 7351052862966599780}
   m_Father: {fileID: 7351052863520339144}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}

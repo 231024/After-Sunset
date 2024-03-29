@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using VContainer;
 
-public class PhotonController : MonoBehaviourPunCallbacks
+public sealed class PhotonController : MonoBehaviourPunCallbacks
 {
     [Header("PhotonServerSettings")] 
     [SerializeField] private ServerSettings _serverSettings; 
@@ -18,12 +18,12 @@ public class PhotonController : MonoBehaviourPunCallbacks
     
     private TypedLobby _sqlLobby = new TypedLobby("CustomSqlLobby", LobbyType.SqlLobby);
     
-    [Inject] private GeneralViews _generalViews;
+    [Inject] private MainGeneralViews _mainGeneralViews;
 
     
     public void Connect()
     {
-        _textProcess = _generalViews.TextStatus;
+        _textProcess = _mainGeneralViews.TextStatus;
         
         _textProcess.text = "";
         

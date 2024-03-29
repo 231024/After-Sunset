@@ -8,11 +8,11 @@ internal sealed class SignInAccountAuthorization : AccountDataWindowBase
 {
     private Button _signInButton;
 
-    public SignInAccountAuthorization(GeneralViews generalViews, PhotonController photonController) : base(generalViews, photonController)
+    public SignInAccountAuthorization(MainGeneralViews mainGeneralViews, PhotonController photonController) : base(mainGeneralViews, photonController)
     {
-        _usernameField = _generalViews.SignInAccountView.UsernameField;
-        _passwordField = _generalViews.SignInAccountView.PasswordField;
-        _signInButton = _generalViews.SignInAccountView.SignInButton;
+        _usernameField = _mainGeneralViews.SignInAccountView.UsernameField;
+        _passwordField = _mainGeneralViews.SignInAccountView.PasswordField;
+        _signInButton = _mainGeneralViews.SignInAccountView.SignInButton;
     }
 
     // public override void Start()

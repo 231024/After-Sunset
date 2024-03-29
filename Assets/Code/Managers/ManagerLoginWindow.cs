@@ -17,24 +17,24 @@ internal sealed class ManagerLoginWindow : IStartable, IDisposable
     private Canvas _createAccountCanvas;
     private Canvas _signInCanvas;
 
-    [Inject] public GeneralViews _generalViews;
+    [Inject] public MainGeneralViews MainGeneralViews;
 
-    public ManagerLoginWindow(GeneralViews generalViews)
+    public ManagerLoginWindow(MainGeneralViews mainGeneralViews)
     {
-        _generalViews = generalViews;
+        MainGeneralViews = mainGeneralViews;
         
     }
     
     public void Start()
     {
-        _signInButton = _generalViews.ManagerLoginWindowView.SignInButton;
-        _createAccountButton = _generalViews.ManagerLoginWindowView.CreateAccountButton;
-        _signInBackButton = _generalViews.ManagerLoginWindowView.SignInBackButton;
-        _createAccountBackButton = _generalViews.ManagerLoginWindowView.CreateAccountBackButton;
-        _quitButton = _generalViews.ManagerLoginWindowView.QuitButton;
-        _enterInGameCanvas = _generalViews.ManagerLoginWindowView.EnterInGameCanvas;
-        _createAccountCanvas = _generalViews.ManagerLoginWindowView.CreateAccountCanvas;
-        _signInCanvas = _generalViews.ManagerLoginWindowView.SignInCanvas;
+        _signInButton = MainGeneralViews.ManagerLoginWindowView.SignInButton;
+        _createAccountButton = MainGeneralViews.ManagerLoginWindowView.CreateAccountButton;
+        _signInBackButton = MainGeneralViews.ManagerLoginWindowView.SignInBackButton;
+        _createAccountBackButton = MainGeneralViews.ManagerLoginWindowView.CreateAccountBackButton;
+        _quitButton = MainGeneralViews.ManagerLoginWindowView.QuitButton;
+        _enterInGameCanvas = MainGeneralViews.ManagerLoginWindowView.EnterInGameCanvas;
+        _createAccountCanvas = MainGeneralViews.ManagerLoginWindowView.CreateAccountCanvas;
+        _signInCanvas = MainGeneralViews.ManagerLoginWindowView.SignInCanvas;
         
         
         _signInButton.onClick.AddListener(OpenSignInWindow);

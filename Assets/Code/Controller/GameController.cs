@@ -4,7 +4,7 @@ using UnityEngine;
 public sealed class GameController : MonoBehaviour
 {
     [SerializeField] private Data _data;
-    [SerializeField] private GeneralViews _views;
+    [SerializeField] private MainGeneralViews _views;
     private Controllers _controllers;
 
     private void Awake()

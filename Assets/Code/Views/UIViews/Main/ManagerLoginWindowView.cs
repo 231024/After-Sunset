@@ -16,20 +16,12 @@ public class ManagerLoginWindowView : MonoBehaviour
     [SerializeField] private Canvas _authorizationCanvas;
 
     public Button SignInButton => _signInButton;
-
     public Button CreateAccountButton => _createAccountButton;
-
     public Button SignInBackButton => _signInBackButton;
-
     public Button CreateAccountBackButton => _createAccountBackButton;
-
     public Button QuitButton => _quitButton;
-
     public Canvas EnterInGameCanvas => _enterInGameCanvas;
-
     public Canvas CreateAccountCanvas => _createAccountCanvas;
-
     public Canvas SignInCanvas => _signInCanvas;
-
     public Canvas AuthorizationCanvas => _authorizationCanvas;
 }

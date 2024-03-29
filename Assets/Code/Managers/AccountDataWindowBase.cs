@@ -37,46 +37,24 @@ internal class AccountDataWindowBase : IStartable, IDisposable
 
     protected bool _creationAccount;
 
-    [Inject] protected GeneralViews _generalViews;
+    [Inject] protected MainGeneralViews _mainGeneralViews;
     [Inject] protected PhotonController _photonController;
-    
-    // [Inject] private readonly ISubscriber<string, GeneralViews> _subscriberView;
-    // [Inject] private readonly ISubscriber<string, PhotonController> _subscriberPhoton;
 
-
-    public AccountDataWindowBase(GeneralViews generalViews, PhotonController photonController)
+    public AccountDataWindowBase(MainGeneralViews mainGeneralViews, PhotonController photonController)
     {
-        _generalViews = generalViews;
+        _mainGeneralViews = mainGeneralViews;
         _photonController = photonController;
         
-        _textStatus = _generalViews.TextStatus;
-        SetColor(_generalViews.ColorView);
-        _enterInGameCanvas = _generalViews.ManagerLoginWindowView.EnterInGameCanvas;
-        _createAccountCanvas = _generalViews.ManagerLoginWindowView.CreateAccountCanvas;
-        _signInCanvas = _generalViews.ManagerLoginWindowView.SignInCanvas;
-        _authorizationCanvas = _generalViews.ManagerLoginWindowView.AuthorizationCanvas;
+        _textStatus = _mainGeneralViews.TextStatus;
+        SetColor(_mainGeneralViews.ColorView);
+        _enterInGameCanvas = _mainGeneralViews.ManagerLoginWindowView.EnterInGameCanvas;
+        _createAccountCanvas = _mainGeneralViews.ManagerLoginWindowView.CreateAccountCanvas;
+        _signInCanvas = _mainGeneralViews.ManagerLoginWindowView.SignInCanvas;
+        _authorizationCanvas = _mainGeneralViews.ManagerLoginWindowView.AuthorizationCanvas;
     }
-    
-    // public AccountDataWindowBase()
-    // {
-    //     SetColor(_generalViews.ColorView);
-    //     _enterInGameCanvas = _generalViews.ManagerLoginWindowView.EnterInGameCanvas;
-    //     _createAccountCanvas = _generalViews.ManagerLoginWindowView.CreateAccountCanvas;
-    //     _signInCanvas = _generalViews.ManagerLoginWindowView.SignInCanvas;
-    //     _authorizationCanvas = _generalViews.ManagerLoginWindowView.AuthorizationCanvas;
-    // }
 
     public void Start()
     {
-        // _subscriberView.Subscribe("GeneralView", SetGeneralView);
-        // _subscriberPhoton.Subscribe("PhotonController", SetPhotonController);
-        
-        // SetColor(_generalViews.ColorView);
-        // _enterInGameCanvas = _generalViews.ManagerLoginWindowView.EnterInGameCanvas;
-        // _createAccountCanvas = _generalViews.ManagerLoginWindowView.CreateAccountCanvas;
-        // _signInCanvas = _generalViews.ManagerLoginWindowView.SignInCanvas;
-        // _authorizationCanvas = _generalViews.ManagerLoginWindowView.AuthorizationCanvas;
-        
         SubscriptionsElementsUi();
         BeginningAuthorized();
     }
@@ -202,13 +180,6 @@ internal class AccountDataWindowBase : IStartable, IDisposable
         _createAccountCanvas.enabled = false;
         _signInCanvas.enabled = false;
         _authorizationCanvas.enabled = false;
-    }
-
-    protected void EnterInGameScene(string playFabId)
-    {
-        //SetUserData(playFabId);
-        //MakePurchase();
-        //GetInventory();
     }
 
     public void Dispose()
