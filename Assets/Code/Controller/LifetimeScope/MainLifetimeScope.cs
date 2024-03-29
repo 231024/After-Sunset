@@ -5,13 +5,14 @@ using VContainer.Unity;
 
 public class MainLifetimeScope : LifetimeScope
 {
-    [SerializeField] private GeneralViews _view;
-    [SerializeField] private PhotonController _photon;
-
-
+    private GeneralViews _view;
+    private PhotonController _photon;
 
     protected override void Configure(IContainerBuilder builder)
     {
+        _view = GetComponent<GeneralViews>();
+        _photon = GetComponent<PhotonController>();
+        
         builder.RegisterComponent(_view);
         builder.RegisterComponent(_photon);
 

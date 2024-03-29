@@ -13174,13 +13174,29 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7351052863591862731, guid: a1ff0ff24c9530343afe84ae172b6c30, type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 7351052863591862732, guid: a1ff0ff24c9530343afe84ae172b6c30, type: 3}
       propertyPath: m_Name
       value: Lobby
+      objectReference: {fileID: 0}
+    - target: {fileID: 7351052864149084348, guid: a1ff0ff24c9530343afe84ae172b6c30, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7351052864149084348, guid: a1ff0ff24c9530343afe84ae172b6c30, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7351052864149084348, guid: a1ff0ff24c9530343afe84ae172b6c30, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7351052864378091044, guid: a1ff0ff24c9530343afe84ae172b6c30, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7351052864378091044, guid: a1ff0ff24c9530343afe84ae172b6c30, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0.000021219254
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

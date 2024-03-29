@@ -12,7 +12,6 @@ internal sealed class SignInAccountAuthorization : AccountDataWindowBase
     {
         _usernameField = _generalViews.SignInAccountView.UsernameField;
         _passwordField = _generalViews.SignInAccountView.PasswordField;
-        _textStatus = _generalViews.TextStatus;
         _signInButton = _generalViews.SignInAccountView.SignInButton;
     }
 

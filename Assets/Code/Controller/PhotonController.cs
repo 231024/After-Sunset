@@ -4,27 +4,33 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using VContainer;
 
 public class PhotonController : MonoBehaviourPunCallbacks
 {
     [Header("PhotonServerSettings")] 
     [SerializeField] private ServerSettings _serverSettings; 
-    [SerializeField] private TMP_Text _textProcess;
-    [SerializeField] private Image _bgConnection;
+    
+    private TMP_Text _textProcess;
     
     protected const string LOADING_LOBBY_SCENE = "Lobby";
     protected string gameVersion = "1";
     
     private TypedLobby _sqlLobby = new TypedLobby("CustomSqlLobby", LobbyType.SqlLobby);
+    
+    [Inject] private GeneralViews _generalViews;
 
     
     public void Connect()
     {
+        _textProcess = _generalViews.TextStatus;
+        
         _textProcess.text = "";
         
         if (PhotonNetwork.IsConnected)
         {
             LogFeedback("Joining Room...");
+            ConnectionInfo("Connect", Color.blue);
             PhotonNetwork.JoinLobby();
         }else{
             LogFeedback("Connecting...");
@@ -34,9 +40,8 @@ public class PhotonController : MonoBehaviourPunCallbacks
     }
     
     
-    protected void ConnectionInfo(bool enable, string message, Color color)
+    protected void ConnectionInfo(string message, Color color)
     {
-        _bgConnection.enabled = enable;
         _textProcess.text = message;
         _textProcess.color = color;
     }
@@ -60,6 +65,7 @@ public class PhotonController : MonoBehaviourPunCallbacks
 
     public override void OnJoinedLobby()
     {
+        LogFeedback("Joining Room...");
         SceneManager.LoadScene(LOADING_LOBBY_SCENE);
     }
 }

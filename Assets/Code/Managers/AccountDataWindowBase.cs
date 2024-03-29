@@ -49,6 +49,7 @@ internal class AccountDataWindowBase : IStartable, IDisposable
         _generalViews = generalViews;
         _photonController = photonController;
         
+        _textStatus = _generalViews.TextStatus;
         SetColor(_generalViews.ColorView);
         _enterInGameCanvas = _generalViews.ManagerLoginWindowView.EnterInGameCanvas;
         _createAccountCanvas = _generalViews.ManagerLoginWindowView.CreateAccountCanvas;

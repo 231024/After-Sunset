@@ -2,7 +2,7 @@
 using UnityEngine.UI;
 
 
-internal sealed class SignInAccountView : MonoBehaviour
+public sealed class SignInAccountView : MonoBehaviour
 {
     [SerializeField] private InputField _usernameField;
     [SerializeField] private InputField _passwordField;

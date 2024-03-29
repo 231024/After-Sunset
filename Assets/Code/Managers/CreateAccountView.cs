@@ -3,7 +3,7 @@ using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 
-internal sealed class CreateAccountView : MonoBehaviour
+public sealed class CreateAccountView : MonoBehaviour
 {
     [SerializeField] private InputField _usernameField;
     [SerializeField] private InputField _passwordField;

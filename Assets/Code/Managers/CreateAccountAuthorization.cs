@@ -14,7 +14,6 @@ internal sealed class CreateAccountAuthorization : AccountDataWindowBase
         _usernameField = _generalViews.CreateAccountView.UsernameField;
         _passwordField = _generalViews.CreateAccountView.PasswordField;
         _mailField = _generalViews.CreateAccountView.MailField;
-        _textStatus = _generalViews.TextStatus;
         _createAccountButton = _generalViews.CreateAccountView.CreateInButton;
     }
 
