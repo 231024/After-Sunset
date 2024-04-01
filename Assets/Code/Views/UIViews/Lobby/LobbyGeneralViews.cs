@@ -2,7 +2,7 @@
 using UnityEngine;
 
 
-internal sealed class MainGeneralViews : MonoBehaviour
+internal sealed class LobbyGeneralViews : MonoBehaviour
 {
     [Header("TextLebels")] 
     [SerializeField] private TMP_Text _textStatus;
