@@ -20680,6 +20680,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2129930382}
   - component: {fileID: 2129930383}
+  - component: {fileID: 2129930384}
   m_Layer: 0
   m_Name: InitLobby
   m_TagString: Untagged
@@ -20719,6 +20720,19 @@ MonoBehaviour:
   autoRun: 1
   autoInjectGameObjects: []
   _lobbyGeneralViews: {fileID: 1421865763}
+--- !u!114 &2129930384
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2129930379}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e3583b5da15e440cb51e37170b6d4d04, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _serverSettings: {fileID: 11400000, guid: 896b9b11090a02043af9bf3b78bf612d, type: 2}
 --- !u!1 &2132831117
 GameObject:
   m_ObjectHideFlags: 0
