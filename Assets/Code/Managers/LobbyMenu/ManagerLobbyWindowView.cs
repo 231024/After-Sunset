@@ -1,4 +1,5 @@
 ﻿using System;
+using UnityEngine;
 using UnityEngine.UI;
 using VContainer;
 using VContainer.Unity;
@@ -11,21 +12,21 @@ internal sealed class ManagerLobbyWindowView : IStartable, IDisposable
     private Button _connectRoom;
     private Button _settingsMenu;
     
-    
     RoomListPanelView _listRooomPanelView;
     HomeLobbyView _homeLobbyViewPanel;
     SettingsMenuView _settingsMenuView;
     
-    [Inject] private LobbyGeneralViews _lobbyGeneralViews;
+    [Inject] private LobbyGeneralViews LobbyGeneralViews;
+    
     
     public void Start()
     {
-        _listRooomPanelView = _lobbyGeneralViews.RoomListPanel;
-        _homeLobbyViewPanel = _lobbyGeneralViews.HomeLobbyViewPanel;
-        _settingsMenuView = _lobbyGeneralViews.SettingsMenuView;
+        _listRooomPanelView = LobbyGeneralViews.RoomListPanel;
+        _homeLobbyViewPanel = LobbyGeneralViews.HomeLobbyViewPanel;
+        _settingsMenuView = LobbyGeneralViews.SettingsMenuView;
         
-        _roomListGlobal = _lobbyGeneralViews.GlobalRoomButton;
-        _settingsMenu = _lobbyGeneralViews.SettingsButton;
+        _roomListGlobal = LobbyGeneralViews.GlobalRoomButton;
+        _settingsMenu = LobbyGeneralViews.SettingsButton;
         
         _roomList = _listRooomPanelView.RoomListButton;
         _roomCreate = _listRooomPanelView.CreateRoomButton;
@@ -34,27 +35,29 @@ internal sealed class ManagerLobbyWindowView : IStartable, IDisposable
         _roomListGlobal.onClick.AddListener(OpenRoomListPanel);
         _settingsMenu.onClick.AddListener(OpenSettingMenuPanel);
         _connectRoom.onClick.AddListener(OpenRoomInfoPanel);
+
+        OpenRoomListPanel();
     }
 
     private void OpenRoomListPanel()
     {
-        _homeLobbyViewPanel.enabled = false;
-        _settingsMenuView.enabled = false;
-        _listRooomPanelView.enabled = true;
+        _homeLobbyViewPanel.GetComponent<Canvas>().enabled = false;
+        _settingsMenuView.GetComponent<Canvas>().enabled = false;
+        _listRooomPanelView.GetComponent<Canvas>().enabled = true;
     }
 
     private void OpenSettingMenuPanel()
     {
-        _listRooomPanelView.enabled = false;
-        _homeLobbyViewPanel.enabled = false;
-        _settingsMenuView.enabled = true;
+        _listRooomPanelView.GetComponent<Canvas>().enabled = false;
+        _homeLobbyViewPanel.GetComponent<Canvas>().enabled = false;
+        _settingsMenuView.GetComponent<Canvas>().enabled = true;
     }
 
     private void OpenRoomInfoPanel()
     {
-        _listRooomPanelView.enabled = false;
-        _settingsMenuView.enabled = false;
-        _homeLobbyViewPanel.enabled = true;
+        _listRooomPanelView.GetComponent<Canvas>().enabled = false;
+        _settingsMenuView.GetComponent<Canvas>().enabled = false;
+        _homeLobbyViewPanel.GetComponent<Canvas>().enabled = true;
     }
 
     public void Dispose()

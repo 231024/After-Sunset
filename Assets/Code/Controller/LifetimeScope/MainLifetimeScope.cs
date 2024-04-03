@@ -3,7 +3,7 @@ using UnityEngine;
 using VContainer;
 using VContainer.Unity;
 
-public class MainLifetimeScope : LifetimeScope
+internal sealed class MainLifetimeScope : LifetimeScope
 {
     private MainGeneralViews _view;
     private PhotonController _photon;
