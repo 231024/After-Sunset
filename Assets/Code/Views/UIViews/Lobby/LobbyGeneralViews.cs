@@ -1,23 +1,29 @@
 ﻿using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 
 internal sealed class LobbyGeneralViews : MonoBehaviour
 {
-    [Header("TextLebels")] 
-    [SerializeField] private TMP_Text _textStatus;
+    [Header("Global UI Elements")]
+    [SerializeField] private Button _roomInfoButton;
+    [SerializeField] private Button _globalRoomButton;
+    [SerializeField] private Button _settingsButton;
 
-    [Header("Views")] 
-    [SerializeField] private ColorView _colorView;
-    [SerializeField] private AnonymousLoginView _anonymousLoginView;
-    [SerializeField] private SignInAccountView _signInAccountView;
-    [SerializeField] private CreateAccountView _createAccountView;
-    [SerializeField] private ManagerLoginWindowView _managerLoginWindowView;
+    [Header("Children Views")] 
+    [SerializeField] private RoomListPanelView _roomListPanel;
+    [SerializeField] private HomeLobbyView _homeLobbyViewPanel;
+    [SerializeField] private SettingsMenuView _settingsMenuView;
 
-    public TMP_Text TextStatus => _textStatus;
-    public ColorView ColorView => _colorView;
-    public AnonymousLoginView AnonymousLoginView => _anonymousLoginView;
-    public SignInAccountView SignInAccountView => _signInAccountView;
-    public CreateAccountView CreateAccountView => _createAccountView;
-    public ManagerLoginWindowView ManagerLoginWindowView => _managerLoginWindowView;
+    public Button RoomInfoButton => _roomInfoButton;
+
+    public Button GlobalRoomButton => _globalRoomButton;
+
+    public Button SettingsButton => _settingsButton;
+
+    public RoomListPanelView RoomListPanel => _roomListPanel;
+
+    public HomeLobbyView HomeLobbyViewPanel => _homeLobbyViewPanel;
+
+    public SettingsMenuView SettingsMenuView => _settingsMenuView;
 }

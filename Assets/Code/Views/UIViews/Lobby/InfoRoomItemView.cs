@@ -2,7 +2,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class InfoRoomItemView : MonoBehaviour
+internal sealed class InfoRoomItemView : MonoBehaviour
 {
     [SerializeField] private TMP_Text _labelRoomName;
     [SerializeField] private TMP_Text _labelAmountPlayers;

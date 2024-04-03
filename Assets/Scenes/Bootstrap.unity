@@ -9870,10 +9870,10 @@ GameObject:
   m_Component:
   - component: {fileID: 1146654649}
   - component: {fileID: 1146654648}
-  - component: {fileID: 1146654650}
   - component: {fileID: 1146654651}
   - component: {fileID: 1146654652}
   - component: {fileID: 1146654653}
+  - component: {fileID: 1146654654}
   m_Layer: 0
   m_Name: Init
   m_TagString: Untagged
@@ -9894,7 +9894,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _data: {fileID: 11400000, guid: f2dfe3fa14e1cfc4cac37664ecc38ffe, type: 2}
-  _views: {fileID: 1146654650}
+  _views: {fileID: 1146654654}
 --- !u!4 &1146654649
 Transform:
   m_ObjectHideFlags: 0
@@ -9910,24 +9910,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1146654650
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1146654647}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 05740685fea4440c9214f94635f86406, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _textStatus: {fileID: 1621630174}
-  _colorView: {fileID: 1146654651}
-  _anonymousLoginView: {fileID: 1426636463}
-  _signInAccountView: {fileID: 1315838732}
-  _createAccountView: {fileID: 1955543137}
-  _managerLoginWindowView: {fileID: 1786913817}
 --- !u!114 &1146654651
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9972,6 +9954,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _serverSettings: {fileID: 11400000, guid: 896b9b11090a02043af9bf3b78bf612d, type: 2}
+--- !u!114 &1146654654
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1146654647}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f14720cc83fca88479636bb385234b9c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _textStatus: {fileID: 1621630174}
+  _colorView: {fileID: 1146654651}
+  _anonymousLoginView: {fileID: 1426636463}
+  _signInAccountView: {fileID: 1315838732}
+  _createAccountView: {fileID: 1955543137}
+  _managerLoginWindowView: {fileID: 1786913817}
 --- !u!4 &1147588733 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -4216859302048453862, guid: bdd8b59fd28ade14d951aeeb4c9644d0, type: 3}
