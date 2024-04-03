@@ -6,15 +6,17 @@ using VContainer.Unity;
 
 internal sealed class ManagerLobbyWindowView : IStartable, IDisposable
 {
-    private Button _roomListGlobal;
-    private Button _roomList;
-    private Button _roomCreate;
-    private Button _connectRoom;
-    private Button _settingsMenu;
+    private Button _buttonRoomListGlobal;
+    private Button _buttonCloseSettingMenu;
+    private Button _buttonConnectRoom;
+    private Button _buttonSettingsMenu;
+
+    private bool _isWasListRoomWindow;
     
-    RoomListPanelView _listRooomPanelView;
-    HomeLobbyView _homeLobbyViewPanel;
-    SettingsMenuView _settingsMenuView;
+    private RoomListPanelView _listRooomPanelView;
+    private HomeLobbyView _homeLobbyPanelView;
+    private SettingsMenuView _settingsMenuView;
+    private Transform _headerPanel;
     
     [Inject] private LobbyGeneralViews LobbyGeneralViews;
     
@@ -22,48 +24,68 @@ internal sealed class ManagerLobbyWindowView : IStartable, IDisposable
     public void Start()
     {
         _listRooomPanelView = LobbyGeneralViews.RoomListPanel;
-        _homeLobbyViewPanel = LobbyGeneralViews.HomeLobbyViewPanel;
+        _homeLobbyPanelView = LobbyGeneralViews.HomeLobbyViewPanel;
         _settingsMenuView = LobbyGeneralViews.SettingsMenuView;
         
-        _roomListGlobal = LobbyGeneralViews.GlobalRoomButton;
-        _settingsMenu = LobbyGeneralViews.SettingsButton;
+        _buttonRoomListGlobal = LobbyGeneralViews.GlobalRoomButton;
+        _buttonSettingsMenu = LobbyGeneralViews.SettingsButton;
         
-        _roomList = _listRooomPanelView.RoomListButton;
-        _roomCreate = _listRooomPanelView.CreateRoomButton;
-        _connectRoom = _listRooomPanelView.ConnectToRoom;
+        _buttonConnectRoom = _listRooomPanelView.ConnectToRoom;
+        _buttonCloseSettingMenu = _settingsMenuView.CloseSettingMenu;
+
+        _headerPanel = LobbyGeneralViews.Header;
         
-        _roomListGlobal.onClick.AddListener(OpenRoomListPanel);
-        _settingsMenu.onClick.AddListener(OpenSettingMenuPanel);
-        _connectRoom.onClick.AddListener(OpenRoomInfoPanel);
+        _buttonRoomListGlobal.onClick.AddListener(OpenRoomListPanel);
+        _buttonSettingsMenu.onClick.AddListener(OpenSettingMenuPanel);
+        _buttonConnectRoom.onClick.AddListener(OpenRoomInfoPanel);
+        _buttonCloseSettingMenu.onClick.AddListener(CloseSettingMenu);
 
         OpenRoomListPanel();
     }
 
     private void OpenRoomListPanel()
     {
-        _homeLobbyViewPanel.GetComponent<Canvas>().enabled = false;
-        _settingsMenuView.GetComponent<Canvas>().enabled = false;
-        _listRooomPanelView.GetComponent<Canvas>().enabled = true;
+        _homeLobbyPanelView.gameObject.SetActive(false);
+        _settingsMenuView.gameObject.SetActive(false);
+        _listRooomPanelView.gameObject.SetActive(true);
+        _headerPanel.gameObject.SetActive(true);
+        _isWasListRoomWindow = true;
     }
 
     private void OpenSettingMenuPanel()
     {
-        _listRooomPanelView.GetComponent<Canvas>().enabled = false;
-        _homeLobbyViewPanel.GetComponent<Canvas>().enabled = false;
-        _settingsMenuView.GetComponent<Canvas>().enabled = true;
+        _listRooomPanelView.gameObject.SetActive(false);
+        _homeLobbyPanelView.gameObject.SetActive(false);
+        _headerPanel.gameObject.SetActive(false);
+        _settingsMenuView.gameObject.SetActive(true);
     }
 
     private void OpenRoomInfoPanel()
     {
-        _listRooomPanelView.GetComponent<Canvas>().enabled = false;
-        _settingsMenuView.GetComponent<Canvas>().enabled = false;
-        _homeLobbyViewPanel.GetComponent<Canvas>().enabled = true;
+        _listRooomPanelView.gameObject.SetActive(false);
+        _settingsMenuView.gameObject.SetActive(false);
+        _homeLobbyPanelView.gameObject.SetActive(true);
+        _headerPanel.gameObject.SetActive(true);
+        _isWasListRoomWindow = false;
+    }
+
+    private void CloseSettingMenu()
+    {
+        if (_isWasListRoomWindow)
+        {
+            OpenRoomListPanel();
+        }
+        else
+        {
+            OpenRoomInfoPanel();
+        }
     }
 
     public void Dispose()
     {
-        _roomListGlobal.onClick.RemoveListener(OpenRoomListPanel);
-        _settingsMenu.onClick.RemoveListener(OpenSettingMenuPanel);
-        _connectRoom.onClick.RemoveListener(OpenRoomInfoPanel);
+        _buttonRoomListGlobal.onClick.RemoveListener(OpenRoomListPanel);
+        _buttonSettingsMenu.onClick.RemoveListener(OpenSettingMenuPanel);
+        _buttonConnectRoom.onClick.RemoveListener(OpenRoomInfoPanel);
+        _buttonCloseSettingMenu.onClick.RemoveListener(CloseSettingMenu);
     }
 }

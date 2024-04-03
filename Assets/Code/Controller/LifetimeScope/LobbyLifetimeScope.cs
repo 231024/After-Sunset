@@ -10,5 +10,6 @@ public class LobbyLifetimeScope : LifetimeScope
         builder.RegisterComponent(_lobbyGeneralViews);
         
         builder.RegisterEntryPoint<ManagerLobbyWindowView>();
+        builder.RegisterEntryPoint<RoomListWindowManager>();
     }
 }

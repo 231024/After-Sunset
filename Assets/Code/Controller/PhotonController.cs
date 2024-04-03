@@ -59,6 +59,7 @@ public sealed class PhotonController : MonoBehaviourPunCallbacks
     {
         if (PhotonNetwork.IsConnected)
         {
+            
             PhotonNetwork.JoinLobby(_sqlLobby);
         }
     }

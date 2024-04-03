@@ -14,15 +14,16 @@ internal sealed class RoomListPanelView : MonoBehaviour
     [SerializeField] private Transform _parentTransformContent;
     [SerializeField] private TMP_InputField _roomNameInputField;
 
-    [FormerlySerializedAs("_createRoomPanel")]
     [Header("Panels")] 
-    [SerializeField] private CreateRoomPanelView createRoomPanelView;
+    [SerializeField] private CreateRoomPanelView _createRoomPanelView;
+    [SerializeField] private Transform _roomListPanelTransform;
 
-    
+
     public Button RoomListButton => _roomListButton;
     public Button CreateRoomButton => _createRoomButton;
     public Button ConnectToRoom => _connectToRoom;
     public Transform ParentTransformContent => _parentTransformContent;
     public TMP_InputField RoomNameInputField => _roomNameInputField;
-    public CreateRoomPanelView CreateRoomPanelView => createRoomPanelView; 
+    public CreateRoomPanelView CreateRoomPanelView => _createRoomPanelView;
+    public Transform RoomListPanelTransform => _roomListPanelTransform;
 }
