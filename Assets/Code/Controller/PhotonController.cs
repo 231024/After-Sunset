@@ -134,7 +134,7 @@ public class PhotonController : MonoBehaviourPunCallbacks
         {
             PhotonNetwork.CreateRoom(DEFAULT_ROOM_NAME);
             PhotonNetwork.CreateRoom("0", _defaultRoomOptions);
-            //SceneManager.LoadScene(LOADING_LOBBY_SCENE);
+            SceneManager.LoadScene(LOADING_LOBBY_SCENE);
         }
 
         //PhotonNetwork.JoinRandomRoom();
