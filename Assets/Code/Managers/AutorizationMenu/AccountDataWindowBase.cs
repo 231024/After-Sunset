@@ -87,6 +87,7 @@ internal class AccountDataWindowBase : IStartable, IDisposable
     
     protected void SetPlayerUsername(String displayName)
     {
+        _username = displayName;
         PlayFabClientAPI.UpdateUserTitleDisplayName(new UpdateUserTitleDisplayNameRequest
             {
                 DisplayName = displayName

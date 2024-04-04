@@ -30,38 +30,72 @@ public class PhotonController : MonoBehaviourPunCallbacks
     [Inject] private MainGeneralViews _mainGeneralViews;
 
 
+    private void Awake()
+    {
+        PhotonNetwork.AutomaticallySyncScene = true;
+    }
+
     private void Start()
     {
         _sqlLobby = new TypedLobby("CustomSqlLobby", LobbyType.SqlLobby);
-        _defaultRoomOptions = new RoomOptions();
-        _defaultRoomOptions.MaxPlayers = MAX_PLAYERS;
-        _defaultRoomOptions.IsOpen = true;
-        _defaultRoomOptions.IsVisible = true;
+        _defaultRoomOptions = new RoomOptions
+        {
+            IsVisible = true,
+            IsOpen = true,
+            MaxPlayers = MAX_PLAYERS
+        };
+        
+        Debug.Log("Start");
+        Connect();
     }
-
-
+    
     public void Connect()
     {
-        LogFeedback("Enter to Connect Method");
-        
+        //PhotonNetwork.NickName = nickname;
+
         _textProcess = _mainGeneralViews.TextStatus;
-        
+
         _textProcess.text = "";
-        
+        LogFeedback("Enter to Connect Method");
+
         if (!PhotonNetwork.IsConnected)
         {
             LogFeedback("Connecting...");
             PhotonNetwork.ConnectUsingSettings(_serverSettings.AppSettings);
-            PhotonNetwork.GameVersion = this.gameVersion;
+            //PhotonNetwork.GameVersion = this.gameVersion;
         }
-        else if (PhotonNetwork.IsConnected && !PhotonNetwork.InLobby)
+        else if (!PhotonNetwork.InLobby)
         {
             LogFeedback("Joining Room...");
             ConnectionInfo("Connect", Color.blue);
             PhotonNetwork.JoinLobby();
         }
     }
+
+    public void JoinLobbyManual()
+    {
+        PhotonNetwork.JoinLobby(_sqlLobby);
+    }
     
+    public override void OnConnected()
+    {
+        Debug.Log("OnConnected");
+    }
+
+    public override void OnDisconnected(DisconnectCause cause)
+    {
+        Debug.Log("OnDisconnected");
+    }
+    
+    public override void OnCreateRoomFailed(short returnCode, string message)
+    {
+        Debug.LogError($"[Photon] OnCreateRoomFailed with code: {returnCode} and message: {message}");
+    }
+
+    public override void OnJoinRoomFailed(short returnCode, string message)
+    {
+        Debug.LogError($"[Photon] OnJoinRoomFailed with code: {returnCode} and message: {message}");
+    }
     
     protected void ConnectionInfo(string message, Color color)
     {
@@ -71,6 +105,7 @@ public class PhotonController : MonoBehaviourPunCallbacks
 
     protected void LogFeedback(string message)
     {
+        _textProcess.text = "";
         if (_textProcess == null) {
             return;
         }
@@ -80,36 +115,39 @@ public class PhotonController : MonoBehaviourPunCallbacks
 
     public override void OnConnectedToMaster()
     {
+        LogFeedback($"IsConnected = {PhotonNetwork.IsConnected.ToString()}");
+        
         //PhotonNetwork.JoinRandomRoom();
         //PhotonNetwork.JoinLobby(_sqlLobby);
-        if (PhotonNetwork.IsConnected)
-        {
-            PhotonNetwork.JoinLobby(_sqlLobby);
-        }
+        // if (PhotonNetwork.IsConnected)
+        // {
+        //     PhotonNetwork.JoinLobby();
+        // }
     }
 
     public override void OnJoinedLobby()
     {
-        LogFeedback(PhotonNetwork.IsConnected.ToString());
-        if (PhotonNetwork.IsConnected)
+        LogFeedback($"IsConnected = {PhotonNetwork.IsConnected.ToString()}");
+        LogFeedback($"InLobby = {PhotonNetwork.InLobby}");
+        
+        if (PhotonNetwork.IsConnected && PhotonNetwork.InLobby)
         {
-            PhotonNetwork.CreateRoom(DEFAULT_ROOM_NAME, _defaultRoomOptions, _sqlLobby);
-            SceneManager.LoadScene(LOADING_LOBBY_SCENE);
+            PhotonNetwork.CreateRoom(DEFAULT_ROOM_NAME);
+            PhotonNetwork.CreateRoom("0", _defaultRoomOptions);
+            //SceneManager.LoadScene(LOADING_LOBBY_SCENE);
         }
+
         //PhotonNetwork.JoinRandomRoom();
-        LogFeedback(PhotonNetwork.CurrentLobby.Name);
-        // if (PhotonNetwork.CountOfRooms == 0)
-        // {
-        //     _defaultRoomOptions.MaxPlayers = MAX_PLAYERS;
-        //     _defaultRoomOptions.IsOpen = true;
-        //     _defaultRoomOptions.IsVisible = true;
-        //     PhotonNetwork.CreateRoom("1");
-        // }
+        if (PhotonNetwork.CountOfRooms == 0)
+        {
+            PhotonNetwork.CreateRoom(DEFAULT_ROOM_NAME);
+            PhotonNetwork.CreateRoom("1", _defaultRoomOptions);
+        }
     }
 
     public override void OnCreatedRoom()
     {
-        LogFeedback("Created");
+        Debug.Log("OnCreatedRoom");
         LogFeedback(PhotonNetwork.CountOfRooms.ToString());
     }
     
@@ -117,9 +155,27 @@ public class PhotonController : MonoBehaviourPunCallbacks
     {
         foreach (var info in roomList)
         {
-            _roomList.Add(info);
-            LogFeedback(info.Name);
+            Debug.Log($"OnRoomListUpdate {info.Name}, {info.PlayerCount}");
+            PhotonNetwork.JoinRoom(info.Name);
+            return;
         }
-        LogFeedback(_roomList.Count.ToString());
+
+        PhotonNetwork.CreateRoom(Guid.NewGuid().ToString());
     }
+    
+    // public override void OnRoomListUpdate(List<RoomInfo> roomList)
+    // {
+    //     foreach (var info in roomList)
+    //     {
+    //         LogFeedback(info.Name);
+    //     }
+    //
+    //     PhotonNetwork.CreateRoom(Guid.NewGuid().ToString());
+    //     // foreach (var info in roomList)
+    //     // {
+    //     //     _roomList.Add(info);
+    //     //     LogFeedback(info.Name);
+    //     // }
+    //     LogFeedback(_roomList.Count.ToString());
+    // }
 }

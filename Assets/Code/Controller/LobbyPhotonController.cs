@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using Photon.Pun;
-using Photon.Realtime;
-using Unity.VisualScripting;
+﻿using Photon.Pun;
 using UnityEngine;
 using VContainer;
 
-public class LobbyPhotonController : PhotonController
+public class LobbyPhotonController : MonoBehaviourPunCallbacks
 {
     protected const string DEFAULT_MAP_NAME = "Default";
         
@@ -14,7 +10,7 @@ public class LobbyPhotonController : PhotonController
 
     private void Start()
     {  
-        LogFeedback(_roomList.Count.ToString());
+        Debug.Log(PhotonNetwork.InLobby.ToString());
     }
 
     // public override void OnRoomListUpdate(List<RoomInfo> roomList)
