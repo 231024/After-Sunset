@@ -57,6 +57,7 @@ internal class AccountDataWindowBase : IStartable, IDisposable
     {
         SubscriptionsElementsUi();
         BeginningAuthorized();
+        //_photonController.Connect();
     }
 
     protected virtual void SubscriptionsElementsUi()
