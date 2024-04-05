@@ -39,6 +39,8 @@ internal class AccountDataWindowBase : IStartable, IDisposable
 
     [Inject] protected MainGeneralViews _mainGeneralViews;
     [Inject] protected PhotonController _photonController;
+    [Inject] private readonly ISubscriber<string, string> _subscriber;
+    private IDisposable _subscription;
 
     public AccountDataWindowBase(MainGeneralViews mainGeneralViews, PhotonController photonController)
     {
@@ -55,6 +57,9 @@ internal class AccountDataWindowBase : IStartable, IDisposable
 
     public void Start()
     {
+        var sub = _subscriber.Subscribe(UIConstants.TEXT_STATUS, TextStatusRecieved);
+        _subscription = DisposableBag.Create(sub);
+        
         SubscriptionsElementsUi();
         BeginningAuthorized();
         //_photonController.Connect();
@@ -70,6 +75,13 @@ internal class AccountDataWindowBase : IStartable, IDisposable
     {
         _usernameField.onValueChanged.RemoveListener(UpdateUsername);
         _passwordField.onValueChanged.RemoveListener(UpdatePassword);
+        _subscription?.Dispose();
+    }
+
+    private void TextStatusRecieved(string text)
+    {
+        _textStatus.text = text;
+        _textStatus.color = Color.blue;
     }
 
     protected void SetColor(ColorView colorView)

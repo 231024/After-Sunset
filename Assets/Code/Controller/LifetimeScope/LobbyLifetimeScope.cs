@@ -14,6 +14,7 @@ public class LobbyLifetimeScope : LifetimeScope
         
         var options = builder.RegisterMessagePipe();
         builder.RegisterMessageBroker<LobbyGeneralViews>(options);
+        builder.RegisterMessageBroker<string, string>(options);
         builder.RegisterComponent(_lobbyGeneralViews);
         builder.RegisterComponent(_lobbyPhotonController);
         

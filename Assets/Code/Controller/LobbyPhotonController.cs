@@ -4,7 +4,7 @@ using Photon.Realtime;
 using UnityEngine;
 using VContainer;
 
-public class LobbyPhotonController : MonoBehaviourPunCallbacks
+public class LobbyPhotonController : PhotonController
 {
     protected const string DEFAULT_MAP_NAME = "Default";
         
@@ -13,6 +13,21 @@ public class LobbyPhotonController : MonoBehaviourPunCallbacks
     private void Start()
     {  
         Debug.Log($"Connect server in Scene Lobby = {PhotonNetwork.IsConnected}");
+    }
+    
+    public void CreateRoom(string roomName, float maxPlayers, bool privacy)
+    {
+        var option = new RoomOptions
+        {
+            IsVisible = privacy,
+            MaxPlayers = Convert.ToInt32(maxPlayers)
+        };
+        PhotonNetwork.CreateRoom(roomName, option, _sqlLobby);
+    }
+
+    public override void OnCreatedRoom()
+    {
+        Debug.Log(_roomList.Count.ToString());
     }
 
     // public override void OnRoomListUpdate(List<RoomInfo> roomList)

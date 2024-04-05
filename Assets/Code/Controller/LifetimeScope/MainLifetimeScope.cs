@@ -13,6 +13,8 @@ internal sealed class MainLifetimeScope : LifetimeScope
         _view = GetComponent<MainGeneralViews>();
         _photon = GetComponent<PhotonController>();
         
+        var options = builder.RegisterMessagePipe();
+        builder.RegisterMessageBroker<string, string>(options);
         builder.RegisterComponent(_view);
         builder.RegisterComponent(_photon).AsSelf();
 

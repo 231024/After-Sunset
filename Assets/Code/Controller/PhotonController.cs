@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using MessagePipe;
 using Photon.Pun;
 using Photon.Realtime;
 using TMPro;
@@ -15,6 +16,8 @@ public class PhotonController : MonoBehaviourPunCallbacks
     [SerializeField] private ServerSettings _serverSettings; 
     
     private TMP_Text _textProcess;
+    private string _stringStatusProcces;
+
 
     private const string LOADING_LOBBY_SCENE = "Lobby";
     private const string DEFAULT_ROOM_NAME = "Default";
@@ -23,11 +26,12 @@ public class PhotonController : MonoBehaviourPunCallbacks
     private string gameVersion = "1";
 
     protected List<RoomInfo> _roomList = new List<RoomInfo>();
-    
+
     protected TypedLobby _sqlLobby;
     private RoomOptions _defaultRoomOptions;
     
-    [Inject] private MainGeneralViews _mainGeneralViews;
+    //[Inject] private MainGeneralViews _mainGeneralViews;
+    [Inject] private readonly IPublisher<string, string> _publisher;
 
 
     private void Awake()
@@ -44,16 +48,14 @@ public class PhotonController : MonoBehaviourPunCallbacks
             IsOpen = true,
             MaxPlayers = MAX_PLAYERS
         };
-        
+        _publisher.Publish(UIConstants.TEXT_STATUS, _stringStatusProcces);
         Debug.Log("Start");
         Connect();
     }
     
     public void Connect()
     {
-        _textProcess = _mainGeneralViews.TextStatus;
-
-        _textProcess.text = "";
+        _stringStatusProcces = "";
         LogFeedback("Enter to Connect Method");
 
         if (!PhotonNetwork.IsConnected)
@@ -65,7 +67,7 @@ public class PhotonController : MonoBehaviourPunCallbacks
         else if (!PhotonNetwork.InLobby)
         {
             LogFeedback("Joining Room...");
-            ConnectionInfo("Connect", Color.blue);
+            //ConnectionInfo("Connect", Color.blue);
             PhotonNetwork.JoinLobby();
         }
     }
@@ -80,16 +82,6 @@ public class PhotonController : MonoBehaviourPunCallbacks
         PhotonNetwork.JoinLobby(_sqlLobby);
     }
     
-    public void CreateRoom(string roomName, float maxPlayers, bool privacy)
-    {
-        var option = new RoomOptions
-        {
-            IsVisible = privacy,
-            MaxPlayers = Convert.ToInt32(maxPlayers)
-        };
-        PhotonNetwork.CreateRoom(roomName, option);
-    }
-    
     protected void ConnectionInfo(string message, Color color)
     {
         _textProcess.text = message;
@@ -98,11 +90,11 @@ public class PhotonController : MonoBehaviourPunCallbacks
 
     protected void LogFeedback(string message)
     {
-        _textProcess.text = "";
+        _stringStatusProcces = "";
         if (_textProcess == null) {
             return;
         }
-        _textProcess.text += System.Environment.NewLine+message;
+        _stringStatusProcces += System.Environment.NewLine+message;
         Debug.Log(message);
     }
 

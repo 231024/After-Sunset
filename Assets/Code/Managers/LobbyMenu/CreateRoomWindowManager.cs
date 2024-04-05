@@ -16,7 +16,7 @@ internal sealed class CreateRoomWindowManager : IStartable, IDisposable
     private TMP_Text _maxPlayersTMPText;
     
     [Inject] private LobbyGeneralViews _lobbyGeneralViews;
-    [Inject] private PhotonController _photonController;
+    [Inject] private LobbyPhotonController _photonController;
     
     public void Start()
     {
@@ -27,7 +27,7 @@ internal sealed class CreateRoomWindowManager : IStartable, IDisposable
         
         _roomNameTMPInputField.onValueChanged.AddListener(OnChangedRoomName);
         _maxPlayersSlider.onValueChanged.AddListener(OnChangedAmountMaxPayers);
-        _createRoomPanelView.ButtonCreateRoom.onClick.RemoveListener(CreateRoom);
+        _createRoomPanelView.ButtonCreateRoom.onClick.AddListener(CreateRoom);
     }
 
     private void CreateRoom()
@@ -50,5 +50,6 @@ internal sealed class CreateRoomWindowManager : IStartable, IDisposable
     {
         _roomNameTMPInputField.onValueChanged.RemoveListener(OnChangedRoomName);
         _maxPlayersSlider.onValueChanged.RemoveListener(OnChangedAmountMaxPayers);
+        _createRoomPanelView.ButtonCreateRoom.onClick.RemoveListener(CreateRoom);
     }
 }
