@@ -24,7 +24,7 @@ public class PhotonController : MonoBehaviourPunCallbacks
 
     protected List<RoomInfo> _roomList = new List<RoomInfo>();
     
-    private TypedLobby _sqlLobby;
+    protected TypedLobby _sqlLobby;
     private RoomOptions _defaultRoomOptions;
     
     [Inject] private MainGeneralViews _mainGeneralViews;
@@ -51,8 +51,6 @@ public class PhotonController : MonoBehaviourPunCallbacks
     
     public void Connect()
     {
-        //PhotonNetwork.NickName = nickname;
-
         _textProcess = _mainGeneralViews.TextStatus;
 
         _textProcess.text = "";
@@ -62,7 +60,7 @@ public class PhotonController : MonoBehaviourPunCallbacks
         {
             LogFeedback("Connecting...");
             PhotonNetwork.ConnectUsingSettings(_serverSettings.AppSettings);
-            //PhotonNetwork.GameVersion = this.gameVersion;
+            PhotonNetwork.GameVersion = this.gameVersion;
         }
         else if (!PhotonNetwork.InLobby)
         {
@@ -71,30 +69,25 @@ public class PhotonController : MonoBehaviourPunCallbacks
             PhotonNetwork.JoinLobby();
         }
     }
+    
+    public void NicknameRecieved(string nickname)
+    {
+        PhotonNetwork.NickName = nickname;
+    }
 
     public void JoinLobbyManual()
     {
         PhotonNetwork.JoinLobby(_sqlLobby);
     }
     
-    public override void OnConnected()
+    public void CreateRoom(string roomName, float maxPlayers, bool privacy)
     {
-        Debug.Log("OnConnected");
-    }
-
-    public override void OnDisconnected(DisconnectCause cause)
-    {
-        Debug.Log("OnDisconnected");
-    }
-    
-    public override void OnCreateRoomFailed(short returnCode, string message)
-    {
-        Debug.LogError($"[Photon] OnCreateRoomFailed with code: {returnCode} and message: {message}");
-    }
-
-    public override void OnJoinRoomFailed(short returnCode, string message)
-    {
-        Debug.LogError($"[Photon] OnJoinRoomFailed with code: {returnCode} and message: {message}");
+        var option = new RoomOptions
+        {
+            IsVisible = privacy,
+            MaxPlayers = Convert.ToInt32(maxPlayers)
+        };
+        PhotonNetwork.CreateRoom(roomName, option);
     }
     
     protected void ConnectionInfo(string message, Color color)
@@ -116,13 +109,6 @@ public class PhotonController : MonoBehaviourPunCallbacks
     public override void OnConnectedToMaster()
     {
         LogFeedback($"IsConnected = {PhotonNetwork.IsConnected.ToString()}");
-        
-        //PhotonNetwork.JoinRandomRoom();
-        //PhotonNetwork.JoinLobby(_sqlLobby);
-        // if (PhotonNetwork.IsConnected)
-        // {
-        //     PhotonNetwork.JoinLobby();
-        // }
     }
 
     public override void OnJoinedLobby()
@@ -132,17 +118,9 @@ public class PhotonController : MonoBehaviourPunCallbacks
         
         if (PhotonNetwork.IsConnected && PhotonNetwork.InLobby)
         {
-            PhotonNetwork.CreateRoom(DEFAULT_ROOM_NAME);
-            PhotonNetwork.CreateRoom("0", _defaultRoomOptions);
             SceneManager.LoadScene(LOADING_LOBBY_SCENE);
         }
-
-        //PhotonNetwork.JoinRandomRoom();
-        if (PhotonNetwork.CountOfRooms == 0)
-        {
-            PhotonNetwork.CreateRoom(DEFAULT_ROOM_NAME);
-            PhotonNetwork.CreateRoom("1", _defaultRoomOptions);
-        }
+        
     }
 
     public override void OnCreatedRoom()
@@ -151,31 +129,16 @@ public class PhotonController : MonoBehaviourPunCallbacks
         LogFeedback(PhotonNetwork.CountOfRooms.ToString());
     }
     
+    
+    
     public override void OnRoomListUpdate(List<RoomInfo> roomList)
     {
+        Debug.Log("OnRoomListUpdate");
         foreach (var info in roomList)
         {
-            Debug.Log($"OnRoomListUpdate {info.Name}, {info.PlayerCount}");
-            PhotonNetwork.JoinRoom(info.Name);
-            return;
+            LogFeedback(info.Name);
         }
-
-        PhotonNetwork.CreateRoom(Guid.NewGuid().ToString());
+        
+        LogFeedback(_roomList.Count.ToString());
     }
-    
-    // public override void OnRoomListUpdate(List<RoomInfo> roomList)
-    // {
-    //     foreach (var info in roomList)
-    //     {
-    //         LogFeedback(info.Name);
-    //     }
-    //
-    //     PhotonNetwork.CreateRoom(Guid.NewGuid().ToString());
-    //     // foreach (var info in roomList)
-    //     // {
-    //     //     _roomList.Add(info);
-    //     //     LogFeedback(info.Name);
-    //     // }
-    //     LogFeedback(_roomList.Count.ToString());
-    // }
 }

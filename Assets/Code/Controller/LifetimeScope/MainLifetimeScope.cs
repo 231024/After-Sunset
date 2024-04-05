@@ -14,7 +14,7 @@ internal sealed class MainLifetimeScope : LifetimeScope
         _photon = GetComponent<PhotonController>();
         
         builder.RegisterComponent(_view);
-        builder.RegisterComponent(_photon);
+        builder.RegisterComponent(_photon).AsSelf();
 
         new BootstrapInitialization(builder);
     }

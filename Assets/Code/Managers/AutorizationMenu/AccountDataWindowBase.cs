@@ -93,7 +93,8 @@ internal class AccountDataWindowBase : IStartable, IDisposable
                 DisplayName = displayName
             },
             result =>
-            { 
+            {
+                _photonController.NicknameRecieved(displayName);
                 _photonController.Connect();
             }, Debug.LogError);
     }

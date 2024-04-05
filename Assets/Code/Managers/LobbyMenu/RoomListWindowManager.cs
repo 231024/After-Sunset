@@ -54,6 +54,7 @@ internal sealed class RoomListWindowManager : IStartable, IDisposable
 
     public void Dispose()
     {
-        
+        _buttonRoomList.onClick.RemoveListener(SwitchRoomListInterfaces);
+        _buttonRoomCreate.onClick.RemoveListener(SwitchRoomListInterfaces);
     }
 }

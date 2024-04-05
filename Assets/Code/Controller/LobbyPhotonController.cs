@@ -1,4 +1,6 @@
-﻿using Photon.Pun;
+﻿using System;
+using Photon.Pun;
+using Photon.Realtime;
 using UnityEngine;
 using VContainer;
 
@@ -10,7 +12,7 @@ public class LobbyPhotonController : MonoBehaviourPunCallbacks
 
     private void Start()
     {  
-        Debug.Log(PhotonNetwork.InLobby.ToString());
+        Debug.Log($"Connect server in Scene Lobby = {PhotonNetwork.IsConnected}");
     }
 
     // public override void OnRoomListUpdate(List<RoomInfo> roomList)
