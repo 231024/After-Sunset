@@ -91,10 +91,7 @@ public class PhotonController : MonoBehaviourPunCallbacks
     protected void LogFeedback(string message)
     {
         _stringStatusProcces = "";
-        if (_textProcess == null) {
-            return;
-        }
-        _stringStatusProcces += System.Environment.NewLine+message;
+        _stringStatusProcces = System.Environment.NewLine+message;
         Debug.Log(message);
     }
 
@@ -130,7 +127,7 @@ public class PhotonController : MonoBehaviourPunCallbacks
         {
             LogFeedback(info.Name);
         }
-        
+        Debug.Log($"OnRoomListUpdate {_roomList.Count.ToString()}");
         LogFeedback(_roomList.Count.ToString());
     }
 }

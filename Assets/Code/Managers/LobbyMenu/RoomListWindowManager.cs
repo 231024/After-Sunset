@@ -7,9 +7,10 @@ using VContainer.Unity;
 
 internal sealed class RoomListWindowManager : IStartable, IDisposable
 {
-    private Button _buttonRoomList;
-    private Button _buttonRoomCreate;
+    private Button _buttonTabRoomList;
+    private Button _buttonTabRoomCreate;
     private Button _buttonConnect;
+    private Button _buttonRoomCreate;
 
     private TMP_InputField _inputFieldRoomName;
 
@@ -26,16 +27,18 @@ internal sealed class RoomListWindowManager : IStartable, IDisposable
         _listRooomPanelView = LobbyGeneralViews.RoomListPanel;
         _createRoomPanelView = _listRooomPanelView.CreateRoomPanelView;
 
-        _buttonRoomList = _listRooomPanelView.RoomListButton;
-        _buttonRoomCreate = _listRooomPanelView.CreateRoomButton;
+        _buttonTabRoomList = _listRooomPanelView.RoomListButton;
+        _buttonTabRoomCreate = _listRooomPanelView.CreateRoomButton;
         _buttonConnect = _listRooomPanelView.ConnectToRoom;
+        _buttonRoomCreate = _createRoomPanelView.ButtonCreateRoom;
 
         _roomListPanelTransform = _listRooomPanelView.RoomListPanelTransform;
         _parentTransform = _listRooomPanelView.ParentTransformContent;
         _inputFieldRoomName = _listRooomPanelView.RoomNameInputField;
 
-        _buttonRoomList.onClick.AddListener(SwitchRoomListInterfaces);
-        _buttonRoomCreate.onClick.AddListener(SwitchRoomListInterfaces);
+        _buttonTabRoomList.onClick.AddListener(SwitchRoomListInterfaces);
+        _buttonTabRoomCreate.onClick.AddListener(SwitchRoomListInterfaces);
+        _buttonRoomCreate.onClick.AddListener(ConnectToRoom);
     }
 
     private void SwitchRoomListInterfaces()
@@ -52,9 +55,14 @@ internal sealed class RoomListWindowManager : IStartable, IDisposable
         }
     }
 
+    private void ConnectToRoom()
+    {
+        
+    }
+
     public void Dispose()
     {
-        _buttonRoomList.onClick.RemoveListener(SwitchRoomListInterfaces);
-        _buttonRoomCreate.onClick.RemoveListener(SwitchRoomListInterfaces);
+        _buttonTabRoomList.onClick.RemoveListener(SwitchRoomListInterfaces);
+        _buttonTabRoomCreate.onClick.RemoveListener(SwitchRoomListInterfaces);
     }
 }
