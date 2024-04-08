@@ -1,4 +1,5 @@
 using System;
+using MessagePipe;
 using TMPro;
 using UnityEngine.UI;
 using VContainer;
@@ -10,13 +11,15 @@ internal sealed class CreateRoomWindowManager : IStartable, IDisposable
     private float _amountMaxPlayers;
         
     private CreateRoomPanelView _createRoomPanelView;
+    private LobbyController _lobbyController;
 
     private TMP_InputField _roomNameTMPInputField;
     private Slider _maxPlayersSlider;
     private TMP_Text _maxPlayersTMPText;
     
     [Inject] private LobbyGeneralViews _lobbyGeneralViews;
-    [Inject] private LobbyPhotonController _photonController;
+    //[Inject] private LobbyController _photonController;
+    [Inject] private PhotonController _photonController;
     
     public void Start()
     {
@@ -28,6 +31,11 @@ internal sealed class CreateRoomWindowManager : IStartable, IDisposable
         _roomNameTMPInputField.onValueChanged.AddListener(OnChangedRoomName);
         _maxPlayersSlider.onValueChanged.AddListener(OnChangedAmountMaxPayers);
         _createRoomPanelView.ButtonCreateRoom.onClick.AddListener(CreateRoom);
+    }
+
+    private void SetLobbyController(LobbyController lobbyController)
+    {
+        _lobbyController = lobbyController;
     }
 
     private void CreateRoom()

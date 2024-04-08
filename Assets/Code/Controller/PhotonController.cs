@@ -4,10 +4,8 @@ using MessagePipe;
 using Photon.Pun;
 using Photon.Realtime;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 using VContainer;
 
 public class PhotonController : MonoBehaviourPunCallbacks
@@ -17,6 +15,9 @@ public class PhotonController : MonoBehaviourPunCallbacks
     
     private TMP_Text _textProcess;
     private string _stringStatusProcces;
+    private string _nickname;
+
+    public string Nickname => _nickname;
 
     private const string LOADING_LOBBY_SCENE = "Lobby";
     private const string DEFAULT_ROOM_NAME = "Default";
@@ -58,13 +59,24 @@ public class PhotonController : MonoBehaviourPunCallbacks
     
     public void NicknameRecieved(string nickname)
     {
-        PhotonNetwork.NickName = nickname;
+        _nickname = nickname;
+        PhotonNetwork.NickName = _nickname;
     }
     
     protected void ConnectionInfo(string message, Color color)
     {
         _textProcess.text = message;
         _textProcess.color = color;
+    }
+    
+    public void CreateRoom(string roomName, float maxPlayers, bool privacy)
+    {
+        var option = new RoomOptions
+        {
+            IsVisible = privacy,
+            MaxPlayers = Convert.ToInt32(maxPlayers)
+        };
+        PhotonNetwork.CreateRoom(roomName, option);
     }
 
     protected void LogFeedback(string message)

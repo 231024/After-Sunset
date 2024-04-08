@@ -3,27 +3,29 @@ using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine;
 using VContainer;
+using VContainer.Unity;
 
-public class LobbyPhotonController : PhotonController
+public class LobbyController : IStartable
 {
     protected const string DEFAULT_MAP_NAME = "Default";
         
     [Inject] private LobbyGeneralViews _lobbyGeneralViews;
+    [Inject] private PhotonController _photonController;
 
-    private void Start()
+    public void Start()
     {  
         Debug.Log($"Connect server in Scene Lobby = {PhotonNetwork.IsConnected}");
     }
     
-    public void CreateRoom(string roomName, float maxPlayers, bool privacy)
-    {
-        var option = new RoomOptions
-        {
-            IsVisible = privacy,
-            MaxPlayers = Convert.ToInt32(maxPlayers)
-        };
-        PhotonNetwork.CreateRoom(roomName, option);
-    }
+    // public void CreateRoom(string roomName, float maxPlayers, bool privacy)
+    // {
+    //     var option = new RoomOptions
+    //     {
+    //         IsVisible = privacy,
+    //         MaxPlayers = Convert.ToInt32(maxPlayers)
+    //     };
+    //     _photonController.CreateRoom(roomName, option);
+    // }
 
     // public override void OnRoomListUpdate(List<RoomInfo> roomList)
     // {
