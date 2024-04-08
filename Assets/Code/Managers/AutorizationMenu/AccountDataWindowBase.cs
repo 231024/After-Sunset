@@ -105,7 +105,7 @@ internal class AccountDataWindowBase : IStartable, IDisposable
             },
             result =>
             {
-                _photonController.NicknameRecieved(displayName);
+                _photonController.NicknameReceived(_username);
                 _photonController.Connect();
             }, Debug.LogError);
     }

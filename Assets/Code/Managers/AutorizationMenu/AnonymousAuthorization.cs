@@ -49,6 +49,7 @@ internal sealed class AnonymousAuthorization  : AccountDataWindowBase
     {
         base.CheckAccount();
         _username = $"Player {Random.Range(1000, 9999)}";
+        Debug.Log($"[CheckAccount] nickname = {_username}");
         
         if (PlayerPrefs.HasKey(UNIQUE_AUTH_KEY))
         {
@@ -87,6 +88,7 @@ internal sealed class AnonymousAuthorization  : AccountDataWindowBase
                 }
                 else
                 {
+                    _photonController.NicknameReceived(_username);
                     _photonController.Connect();
                 }
             }, OnLoginError);

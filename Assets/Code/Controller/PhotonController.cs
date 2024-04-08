@@ -57,9 +57,10 @@ public class PhotonController : MonoBehaviourPunCallbacks
         }
     }
     
-    public void NicknameRecieved(string nickname)
+    public void NicknameReceived(string nickname)
     {
         _nickname = nickname;
+        LogFeedback($"[NicknameReceived] nickname = {_nickname}");
         PhotonNetwork.NickName = _nickname;
     }
     
