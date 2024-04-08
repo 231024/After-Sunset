@@ -18,21 +18,13 @@ public class PhotonController : MonoBehaviourPunCallbacks
     private TMP_Text _textProcess;
     private string _stringStatusProcces;
 
-
     private const string LOADING_LOBBY_SCENE = "Lobby";
     private const string DEFAULT_ROOM_NAME = "Default";
     private const int MAX_PLAYERS = 4;
-
-    private string gameVersion = "1";
-
-    protected List<RoomInfo> _roomList = new List<RoomInfo>();
-
-    protected TypedLobby _sqlLobby;
-    private RoomOptions _defaultRoomOptions;
+    private const string GAME_VERSION = "1";
     
-    //[Inject] private MainGeneralViews _mainGeneralViews;
+    protected List<RoomInfo> _roomList = new List<RoomInfo>();
     [Inject] private readonly IPublisher<string, string> _publisher;
-
 
     private void Awake()
     {
@@ -41,13 +33,6 @@ public class PhotonController : MonoBehaviourPunCallbacks
 
     private void Start()
     {
-        _sqlLobby = new TypedLobby("CustomSqlLobby", LobbyType.SqlLobby);
-        _defaultRoomOptions = new RoomOptions
-        {
-            IsVisible = true,
-            IsOpen = true,
-            MaxPlayers = MAX_PLAYERS
-        };
         _publisher.Publish(UIConstants.TEXT_STATUS, _stringStatusProcces);
         Debug.Log("Start");
         Connect();
@@ -60,14 +45,13 @@ public class PhotonController : MonoBehaviourPunCallbacks
 
         if (!PhotonNetwork.IsConnected)
         {
-            LogFeedback("Connecting...");
+            LogFeedback("[Connect] Connecting...");
+            PhotonNetwork.GameVersion = GAME_VERSION;
             PhotonNetwork.ConnectUsingSettings(_serverSettings.AppSettings);
-            PhotonNetwork.GameVersion = this.gameVersion;
         }
         else if (!PhotonNetwork.InLobby)
         {
-            LogFeedback("Joining Room...");
-            //ConnectionInfo("Connect", Color.blue);
+            LogFeedback("[Connect] Joining Lobby...");
             PhotonNetwork.JoinLobby();
         }
     }
@@ -75,11 +59,6 @@ public class PhotonController : MonoBehaviourPunCallbacks
     public void NicknameRecieved(string nickname)
     {
         PhotonNetwork.NickName = nickname;
-    }
-
-    public void JoinLobbyManual()
-    {
-        PhotonNetwork.JoinLobby(_sqlLobby);
     }
     
     protected void ConnectionInfo(string message, Color color)
@@ -97,37 +76,40 @@ public class PhotonController : MonoBehaviourPunCallbacks
 
     public override void OnConnectedToMaster()
     {
-        LogFeedback($"IsConnected = {PhotonNetwork.IsConnected.ToString()}");
+        LogFeedback($"[OnConnectedToMaster] IsConnected = {PhotonNetwork.IsConnected.ToString()}");
     }
 
     public override void OnJoinedLobby()
     {
-        LogFeedback($"IsConnected = {PhotonNetwork.IsConnected.ToString()}");
-        LogFeedback($"InLobby = {PhotonNetwork.InLobby}");
+        LogFeedback($"[OnJoinedLobby] IsConnected = {PhotonNetwork.IsConnected.ToString()}");
+        LogFeedback($"[OnJoinedLobby] InLobby = {PhotonNetwork.InLobby}");
         
         if (PhotonNetwork.IsConnected && PhotonNetwork.InLobby)
         {
             SceneManager.LoadScene(LOADING_LOBBY_SCENE);
         }
-        
     }
 
     public override void OnCreatedRoom()
     {
-        Debug.Log("OnCreatedRoom");
-        LogFeedback(PhotonNetwork.CountOfRooms.ToString());
+        LogFeedback($"[OnCreatedRoom] PlayerCount {PhotonNetwork.CurrentRoom.PlayerCount}");
+        LogFeedback($"[OnCreatedRoom] In Lobby {PhotonNetwork.InLobby}");
     }
-    
-    
     
     public override void OnRoomListUpdate(List<RoomInfo> roomList)
     {
+        _roomList = roomList;
         Debug.Log("OnRoomListUpdate");
         foreach (var info in roomList)
         {
             LogFeedback(info.Name);
         }
-        Debug.Log($"OnRoomListUpdate {_roomList.Count.ToString()}");
+        Debug.Log($"OnRoomListUpdate {_roomList.Count}");
         LogFeedback(_roomList.Count.ToString());
+    }
+
+    public override void OnPlayerEnteredRoom(Photon.Realtime.Player newPlayer)
+    {
+        LogFeedback($"[OnPlayerEnteredRoom] Player = {newPlayer.NickName}");
     }
 }

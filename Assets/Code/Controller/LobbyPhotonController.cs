@@ -22,12 +22,7 @@ public class LobbyPhotonController : PhotonController
             IsVisible = privacy,
             MaxPlayers = Convert.ToInt32(maxPlayers)
         };
-        PhotonNetwork.CreateRoom(roomName, option, _sqlLobby);
-    }
-
-    public override void OnCreatedRoom()
-    {
-        Debug.Log(_roomList.Count.ToString());
+        PhotonNetwork.CreateRoom(roomName, option);
     }
 
     // public override void OnRoomListUpdate(List<RoomInfo> roomList)

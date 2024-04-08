@@ -57,9 +57,6 @@ internal class AccountDataWindowBase : IStartable, IDisposable
 
     public void Start()
     {
-        var sub = _subscriber.Subscribe(UIConstants.TEXT_STATUS, TextStatusRecieved);
-        _subscription = DisposableBag.Create(sub);
-        
         SubscriptionsElementsUi();
         BeginningAuthorized();
         //_photonController.Connect();
@@ -69,6 +66,8 @@ internal class AccountDataWindowBase : IStartable, IDisposable
     {
         _usernameField.onValueChanged.AddListener(UpdateUsername);
         _passwordField.onValueChanged.AddListener(UpdatePassword);
+        var sub = _subscriber.Subscribe(UIConstants.TEXT_STATUS, TextStatusRecieved);
+        _subscription = DisposableBag.Create(sub);
     }
     
     protected virtual void UnSubscriptionsElementsUi()
