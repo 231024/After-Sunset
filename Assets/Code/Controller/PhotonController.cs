@@ -93,6 +93,8 @@ public class PhotonController : MonoBehaviourPunCallbacks
     public override void OnCreatedRoom()
     {
         LogFeedback($"[OnCreatedRoom] PlayerCount {PhotonNetwork.CurrentRoom.PlayerCount}");
+        LogFeedback($"[OnCreatedRoom] CurrentRoom Name {PhotonNetwork.CurrentRoom.Name}");
+        LogFeedback($"[OnCreatedRoom] LocalPlayer Name {PhotonNetwork.NickName}");
         LogFeedback($"[OnCreatedRoom] In Lobby {PhotonNetwork.InLobby}");
     }
     
