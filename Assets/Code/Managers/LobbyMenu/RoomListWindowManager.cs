@@ -1,4 +1,5 @@
 ﻿using System;
+using MessagePipe;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -20,11 +21,11 @@ internal sealed class RoomListWindowManager : IStartable, IDisposable
     private RoomListPanelView _listRooomPanelView;
     private CreateRoomPanelView _createRoomPanelView;
     
-    [Inject] private LobbyGeneralViews LobbyGeneralViews;
+    [Inject] private LobbyGeneralViews _lobbyGeneralViews;
     
     public void Start()
     {
-        _listRooomPanelView = LobbyGeneralViews.RoomListPanel;
+        _listRooomPanelView = _lobbyGeneralViews.RoomListPanel;
         _createRoomPanelView = _listRooomPanelView.CreateRoomPanelView;
 
         _buttonTabRoomList = _listRooomPanelView.RoomListButton;
@@ -47,17 +48,20 @@ internal sealed class RoomListWindowManager : IStartable, IDisposable
         {
             _createRoomPanelView.gameObject.SetActive(false);
             _roomListPanelTransform.gameObject.SetActive(true);
+            _buttonTabRoomList.interactable = false;
+            _buttonTabRoomCreate.interactable = true;
         }
         else
         {
             _roomListPanelTransform.gameObject.SetActive(false);
             _createRoomPanelView.gameObject.SetActive(true);
+            _buttonTabRoomCreate.interactable = false;
+            _buttonTabRoomList.interactable = true;
         }
     }
 
-    private void ConnectToRoom()
+    public void ConnectToRoom()
     {
-        
     }
 
     public void Dispose()

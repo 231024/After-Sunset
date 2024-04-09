@@ -1,10 +1,11 @@
 ﻿using System;
+using MessagePipe;
 using UnityEngine;
 using UnityEngine.UI;
 using VContainer;
 using VContainer.Unity;
 
-internal sealed class ManagerLobbyWindowView : IStartable, IDisposable
+internal sealed class LobbyWindowManager : IStartable, IDisposable
 {
     private Button _buttonRoomListGlobal;
     private Button _buttonCloseSettingMenu;
@@ -18,22 +19,24 @@ internal sealed class ManagerLobbyWindowView : IStartable, IDisposable
     private SettingsMenuView _settingsMenuView;
     private Transform _headerPanel;
     
-    [Inject] private LobbyGeneralViews LobbyGeneralViews;
-    
+    [Inject] private LobbyGeneralViews _lobbyGeneralViews;
+    [Inject] private readonly IPublisher<LobbyWindowManager> _publisher;
     
     public void Start()
     {
-        _listRooomPanelView = LobbyGeneralViews.RoomListPanel;
-        _homeLobbyPanelView = LobbyGeneralViews.HomeLobbyViewPanel;
-        _settingsMenuView = LobbyGeneralViews.SettingsMenuView;
+        _publisher.Publish(this);
         
-        _buttonRoomListGlobal = LobbyGeneralViews.GlobalRoomButton;
-        _buttonSettingsMenu = LobbyGeneralViews.SettingsButton;
+        _listRooomPanelView = _lobbyGeneralViews.RoomListPanel;
+        _homeLobbyPanelView = _lobbyGeneralViews.HomeLobbyViewPanel;
+        _settingsMenuView = _lobbyGeneralViews.SettingsMenuView;
+        
+        _buttonRoomListGlobal = _lobbyGeneralViews.GlobalRoomButton;
+        _buttonSettingsMenu = _lobbyGeneralViews.SettingsButton;
         
         _buttonConnectRoom = _listRooomPanelView.ConnectToRoom;
         _buttonCloseSettingMenu = _settingsMenuView.CloseSettingMenu;
 
-        _headerPanel = LobbyGeneralViews.Header;
+        _headerPanel = _lobbyGeneralViews.Header;
         
         _buttonRoomListGlobal.onClick.AddListener(OpenRoomListPanel);
         _buttonSettingsMenu.onClick.AddListener(OpenSettingMenuPanel);
@@ -50,6 +53,7 @@ internal sealed class ManagerLobbyWindowView : IStartable, IDisposable
         _listRooomPanelView.gameObject.SetActive(true);
         _headerPanel.gameObject.SetActive(true);
         _isWasListRoomWindow = true;
+        _buttonRoomListGlobal.interactable = false;
     }
 
     private void OpenSettingMenuPanel()
@@ -60,7 +64,7 @@ internal sealed class ManagerLobbyWindowView : IStartable, IDisposable
         _settingsMenuView.gameObject.SetActive(true);
     }
 
-    private void OpenRoomInfoPanel()
+    public void OpenRoomInfoPanel()
     {
         _listRooomPanelView.gameObject.SetActive(false);
         _settingsMenuView.gameObject.SetActive(false);
