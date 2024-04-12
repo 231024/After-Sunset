@@ -10,8 +10,6 @@ internal sealed class RoomListWindowManager : IStartable, IDisposable
 {
     private Button _buttonTabRoomList;
     private Button _buttonTabRoomCreate;
-    private Button _buttonConnect;
-    private Button _buttonRoomCreate;
 
     private TMP_InputField _inputFieldRoomName;
 
@@ -22,6 +20,7 @@ internal sealed class RoomListWindowManager : IStartable, IDisposable
     private CreateRoomPanelView _createRoomPanelView;
     
     [Inject] private LobbyGeneralViews _lobbyGeneralViews;
+    [Inject] private PhotonController _photonController;
     
     public void Start()
     {
@@ -30,8 +29,6 @@ internal sealed class RoomListWindowManager : IStartable, IDisposable
 
         _buttonTabRoomList = _listRooomPanelView.RoomListButton;
         _buttonTabRoomCreate = _listRooomPanelView.CreateRoomButton;
-        _buttonConnect = _listRooomPanelView.ConnectToRoom;
-        _buttonRoomCreate = _createRoomPanelView.ButtonCreateRoom;
 
         _roomListPanelTransform = _listRooomPanelView.RoomListPanelTransform;
         _parentTransform = _listRooomPanelView.ParentTransformContent;
@@ -39,7 +36,6 @@ internal sealed class RoomListWindowManager : IStartable, IDisposable
 
         _buttonTabRoomList.onClick.AddListener(SwitchRoomListInterfaces);
         _buttonTabRoomCreate.onClick.AddListener(SwitchRoomListInterfaces);
-        _buttonRoomCreate.onClick.AddListener(ConnectToRoom);
     }
 
     private void SwitchRoomListInterfaces()
@@ -58,10 +54,6 @@ internal sealed class RoomListWindowManager : IStartable, IDisposable
             _buttonTabRoomCreate.interactable = false;
             _buttonTabRoomList.interactable = true;
         }
-    }
-
-    public void ConnectToRoom()
-    {
     }
 
     public void Dispose()

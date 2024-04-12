@@ -11,6 +11,7 @@ public class ProjectLifetimeScope : LifetimeScope
 	{
 		var options = builder.RegisterMessagePipe();
 		builder.RegisterMessageBroker<string, string>(options);
+		builder.RegisterMessageBroker<string>(options);
 
 		builder.RegisterComponent(_photon);
 	}

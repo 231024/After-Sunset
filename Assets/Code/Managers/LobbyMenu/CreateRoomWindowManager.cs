@@ -19,16 +19,10 @@ internal sealed class CreateRoomWindowManager : IStartable, IDisposable
     private TMP_Text _maxPlayersTMPText;
     
     [Inject] private LobbyGeneralViews _lobbyGeneralViews;
-    //[Inject] private LobbyController _photonController;
     [Inject] private PhotonController _photonController;
-    [Inject] private readonly ISubscriber<LobbyWindowManager> _subscriber;
-    private IDisposable _subscription;
     
     public void Start()
     {
-        var sub = _subscriber.Subscribe(SetLobbyWindowManager);
-        _subscription = DisposableBag.Create(sub);
-        
         _createRoomPanelView = _lobbyGeneralViews.RoomListPanel.CreateRoomPanelView;
         _roomNameTMPInputField = _createRoomPanelView.RoomNameCreate;
         _maxPlayersSlider = _createRoomPanelView.AmountPlayerSlider;
@@ -37,16 +31,6 @@ internal sealed class CreateRoomWindowManager : IStartable, IDisposable
         _roomNameTMPInputField.onValueChanged.AddListener(OnChangedRoomName);
         _maxPlayersSlider.onValueChanged.AddListener(OnChangedAmountMaxPayers);
         _createRoomPanelView.ButtonCreateRoom.onClick.AddListener(CreateRoom);
-    }
-
-    private void SetLobbyWindowManager(LobbyWindowManager roomListWindowManager)
-    {
-        _lobbyWindowManager = roomListWindowManager;
-    }
-    
-    private void SetLobbyController(LobbyController lobbyController)
-    {
-        _lobbyController = lobbyController;
     }
 
     private void CreateRoom()
@@ -71,6 +55,5 @@ internal sealed class CreateRoomWindowManager : IStartable, IDisposable
         _roomNameTMPInputField.onValueChanged.RemoveListener(OnChangedRoomName);
         _maxPlayersSlider.onValueChanged.RemoveListener(OnChangedAmountMaxPayers);
         _createRoomPanelView.ButtonCreateRoom.onClick.RemoveListener(CreateRoom);
-        _subscription?.Dispose();
     }
 }

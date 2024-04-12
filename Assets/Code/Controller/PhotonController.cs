@@ -14,17 +14,20 @@ public class PhotonController : MonoBehaviourPunCallbacks
     [SerializeField] private ServerSettings _serverSettings; 
     
     private TMP_Text _textProcess;
-    private string _stringStatusProcces;
-    private string _nickname;
+    private List<RoomInfo> _roomList;
 
-    public string Nickname => _nickname;
 
     private const string LOADING_LOBBY_SCENE = "Lobby";
     private const string DEFAULT_ROOM_NAME = "Default";
     private const int MAX_PLAYERS = 4;
     private const string GAME_VERSION = "1";
+    private string _stringStatusProcess;
+    private string _nickname;
     
-    protected List<RoomInfo> _roomList = new List<RoomInfo>();
+    public List<RoomInfo> RoomList => _roomList;
+    public string StringStatusProcess => _stringStatusProcess;
+    public string Nickname => _nickname;
+
     [Inject] private readonly IPublisher<string, string> _publisher;
 
     private void Awake()
@@ -34,14 +37,14 @@ public class PhotonController : MonoBehaviourPunCallbacks
 
     private void Start()
     {
-        _publisher.Publish(UIConstants.TEXT_STATUS, _stringStatusProcces);
         Debug.Log("Start");
+        _roomList = new List<RoomInfo>();
         Connect();
     }
-    
+
     public void Connect()
     {
-        _stringStatusProcces = "";
+        _stringStatusProcess = "";
         LogFeedback("Enter to Connect Method");
 
         if (!PhotonNetwork.IsConnected)
@@ -69,7 +72,7 @@ public class PhotonController : MonoBehaviourPunCallbacks
         _textProcess.text = message;
         _textProcess.color = color;
     }
-    
+
     public void CreateRoom(string roomName, float maxPlayers, bool privacy)
     {
         var option = new RoomOptions
@@ -80,11 +83,22 @@ public class PhotonController : MonoBehaviourPunCallbacks
         PhotonNetwork.CreateRoom(roomName, option);
     }
 
+    public string GetCurrentRoom()
+    {
+        return PhotonNetwork.CurrentRoom.Name;
+    }
+
     protected void LogFeedback(string message)
     {
-        _stringStatusProcces = "";
-        _stringStatusProcces = System.Environment.NewLine+message;
+        _stringStatusProcess = "";
+        _stringStatusProcess = message;
+        _publisher.Publish(UIConstants.TEXT_STATUS, SetMassage(message));
         Debug.Log(message);
+    }
+
+    private string SetMassage(string mes)
+    {
+        return mes;
     }
 
     public override void OnConnectedToMaster()
@@ -99,7 +113,7 @@ public class PhotonController : MonoBehaviourPunCallbacks
         
         if (PhotonNetwork.IsConnected && PhotonNetwork.InLobby)
         {
-            SceneManager.LoadScene(LOADING_LOBBY_SCENE);
+            //SceneManager.LoadScene(LOADING_LOBBY_SCENE);
         }
     }
 
@@ -110,7 +124,7 @@ public class PhotonController : MonoBehaviourPunCallbacks
         LogFeedback($"[OnCreatedRoom] LocalPlayer Name {PhotonNetwork.NickName}");
         LogFeedback($"[OnCreatedRoom] In Lobby {PhotonNetwork.InLobby}");
     }
-    
+
     public override void OnRoomListUpdate(List<RoomInfo> roomList)
     {
         _roomList = roomList;

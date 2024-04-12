@@ -1,4 +1,5 @@
-﻿using PlayFab;
+﻿using MessagePipe;
+using PlayFab;
 using PlayFab.ClientModels;
 using UnityEngine.UI;
 
@@ -9,7 +10,10 @@ internal sealed class CreateAccountAuthorization : AccountDataWindowBase
 
     private string _mail;
 
-    public CreateAccountAuthorization(MainGeneralViews mainGeneralViews, PhotonController photonController) : base(mainGeneralViews, photonController)
+    public CreateAccountAuthorization(MainGeneralViews mainGeneralViews, 
+        PhotonController photonController, 
+        ISubscriber<string, string> subscriber) : 
+        base(mainGeneralViews, photonController, subscriber)
     {
         _usernameField = _mainGeneralViews.CreateAccountView.UsernameField;
         _passwordField = _mainGeneralViews.CreateAccountView.PasswordField;

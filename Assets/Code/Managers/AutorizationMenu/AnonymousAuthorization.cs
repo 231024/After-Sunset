@@ -1,4 +1,5 @@
-﻿using PlayFab;
+﻿using MessagePipe;
+using PlayFab;
 using PlayFab.ClientModels;
 using TMPro;
 using UnityEngine;
@@ -20,7 +21,10 @@ internal sealed class AnonymousAuthorization  : AccountDataWindowBase
     //     _textButtonSignInAnonimous = _signInButton.GetComponentInChildren<TMP_Text>();
     // }
 
-    public AnonymousAuthorization(MainGeneralViews mainGeneralViews, PhotonController photonController) : base(mainGeneralViews, photonController)
+    public AnonymousAuthorization(MainGeneralViews mainGeneralViews, 
+        PhotonController photonController, 
+        ISubscriber<string, string> subscriber) : 
+        base(mainGeneralViews, photonController, subscriber)
     {
         _signInButton = _mainGeneralViews.AnonymousLoginView.SignInButton;
         _textButtonSignInAnonimous = _signInButton.GetComponentInChildren<TMP_Text>();
@@ -36,6 +40,9 @@ internal sealed class AnonymousAuthorization  : AccountDataWindowBase
 
     protected override void SubscriptionsElementsUi()
     {
+        _textStatus = _mainGeneralViews.TextStatus;
+        _signInButton = _mainGeneralViews.AnonymousLoginView.SignInButton;
+        _textButtonSignInAnonimous = _signInButton.GetComponentInChildren<TMP_Text>();
         _signInButton.onClick.AddListener(Login);
         CheckAccount();
     }

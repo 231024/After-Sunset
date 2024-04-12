@@ -13,12 +13,8 @@ internal sealed class CreateRoomPanelView : MonoBehaviour
     [SerializeField] private Button _buttonCreateRoom;
 
     public TMP_InputField RoomNameCreate => _roomNameCreate;
-
     public Slider AmountPlayerSlider => _amountPlayerSlider;
-
     public TMP_Text TextMaxPlayers => _textMaxPlayers;
-
     public Toggle TogglePrivacy => _togglePrivacy;
-
     public Button ButtonCreateRoom => _buttonCreateRoom;
 }

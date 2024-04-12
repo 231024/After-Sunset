@@ -10,10 +10,11 @@ internal sealed class HomeLobbyView : MonoBehaviour
     [SerializeField] private Button _buttonStart;
     [SerializeField] private Button _buttonCloseRoom;
     [SerializeField] private Button _buttonInventory;
+    [SerializeField] private Button _buttonCopy;
+
 
     [Header("Other Element")] 
     [SerializeField] private TMP_Text _inputFieldRoomName;
-    [SerializeField] private Button _buttonCopy;
     [SerializeField] private Transform _contentListPlayers;
     [SerializeField] private TMP_Text _textUsername;
     [SerializeField] private TMP_Text _textProgress;

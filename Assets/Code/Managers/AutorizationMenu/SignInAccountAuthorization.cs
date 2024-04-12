@@ -1,4 +1,5 @@
-﻿using PlayFab;
+﻿using MessagePipe;
+using PlayFab;
 using PlayFab.ClientModels;
 using UnityEngine;
 using UnityEngine.UI;
@@ -8,7 +9,10 @@ internal sealed class SignInAccountAuthorization : AccountDataWindowBase
 {
     private Button _signInButton;
 
-    public SignInAccountAuthorization(MainGeneralViews mainGeneralViews, PhotonController photonController) : base(mainGeneralViews, photonController)
+    public SignInAccountAuthorization(MainGeneralViews mainGeneralViews, 
+        PhotonController photonController, 
+        ISubscriber<string, string> subscriber) : 
+        base(mainGeneralViews, photonController, subscriber)
     {
         _usernameField = _mainGeneralViews.SignInAccountView.UsernameField;
         _passwordField = _mainGeneralViews.SignInAccountView.PasswordField;

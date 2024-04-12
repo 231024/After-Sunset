@@ -19,8 +19,6 @@ public class LobbyLifetimeScope : LifetimeScope
         builder.RegisterEntryPoint<LobbyWindowManager>();
         builder.RegisterEntryPoint<LobbyController>();
         builder.RegisterEntryPoint<RoomListWindowManager>();
-        builder.RegisterEntryPoint<CreateRoomWindowManager>();
-        
-        builder.RegisterMessageBroker<RoomListWindowManager>(options);
+        //builder.RegisterEntryPoint<CreateRoomWindowManager>();
     }
 }

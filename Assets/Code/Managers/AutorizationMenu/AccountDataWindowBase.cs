@@ -39,13 +39,16 @@ internal class AccountDataWindowBase : IStartable, IDisposable
 
     [Inject] protected MainGeneralViews _mainGeneralViews;
     [Inject] protected PhotonController _photonController;
-    [Inject] private readonly ISubscriber<string, string> _subscriber;
-    private IDisposable _subscription;
+    [Inject] protected readonly ISubscriber<string, string> _subscriber;
+    protected IDisposable _subscription;
 
-    public AccountDataWindowBase(MainGeneralViews mainGeneralViews, PhotonController photonController)
+    public AccountDataWindowBase(MainGeneralViews mainGeneralViews, 
+        PhotonController photonController, 
+        ISubscriber<string, string> subscriber)
     {
         _mainGeneralViews = mainGeneralViews;
         _photonController = photonController;
+        _subscriber = subscriber;
         
         _textStatus = _mainGeneralViews.TextStatus;
         SetColor(_mainGeneralViews.ColorView);
@@ -66,8 +69,11 @@ internal class AccountDataWindowBase : IStartable, IDisposable
     {
         _usernameField.onValueChanged.AddListener(UpdateUsername);
         _passwordField.onValueChanged.AddListener(UpdatePassword);
-        var sub = _subscriber.Subscribe(UIConstants.TEXT_STATUS, TextStatusRecieved);
-        _subscription = DisposableBag.Create(sub);
+        
+        var d = DisposableBag.CreateBuilder();
+        _subscriber.Subscribe(UIConstants.TEXT_STATUS, TextStatusReceived).AddTo(d);
+        _subscription = d.Build();
+        
     }
     
     protected virtual void UnSubscriptionsElementsUi()
@@ -77,10 +83,11 @@ internal class AccountDataWindowBase : IStartable, IDisposable
         _subscription?.Dispose();
     }
 
-    private void TextStatusRecieved(string text)
+    private void TextStatusReceived(string text)
     {
-        _textStatus.text = text;
+        Debug.LogWarning("TextStatusReceived - enter");
         _textStatus.color = Color.blue;
+        _textStatus.text = text;
     }
 
     protected void SetColor(ColorView colorView)

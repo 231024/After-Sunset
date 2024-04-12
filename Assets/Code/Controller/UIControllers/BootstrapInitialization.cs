@@ -5,10 +5,10 @@ internal sealed class BootstrapInitialization
 {
     public BootstrapInitialization(IContainerBuilder builder)
     {
-        builder.RegisterEntryPoint<ManagerLoginWindow>();
-        builder.RegisterEntryPoint<AnonymousAuthorization>();
-        builder.RegisterEntryPoint<SignInAccountAuthorization>();
-        builder.RegisterEntryPoint<CreateAccountAuthorization>();
+        builder.RegisterEntryPoint<ManagerLoginWindow>(Lifetime.Singleton);
+        builder.RegisterEntryPoint<AnonymousAuthorization>(Lifetime.Singleton);
+        builder.RegisterEntryPoint<SignInAccountAuthorization>(Lifetime.Singleton);
+        builder.RegisterEntryPoint<CreateAccountAuthorization>(Lifetime.Singleton);
         
         //var anonymousAuthorization = new AnonymousAuthorization(views);
 

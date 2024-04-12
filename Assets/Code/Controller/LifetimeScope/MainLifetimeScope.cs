@@ -10,7 +10,11 @@ internal sealed class MainLifetimeScope : LifetimeScope
 		_view = GetComponent<MainGeneralViews>();
 
 		builder.RegisterComponent(_view);
+		builder.RegisterEntryPoint<ManagerLoginWindow>(Lifetime.Singleton);
+		builder.RegisterEntryPoint<AnonymousAuthorization>(Lifetime.Singleton);
+		builder.RegisterEntryPoint<SignInAccountAuthorization>(Lifetime.Singleton);
+		builder.RegisterEntryPoint<CreateAccountAuthorization>(Lifetime.Singleton);
 
-		new BootstrapInitialization(builder);
+		//new BootstrapInitialization(builder);
 	}
 }
