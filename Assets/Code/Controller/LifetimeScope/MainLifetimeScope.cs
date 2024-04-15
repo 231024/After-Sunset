@@ -1,3 +1,4 @@
+using MessagePipe;
 using VContainer;
 using VContainer.Unity;
 
@@ -9,12 +10,10 @@ internal sealed class MainLifetimeScope : LifetimeScope
 	{
 		_view = GetComponent<MainGeneralViews>();
 
+		var options = builder.RegisterMessagePipe();
+		builder.RegisterMessageBroker<string, string>(options);
 		builder.RegisterComponent(_view);
-		builder.RegisterEntryPoint<ManagerLoginWindow>(Lifetime.Singleton);
-		builder.RegisterEntryPoint<AnonymousAuthorization>(Lifetime.Singleton);
-		builder.RegisterEntryPoint<SignInAccountAuthorization>(Lifetime.Singleton);
-		builder.RegisterEntryPoint<CreateAccountAuthorization>(Lifetime.Singleton);
 
-		//new BootstrapInitialization(builder);
+		new BootstrapInitialization(builder);
 	}
 }

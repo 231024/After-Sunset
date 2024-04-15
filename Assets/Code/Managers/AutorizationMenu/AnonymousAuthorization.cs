@@ -22,9 +22,8 @@ internal sealed class AnonymousAuthorization  : AccountDataWindowBase
     // }
 
     public AnonymousAuthorization(MainGeneralViews mainGeneralViews, 
-        PhotonController photonController, 
-        ISubscriber<string, string> subscriber) : 
-        base(mainGeneralViews, photonController, subscriber)
+        PhotonController photonController) : 
+        base(mainGeneralViews, photonController)
     {
         _signInButton = _mainGeneralViews.AnonymousLoginView.SignInButton;
         _textButtonSignInAnonimous = _signInButton.GetComponentInChildren<TMP_Text>();

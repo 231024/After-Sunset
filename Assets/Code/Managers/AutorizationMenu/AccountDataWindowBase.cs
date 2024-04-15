@@ -5,7 +5,6 @@ using PlayFab;
 using PlayFab.ClientModels;
 using TMPro;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using VContainer;
 using VContainer.Unity;
@@ -39,16 +38,14 @@ internal class AccountDataWindowBase : IStartable, IDisposable
 
     [Inject] protected MainGeneralViews _mainGeneralViews;
     [Inject] protected PhotonController _photonController;
-    [Inject] protected readonly ISubscriber<string, string> _subscriber;
-    protected IDisposable _subscription;
+    // [Inject] protected readonly ISubscriber<string, string> _subscriber;
+    // protected IDisposable _subscription;
 
     public AccountDataWindowBase(MainGeneralViews mainGeneralViews, 
-        PhotonController photonController, 
-        ISubscriber<string, string> subscriber)
+        PhotonController photonController)
     {
         _mainGeneralViews = mainGeneralViews;
         _photonController = photonController;
-        _subscriber = subscriber;
         
         _textStatus = _mainGeneralViews.TextStatus;
         SetColor(_mainGeneralViews.ColorView);
@@ -62,30 +59,28 @@ internal class AccountDataWindowBase : IStartable, IDisposable
     {
         SubscriptionsElementsUi();
         BeginningAuthorized();
-        //_photonController.Connect();
     }
-
+    
     protected virtual void SubscriptionsElementsUi()
     {
         _usernameField.onValueChanged.AddListener(UpdateUsername);
         _passwordField.onValueChanged.AddListener(UpdatePassword);
-        
+
         var d = DisposableBag.CreateBuilder();
-        _subscriber.Subscribe(UIConstants.TEXT_STATUS, TextStatusReceived).AddTo(d);
-        _subscription = d.Build();
-        
+        //_subscriber.Subscribe(UIConstants.TEXT_STATUS, TextStatusReceived).AddTo(d);
+        _photonController.OnPublishedStatusProcess += TextStatusReceived;        
     }
     
     protected virtual void UnSubscriptionsElementsUi()
     {
         _usernameField.onValueChanged.RemoveListener(UpdateUsername);
         _passwordField.onValueChanged.RemoveListener(UpdatePassword);
-        _subscription?.Dispose();
+        _photonController.OnPublishedStatusProcess -= TextStatusReceived;
+        //_subscription?.Dispose();
     }
 
     private void TextStatusReceived(string text)
     {
-        Debug.LogWarning("TextStatusReceived - enter");
         _textStatus.color = Color.blue;
         _textStatus.text = text;
     }

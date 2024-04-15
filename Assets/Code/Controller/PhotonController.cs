@@ -16,16 +16,18 @@ public class PhotonController : MonoBehaviourPunCallbacks
     private TMP_Text _textProcess;
     private List<RoomInfo> _roomList;
 
+    public Action<string> OnPublishedStatusProcess;
+    public Action OnEnteredTheRoom;
 
+    private const int MAX_PLAYERS = 4;
     private const string LOADING_LOBBY_SCENE = "Lobby";
     private const string DEFAULT_ROOM_NAME = "Default";
-    private const int MAX_PLAYERS = 4;
     private const string GAME_VERSION = "1";
-    private string _stringStatusProcess;
-    private string _nickname;
     
+    private string _nickname;
+    private bool _isLoggingStatus;
+
     public List<RoomInfo> RoomList => _roomList;
-    public string StringStatusProcess => _stringStatusProcess;
     public string Nickname => _nickname;
 
     [Inject] private readonly IPublisher<string, string> _publisher;
@@ -44,12 +46,11 @@ public class PhotonController : MonoBehaviourPunCallbacks
 
     public void Connect()
     {
-        _stringStatusProcess = "";
         LogFeedback("Enter to Connect Method");
 
         if (!PhotonNetwork.IsConnected)
         {
-            LogFeedback("[Connect] Connecting...");
+            LogFeedback("Connecting...");
             PhotonNetwork.GameVersion = GAME_VERSION;
             PhotonNetwork.ConnectUsingSettings(_serverSettings.AppSettings);
         }
@@ -90,9 +91,8 @@ public class PhotonController : MonoBehaviourPunCallbacks
 
     protected void LogFeedback(string message)
     {
-        _stringStatusProcess = "";
-        _stringStatusProcess = message;
-        _publisher.Publish(UIConstants.TEXT_STATUS, SetMassage(message));
+        //_publisher.Publish(UIConstants.TEXT_STATUS, SetMassage(message));
+        OnPublishedStatusProcess?.Invoke(message);
         Debug.Log(message);
     }
 
@@ -103,7 +103,7 @@ public class PhotonController : MonoBehaviourPunCallbacks
 
     public override void OnConnectedToMaster()
     {
-        LogFeedback($"[OnConnectedToMaster] IsConnected = {PhotonNetwork.IsConnected.ToString()}");
+        LogFeedback($"Connected To Master");
     }
 
     public override void OnJoinedLobby()
@@ -113,7 +113,7 @@ public class PhotonController : MonoBehaviourPunCallbacks
         
         if (PhotonNetwork.IsConnected && PhotonNetwork.InLobby)
         {
-            //SceneManager.LoadScene(LOADING_LOBBY_SCENE);
+            SceneManager.LoadScene(LOADING_LOBBY_SCENE);
         }
     }
 
@@ -123,6 +123,7 @@ public class PhotonController : MonoBehaviourPunCallbacks
         LogFeedback($"[OnCreatedRoom] CurrentRoom Name {PhotonNetwork.CurrentRoom.Name}");
         LogFeedback($"[OnCreatedRoom] LocalPlayer Name {PhotonNetwork.NickName}");
         LogFeedback($"[OnCreatedRoom] In Lobby {PhotonNetwork.InLobby}");
+        OnEnteredTheRoom?.Invoke();
     }
 
     public override void OnRoomListUpdate(List<RoomInfo> roomList)

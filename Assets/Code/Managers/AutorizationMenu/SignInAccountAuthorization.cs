@@ -10,9 +10,8 @@ internal sealed class SignInAccountAuthorization : AccountDataWindowBase
     private Button _signInButton;
 
     public SignInAccountAuthorization(MainGeneralViews mainGeneralViews, 
-        PhotonController photonController, 
-        ISubscriber<string, string> subscriber) : 
-        base(mainGeneralViews, photonController, subscriber)
+        PhotonController photonController) : 
+        base(mainGeneralViews, photonController)
     {
         _usernameField = _mainGeneralViews.SignInAccountView.UsernameField;
         _passwordField = _mainGeneralViews.SignInAccountView.PasswordField;
