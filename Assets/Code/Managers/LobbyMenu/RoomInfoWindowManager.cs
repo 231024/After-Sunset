@@ -21,8 +21,8 @@ public class RoomInfoWindowManager: IStartable, IDisposable
 
         _labelRoomName = _homeLobbyView.InputFieldRoomName;
         _buttonCopyRoomName = _homeLobbyView.ButtonCopy;
+        _labelRoomName.text = " ";
 
-        _labelRoomName.text = "167";
         _photonController.OnEnteredTheRoom += Init;
     }
 

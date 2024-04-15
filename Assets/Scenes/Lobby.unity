@@ -13183,16 +13183,8 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 7351052863132605222, guid: a1ff0ff24c9530343afe84ae172b6c30, type: 3}
-      propertyPath: m_Size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7351052863132605222, guid: a1ff0ff24c9530343afe84ae172b6c30, type: 3}
       propertyPath: m_Value
       value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7351052863542755866, guid: a1ff0ff24c9530343afe84ae172b6c30, type: 3}
-      propertyPath: m_text
-      value: Room name 1
       objectReference: {fileID: 0}
     - target: {fileID: 7351052863591862728, guid: a1ff0ff24c9530343afe84ae172b6c30, type: 3}
       propertyPath: m_Pivot.x
@@ -13296,7 +13288,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7351052864378091044, guid: a1ff0ff24c9530343afe84ae172b6c30, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -0.00002169609
+      value: 0.000039577484
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
