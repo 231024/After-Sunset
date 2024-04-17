@@ -14,6 +14,7 @@ internal sealed class LobbyGeneralViews : MonoBehaviour
     [SerializeField] private RoomListPanelView _roomListPanel;
     [SerializeField] private HomeLobbyView _homeLobbyViewPanel;
     [SerializeField] private SettingsMenuView _settingsMenuView;
+    [SerializeField] private HeaderLobbyView _headerLobbyView;
     [SerializeField] private Transform _header;
 
 
@@ -28,6 +29,7 @@ internal sealed class LobbyGeneralViews : MonoBehaviour
     public HomeLobbyView HomeLobbyViewPanel => _homeLobbyViewPanel;
 
     public SettingsMenuView SettingsMenuView => _settingsMenuView;
-    
+    public HeaderLobbyView HeaderLobbyView => _headerLobbyView;
+
     public Transform Header => _header;
 }

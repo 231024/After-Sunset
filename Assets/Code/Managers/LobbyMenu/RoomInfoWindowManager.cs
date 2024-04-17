@@ -32,15 +32,12 @@ public class RoomInfoWindowManager: IStartable, IDisposable
     private void Init()
     {
         _labelRoomName.text = _photonController.GetCurrentRoom();
-        Debug.LogWarning($"PlayerList Count = {_photonController.PlayerList.Length}");
+        var prefab = Resources.Load<GameObject>(UIConstants.INFO_PLAYER_NAME_ITEM_PREFAB);
 
         foreach (var player in _photonController.PlayerList)
         {
-            Debug.LogWarning($"Enter to Foreach");
-
-            var go = Object.Instantiate(Resources.Load<GameObject>
-                (UIConstants.INFO_PLAYER_NAME_ITEM_PREFAB), _parentContent);
-            go.GetComponent<InfoPlayerItemView>().LabelPlayerName.text = player.NickName;
+            var go = Object.Instantiate(prefab, _parentContent).
+                GetComponent<InfoPlayerItemView>().LabelPlayerName.text = player.NickName;
         }
     }
 

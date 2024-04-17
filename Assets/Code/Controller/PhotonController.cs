@@ -26,6 +26,7 @@ public class PhotonController : MonoBehaviourPunCallbacks
     
     private string _nickname;
 
+    public string Nickname => _nickname;
     public List<RoomInfo> RoomList => _roomList;
     public Photon.Realtime.Player[] PlayerList => _playerList;
 

@@ -16,15 +16,6 @@ internal sealed class HomeLobbyView : MonoBehaviour
     [Header("Other Element")] 
     [SerializeField] private TMP_Text _inputFieldRoomName;
     [SerializeField] private Transform _contentListPlayers;
-    [SerializeField] private TMP_Text _textUsername;
-    [SerializeField] private TMP_Text _textProgress;
-    [SerializeField] private TMP_Text _textLevel;
-
-    public TMP_Text TextUsername => _textUsername;
-
-    public TMP_Text TextProgress => _textProgress;
-
-    public TMP_Text TextLevel => _textLevel;
 
     public Button ButtonBack => _buttonBack;
 
