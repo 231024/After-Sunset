@@ -1,15 +1,17 @@
 ﻿using System;
 using TMPro;
-using UnityEngine.PlayerLoop;
+using UnityEngine;
 using UnityEngine.UI;
 using VContainer;
 using VContainer.Unity;
+using Object = UnityEngine.Object;
 
 public class RoomInfoWindowManager: IStartable, IDisposable
 {
     private HomeLobbyView _homeLobbyView;
 
     private Button _buttonCopyRoomName;
+    private Transform _parentContent;
     private TMP_Text _labelRoomName;
     
     [Inject] private LobbyGeneralViews _lobbyGeneralViews;
@@ -21,6 +23,7 @@ public class RoomInfoWindowManager: IStartable, IDisposable
 
         _labelRoomName = _homeLobbyView.InputFieldRoomName;
         _buttonCopyRoomName = _homeLobbyView.ButtonCopy;
+        _parentContent = _homeLobbyView.ContentListPlayers;
         _labelRoomName.text = " ";
 
         _photonController.OnEnteredTheRoom += Init;
@@ -29,6 +32,16 @@ public class RoomInfoWindowManager: IStartable, IDisposable
     private void Init()
     {
         _labelRoomName.text = _photonController.GetCurrentRoom();
+        Debug.LogWarning($"PlayerList Count = {_photonController.PlayerList.Length}");
+
+        foreach (var player in _photonController.PlayerList)
+        {
+            Debug.LogWarning($"Enter to Foreach");
+
+            var go = Object.Instantiate(Resources.Load<GameObject>
+                (UIConstants.INFO_PLAYER_NAME_ITEM_PREFAB), _parentContent);
+            go.GetComponent<InfoPlayerItemView>().LabelPlayerName.text = player.NickName;
+        }
     }
 
     public void Dispose()

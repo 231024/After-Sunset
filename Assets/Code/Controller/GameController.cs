@@ -16,7 +16,7 @@ public sealed class GameController : MonoBehaviour
     {
         _controllers = new Controllers();
         //new BootstrapInitialization(_controllers, _views);
-        //new GameInitialization(_controllers, _data);
+        new GameInitialization(_controllers, _data);
         _controllers.Initialization();
     }
 

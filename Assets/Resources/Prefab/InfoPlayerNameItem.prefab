@@ -67,8 +67,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Player Name
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: ae04ab211c61a034ab9e0ec54f475c12, type: 2}
+  m_sharedMaterial: {fileID: 8360488620603956369, guid: ae04ab211c61a034ab9e0ec54f475c12, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -145,7 +145,7 @@ GameObject:
   - component: {fileID: 3634586328283617838}
   - component: {fileID: 8459633526377805020}
   - component: {fileID: 3626552033577362130}
-  - component: {fileID: 2618813636032589753}
+  - component: {fileID: 3933293662574032280}
   m_Layer: 5
   m_Name: InfoPlayerNameItem
   m_TagString: Untagged
@@ -211,7 +211,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &2618813636032589753
+--- !u!114 &3933293662574032280
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -220,10 +220,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 5643069629563603039}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cedff65732405f94484a15db357a81c9, type: 3}
+  m_Script: {fileID: 11500000, guid: ab4c0690f1055cc4785a89e7f2548c1a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _labelRoomName: {fileID: 1525837145693571519}
-  _labelAmountPlayers: {fileID: 0}
-  _labelMapName: {fileID: 0}
-  _infoRoomItemButton: {fileID: 0}
+  _labelPlayerName: {fileID: 1525837145693571519}

@@ -15,6 +15,7 @@ public class PhotonController : MonoBehaviourPunCallbacks
     
     private TMP_Text _textProcess;
     private List<RoomInfo> _roomList;
+    private Photon.Realtime.Player[] _playerList;
 
     public Action<string> OnPublishedStatusProcess;
     public Action OnEnteredTheRoom;
@@ -26,6 +27,7 @@ public class PhotonController : MonoBehaviourPunCallbacks
     private string _nickname;
 
     public List<RoomInfo> RoomList => _roomList;
+    public Photon.Realtime.Player[] PlayerList => _playerList;
 
     [Inject] private readonly IPublisher<string, string> _publisher;
 
@@ -36,15 +38,13 @@ public class PhotonController : MonoBehaviourPunCallbacks
 
     private void Start()
     {
-        Debug.Log("Start");
         _roomList = new List<RoomInfo>();
+        _playerList = Array.Empty<Photon.Realtime.Player>();
         Connect();
     }
 
     public void Connect()
     {
-        LogFeedback("Enter to Connect Method");
-
         if (!PhotonNetwork.IsConnected)
         {
             LogFeedback("Connecting...");
@@ -53,7 +53,7 @@ public class PhotonController : MonoBehaviourPunCallbacks
         }
         else if (!PhotonNetwork.InLobby)
         {
-            LogFeedback("[Connect] Joining Lobby...");
+            LogFeedback("Joining Lobby...");
             PhotonNetwork.JoinLobby();
         }
     }
@@ -61,7 +61,7 @@ public class PhotonController : MonoBehaviourPunCallbacks
     public void NicknameReceived(string nickname)
     {
         _nickname = nickname;
-        LogFeedback($"[NicknameReceived] nickname = {_nickname}");
+        LogFeedback($"Nickname = {_nickname}");
         PhotonNetwork.NickName = _nickname;
     }
     
@@ -110,6 +110,7 @@ public class PhotonController : MonoBehaviourPunCallbacks
 
     public override void OnCreatedRoom()
     {
+        _playerList = PhotonNetwork.PlayerList;
         OnEnteredTheRoom?.Invoke();
     }
 

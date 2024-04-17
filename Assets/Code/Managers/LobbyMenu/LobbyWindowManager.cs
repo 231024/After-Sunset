@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using VContainer;
 using VContainer.Unity;
+using Object = UnityEngine.Object;
 
 internal sealed class LobbyWindowManager : IStartable, IDisposable
 {
@@ -96,7 +97,7 @@ internal sealed class LobbyWindowManager : IStartable, IDisposable
             foreach (var roomInfo in _photonController.RoomList)
             {
                 Debug.Log("[CreateItemInfoRooms] CreateItem");
-                var itemRoomInfo = GameObject.Instantiate(Resources.Load<GameObject>(UIConstants.INFO_ROOM_ITEM_PREFAB),
+                var itemRoomInfo = Object.Instantiate(Resources.Load<GameObject>(UIConstants.INFO_ROOM_ITEM_PREFAB),
                     roomListPanel.ParentTransformContent);
                 var view = itemRoomInfo.GetComponent<InfoRoomItemView>();
                 view.LabelRoomName.text = roomInfo.Name;
