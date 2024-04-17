@@ -21,14 +21,11 @@ public class PhotonController : MonoBehaviourPunCallbacks
 
     private const int MAX_PLAYERS = 4;
     private const string LOADING_LOBBY_SCENE = "Lobby";
-    private const string DEFAULT_ROOM_NAME = "Default";
     private const string GAME_VERSION = "1";
     
     private string _nickname;
-    private bool _isLoggingStatus;
 
     public List<RoomInfo> RoomList => _roomList;
-    public string Nickname => _nickname;
 
     [Inject] private readonly IPublisher<string, string> _publisher;
 
@@ -91,14 +88,8 @@ public class PhotonController : MonoBehaviourPunCallbacks
 
     protected void LogFeedback(string message)
     {
-        //_publisher.Publish(UIConstants.TEXT_STATUS, SetMassage(message));
         OnPublishedStatusProcess?.Invoke(message);
         Debug.Log(message);
-    }
-
-    private string SetMassage(string mes)
-    {
-        return mes;
     }
 
     public override void OnConnectedToMaster()
@@ -119,17 +110,13 @@ public class PhotonController : MonoBehaviourPunCallbacks
 
     public override void OnCreatedRoom()
     {
-        LogFeedback($"[OnCreatedRoom] PlayerCount {PhotonNetwork.CurrentRoom.PlayerCount}");
-        LogFeedback($"[OnCreatedRoom] CurrentRoom Name {PhotonNetwork.CurrentRoom.Name}");
-        LogFeedback($"[OnCreatedRoom] LocalPlayer Name {PhotonNetwork.NickName}");
-        LogFeedback($"[OnCreatedRoom] In Lobby {PhotonNetwork.InLobby}");
         OnEnteredTheRoom?.Invoke();
     }
 
     public override void OnRoomListUpdate(List<RoomInfo> roomList)
     {
         _roomList = roomList;
-        Debug.Log("OnRoomListUpdate");
+        LogFeedback("OnRoomListUpdate");
         foreach (var info in roomList)
         {
             LogFeedback(info.Name);

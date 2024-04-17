@@ -19,12 +19,7 @@ internal sealed class LobbyWindowManager : IStartable, IDisposable
     private RoomListPanelView _listRooomPanelView;
     private HomeLobbyView _homeLobbyPanelView;
     private SettingsMenuView _settingsMenuView;
-    private CreateRoomPanelView _createRoomPanelView;
     private Transform _headerPanel;
-    
-    private TMP_InputField _roomNameTMPInputField;
-    private Slider _maxPlayersSlider;
-    private TMP_Text _maxPlayersTMPText;
     
     [Inject] private LobbyGeneralViews _lobbyGeneralViews;
     [Inject] private PhotonController _photonController;
@@ -34,7 +29,6 @@ internal sealed class LobbyWindowManager : IStartable, IDisposable
         _listRooomPanelView = _lobbyGeneralViews.RoomListPanel;
         _homeLobbyPanelView = _lobbyGeneralViews.HomeLobbyViewPanel;
         _settingsMenuView = _lobbyGeneralViews.SettingsMenuView;
-        _createRoomPanelView = _lobbyGeneralViews.RoomListPanel.CreateRoomPanelView;
 
 
         _buttonRoomListGlobal = _lobbyGeneralViews.GlobalRoomButton;
@@ -44,17 +38,11 @@ internal sealed class LobbyWindowManager : IStartable, IDisposable
         _buttonCloseSettingMenu = _settingsMenuView.CloseSettingMenu;
 
         _headerPanel = _lobbyGeneralViews.Header;
-        _roomNameTMPInputField = _createRoomPanelView.RoomNameCreate;
-        _maxPlayersSlider = _createRoomPanelView.AmountPlayerSlider;
-        _maxPlayersTMPText = _createRoomPanelView.TextMaxPlayers;
 
         _buttonRoomListGlobal.onClick.AddListener(OpenRoomListPanel);
         _buttonSettingsMenu.onClick.AddListener(OpenSettingMenuPanel);
         _buttonConnectRoom.onClick.AddListener(OpenRoomInfoPanel);
         _buttonCloseSettingMenu.onClick.AddListener(CloseSettingMenu);
-        _roomNameTMPInputField.onValueChanged.AddListener(OnChangedRoomName);
-        _maxPlayersSlider.onValueChanged.AddListener(OnChangedAmountMaxPayers);
-        //_createRoomPanelView.ButtonCreateRoom.onClick.AddListener(CreateRoom);
 
         OpenRoomListPanel();
     }
@@ -98,23 +86,6 @@ internal sealed class LobbyWindowManager : IStartable, IDisposable
             OpenRoomInfoPanel();
         }
     }
-    
-    private void CreateRoom()
-    {
-        OpenRoomInfoPanel();
-        _photonController.CreateRoom(_roomName, _amountMaxPlayers, _createRoomPanelView.TogglePrivacy);
-    }
-    
-    private void OnChangedAmountMaxPayers(float amount)
-    {
-        _amountMaxPlayers = amount;
-        _maxPlayersTMPText.text = amount.ToString();
-    }
-
-    private void OnChangedRoomName(string roomName)
-    {
-        _roomName = roomName;
-    }
 
     private void CreateItemInfoRooms()
     {
@@ -140,8 +111,5 @@ internal sealed class LobbyWindowManager : IStartable, IDisposable
         _buttonSettingsMenu.onClick.RemoveListener(OpenSettingMenuPanel);
         _buttonConnectRoom.onClick.RemoveListener(OpenRoomInfoPanel);
         _buttonCloseSettingMenu.onClick.RemoveListener(CloseSettingMenu);
-        _roomNameTMPInputField.onValueChanged.RemoveListener(OnChangedRoomName);
-        _maxPlayersSlider.onValueChanged.RemoveListener(OnChangedAmountMaxPayers);
-        _createRoomPanelView.ButtonCreateRoom.onClick.RemoveListener(CreateRoom);
     }
 }

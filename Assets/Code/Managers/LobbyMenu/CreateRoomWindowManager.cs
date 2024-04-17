@@ -1,5 +1,6 @@
 using System;
 using TMPro;
+using UnityEngine;
 using UnityEngine.UI;
 using VContainer;
 using VContainer.Unity;
@@ -34,7 +35,7 @@ internal sealed class CreateRoomWindowManager : IStartable, IDisposable
     private void CreateRoom()
     {
         _photonController.CreateRoom(_roomName, _amountMaxPlayers, 
-            _createRoomPanelView.TogglePrivacy);
+            _createRoomPanelView.TogglePrivacy.isOn);
         _lobbyWindowManager.OpenRoomInfoPanel();
     }
 
