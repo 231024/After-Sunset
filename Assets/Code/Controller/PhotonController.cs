@@ -20,7 +20,6 @@ public class PhotonController : MonoBehaviourPunCallbacks
     public Action<string> OnPublishedStatusProcess;
     public Action OnEnteredTheRoom;
 
-    private const int MAX_PLAYERS = 4;
     private const string LOADING_LOBBY_SCENE = "Lobby";
     private const string GAME_VERSION = "1";
     
@@ -65,18 +64,12 @@ public class PhotonController : MonoBehaviourPunCallbacks
         LogFeedback($"Nickname = {_nickname}");
         PhotonNetwork.NickName = _nickname;
     }
-    
-    protected void ConnectionInfo(string message, Color color)
-    {
-        _textProcess.text = message;
-        _textProcess.color = color;
-    }
 
     public void CreateRoom(string roomName, float maxPlayers, bool privacy)
     {
         var option = new RoomOptions
         {
-            IsVisible = privacy,
+            IsOpen = privacy,
             MaxPlayers = Convert.ToInt32(maxPlayers)
         };
         PhotonNetwork.CreateRoom(roomName, option);
@@ -84,10 +77,26 @@ public class PhotonController : MonoBehaviourPunCallbacks
 
     public string GetCurrentRoom()
     {
+        Debug.Log(PhotonNetwork.CurrentRoom.Name);
         return PhotonNetwork.CurrentRoom.Name;
     }
 
-    protected void LogFeedback(string message)
+    public void SetOpenedRoom(bool isOpened)
+    {
+        PhotonNetwork.CurrentRoom.IsOpen = isOpened;
+    }
+
+    public void LeaveTheRoom()
+    {
+        PhotonNetwork.LeaveRoom();
+    }
+
+    public void SetNameForJoiningRoom(string roomName)
+    {
+        PhotonNetwork.JoinRoom(roomName);
+    }
+
+    private void LogFeedback(string message)
     {
         OnPublishedStatusProcess?.Invoke(message);
         Debug.Log(message);
@@ -100,9 +109,7 @@ public class PhotonController : MonoBehaviourPunCallbacks
 
     public override void OnJoinedLobby()
     {
-        LogFeedback($"[OnJoinedLobby] IsConnected = {PhotonNetwork.IsConnected.ToString()}");
-        LogFeedback($"[OnJoinedLobby] InLobby = {PhotonNetwork.InLobby}");
-        
+        Debug.Log($"OnJoinedLobby");
         if (PhotonNetwork.IsConnected && PhotonNetwork.InLobby)
         {
             SceneManager.LoadScene(LOADING_LOBBY_SCENE);
@@ -111,6 +118,18 @@ public class PhotonController : MonoBehaviourPunCallbacks
 
     public override void OnCreatedRoom()
     {
+        
+    }
+
+    public override void OnLeftRoom()
+    {
+        base.OnLeftRoom();
+        Connect();
+    }
+
+    public override void OnJoinedRoom()
+    {
+        base.OnJoinedRoom();
         _playerList = PhotonNetwork.PlayerList;
         OnEnteredTheRoom?.Invoke();
     }
@@ -118,17 +137,10 @@ public class PhotonController : MonoBehaviourPunCallbacks
     public override void OnRoomListUpdate(List<RoomInfo> roomList)
     {
         _roomList = roomList;
-        LogFeedback("OnRoomListUpdate");
         foreach (var info in roomList)
         {
             LogFeedback(info.Name);
         }
         Debug.Log($"OnRoomListUpdate {_roomList.Count}");
-        LogFeedback(_roomList.Count.ToString());
-    }
-
-    public override void OnPlayerEnteredRoom(Photon.Realtime.Player newPlayer)
-    {
-        LogFeedback($"[OnPlayerEnteredRoom] Player = {newPlayer.NickName}");
     }
 }

@@ -42,13 +42,14 @@ internal sealed class LobbyWindowManager : IStartable, IDisposable
 
         _buttonRoomListGlobal.onClick.AddListener(OpenRoomListPanel);
         _buttonSettingsMenu.onClick.AddListener(OpenSettingMenuPanel);
-        _buttonConnectRoom.onClick.AddListener(OpenRoomInfoPanel);
+        _buttonConnectRoom.onClick.AddListener(ConnectToRoom);
         _buttonCloseSettingMenu.onClick.AddListener(CloseSettingMenu);
+        _photonController.OnEnteredTheRoom += OpenRoomInfoPanel;
 
         OpenRoomListPanel();
     }
 
-    private void OpenRoomListPanel()
+    public void OpenRoomListPanel()
     {
         _homeLobbyPanelView.gameObject.SetActive(false);
         _settingsMenuView.gameObject.SetActive(false);
@@ -88,21 +89,31 @@ internal sealed class LobbyWindowManager : IStartable, IDisposable
         }
     }
 
+    private void ConnectToRoom()
+    {
+        _photonController.SetNameForJoiningRoom(_listRooomPanelView.RoomNameInputField.text);
+        //OpenRoomInfoPanel();
+    }
+
     private void CreateItemInfoRooms()
     {
-        Debug.Log("CreateItemInfoRooms");
         var roomListPanel = _lobbyGeneralViews.RoomListPanel;
+        Debug.Log($"CreateItemInfoRooms - {_photonController.RoomList.Count}");
+        var prefab = Resources.Load<GameObject>(UIConstants.INFO_ROOM_ITEM_PREFAB);
 
-        if (_photonController?.RoomList != null)
+        if (_photonController.RoomList != null)
             foreach (var roomInfo in _photonController.RoomList)
             {
-                Debug.Log("[CreateItemInfoRooms] CreateItem");
-                var itemRoomInfo = Object.Instantiate(Resources.Load<GameObject>(UIConstants.INFO_ROOM_ITEM_PREFAB),
+                var itemRoomInfo =Object.Instantiate(prefab, 
                     roomListPanel.ParentTransformContent);
                 var view = itemRoomInfo.GetComponent<InfoRoomItemView>();
                 view.LabelRoomName.text = roomInfo.Name;
                 view.LabelAmountPlayers.text = roomInfo.PlayerCount.ToString();
                 view.LabelMapName.text = UIConstants.DEFAULT_MAP_NAME;
+                view.InfoRoomItemButton.onClick.AddListener((() =>
+                {
+                    _photonController.SetNameForJoiningRoom(roomInfo.Name);
+                }));
             }
     }
 
@@ -112,5 +123,6 @@ internal sealed class LobbyWindowManager : IStartable, IDisposable
         _buttonSettingsMenu.onClick.RemoveListener(OpenSettingMenuPanel);
         _buttonConnectRoom.onClick.RemoveListener(OpenRoomInfoPanel);
         _buttonCloseSettingMenu.onClick.RemoveListener(CloseSettingMenu);
+        _photonController.OnEnteredTheRoom -= OpenRoomInfoPanel;
     }
 }

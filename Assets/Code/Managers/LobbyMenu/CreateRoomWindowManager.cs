@@ -19,6 +19,7 @@ internal sealed class CreateRoomWindowManager : IStartable, IDisposable
     [Inject] private LobbyGeneralViews _lobbyGeneralViews;
     [Inject] private PhotonController _photonController;
     [Inject] private LobbyWindowManager _lobbyWindowManager;
+    [Inject] private RoomListWindowManager _roomListWindowManager;
 
     public void Start()
     {
@@ -36,6 +37,7 @@ internal sealed class CreateRoomWindowManager : IStartable, IDisposable
     {
         _photonController.CreateRoom(_roomName, _amountMaxPlayers, 
             _createRoomPanelView.TogglePrivacy.isOn);
+        _roomListWindowManager.OpenListRoomTab();
         _lobbyWindowManager.OpenRoomInfoPanel();
     }
 

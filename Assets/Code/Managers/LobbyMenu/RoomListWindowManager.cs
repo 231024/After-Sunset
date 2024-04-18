@@ -38,22 +38,32 @@ internal sealed class RoomListWindowManager : IStartable, IDisposable
         _buttonTabRoomCreate.onClick.AddListener(SwitchRoomListInterfaces);
     }
 
-    private void SwitchRoomListInterfaces()
+    public void SwitchRoomListInterfaces()
     {
         if (!_roomListPanelTransform.gameObject.activeSelf)
         {
-            _createRoomPanelView.gameObject.SetActive(false);
-            _roomListPanelTransform.gameObject.SetActive(true);
-            _buttonTabRoomList.interactable = false;
-            _buttonTabRoomCreate.interactable = true;
+            OpenListRoomTab();
         }
         else
         {
-            _roomListPanelTransform.gameObject.SetActive(false);
-            _createRoomPanelView.gameObject.SetActive(true);
-            _buttonTabRoomCreate.interactable = false;
-            _buttonTabRoomList.interactable = true;
+            OpenCreateRoomTab();
         }
+    }
+
+    public void OpenListRoomTab()
+    {
+        _createRoomPanelView.gameObject.SetActive(false);
+        _roomListPanelTransform.gameObject.SetActive(true);
+        _buttonTabRoomList.interactable = false;
+        _buttonTabRoomCreate.interactable = true;
+    }
+
+    public void OpenCreateRoomTab()
+    {
+        _roomListPanelTransform.gameObject.SetActive(false);
+        _createRoomPanelView.gameObject.SetActive(true);
+        _buttonTabRoomCreate.interactable = false;
+        _buttonTabRoomList.interactable = true;
     }
 
     public void Dispose()
