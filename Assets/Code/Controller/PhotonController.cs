@@ -1,65 +1,146 @@
-﻿using Photon.Pun;
+﻿using System;
+using System.Collections.Generic;
+using MessagePipe;
+using Photon.Pun;
 using Photon.Realtime;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
+using VContainer;
 
 public class PhotonController : MonoBehaviourPunCallbacks
 {
     [Header("PhotonServerSettings")] 
     [SerializeField] private ServerSettings _serverSettings; 
-    [SerializeField] private TMP_Text _textProcess;
-    [SerializeField] private Image _bgConnection;
     
-    protected const string LOADING_LOBBY_SCENE = "Lobby";
-    protected string gameVersion = "1";
-    
-    private TypedLobby _sqlLobby = new TypedLobby("CustomSqlLobby", LobbyType.SqlLobby);
+    private TMP_Text _textProcess;
+    private List<RoomInfo> _roomList;
+    private Photon.Realtime.Player[] _playerList;
 
+    public Action<string> OnPublishedStatusProcess;
+    public Action OnEnteredTheRoom;
+
+    private const string LOADING_LOBBY_SCENE = "Lobby";
+    private const string GAME_VERSION = "1";
     
+    private string _nickname;
+
+    public string Nickname => _nickname;
+    public List<RoomInfo> RoomList => _roomList;
+    public Photon.Realtime.Player[] PlayerList => _playerList;
+
+    [Inject] private readonly IPublisher<string, string> _publisher;
+
+    private void Awake()
+    {
+        PhotonNetwork.AutomaticallySyncScene = true;
+    }
+
+    private void Start()
+    {
+        _roomList = new List<RoomInfo>();
+        _playerList = Array.Empty<Photon.Realtime.Player>();
+        Connect();
+    }
+
     public void Connect()
     {
-        _textProcess.text = "";
-        
-        if (PhotonNetwork.IsConnected)
+        if (!PhotonNetwork.IsConnected)
         {
-            LogFeedback("Joining Room...");
-            PhotonNetwork.JoinLobby();
-        }else{
             LogFeedback("Connecting...");
+            PhotonNetwork.GameVersion = GAME_VERSION;
             PhotonNetwork.ConnectUsingSettings(_serverSettings.AppSettings);
-            PhotonNetwork.GameVersion = this.gameVersion;
+        }
+        else if (!PhotonNetwork.InLobby)
+        {
+            LogFeedback("Joining Lobby...");
+            PhotonNetwork.JoinLobby();
         }
     }
     
-    
-    protected void ConnectionInfo(bool enable, string message, Color color)
+    public void NicknameReceived(string nickname)
     {
-        _bgConnection.enabled = enable;
-        _textProcess.text = message;
-        _textProcess.color = color;
+        _nickname = nickname;
+        LogFeedback($"Nickname = {_nickname}");
+        PhotonNetwork.NickName = _nickname;
     }
 
-    void LogFeedback(string message)
+    public void CreateRoom(string roomName, float maxPlayers, bool privacy)
     {
-        if (_textProcess == null) {
-            return;
-        }
-        _textProcess.text += System.Environment.NewLine+message;
-        Debug.LogError(message);
+        var option = new RoomOptions
+        {
+            IsOpen = privacy,
+            MaxPlayers = Convert.ToInt32(maxPlayers)
+        };
+        PhotonNetwork.CreateRoom(roomName, option);
+    }
+
+    public string GetCurrentRoom()
+    {
+        Debug.Log(PhotonNetwork.CurrentRoom.Name);
+        return PhotonNetwork.CurrentRoom.Name;
+    }
+
+    public void SetOpenedRoom(bool isOpened)
+    {
+        PhotonNetwork.CurrentRoom.IsOpen = isOpened;
+    }
+
+    public void LeaveTheRoom()
+    {
+        PhotonNetwork.LeaveRoom();
+    }
+
+    public void SetNameForJoiningRoom(string roomName)
+    {
+        PhotonNetwork.JoinRoom(roomName);
+    }
+
+    private void LogFeedback(string message)
+    {
+        OnPublishedStatusProcess?.Invoke(message);
+        Debug.Log(message);
     }
 
     public override void OnConnectedToMaster()
     {
-        if (PhotonNetwork.IsConnected)
-        {
-            PhotonNetwork.JoinLobby(_sqlLobby);
-        }
+        LogFeedback($"Connected To Master");
     }
 
     public override void OnJoinedLobby()
     {
-        SceneManager.LoadScene(LOADING_LOBBY_SCENE);
+        Debug.Log($"OnJoinedLobby");
+        if (PhotonNetwork.IsConnected && PhotonNetwork.InLobby)
+        {
+            SceneManager.LoadScene(LOADING_LOBBY_SCENE);
+        }
+    }
+
+    public override void OnCreatedRoom()
+    {
+        
+    }
+
+    public override void OnLeftRoom()
+    {
+        base.OnLeftRoom();
+        Connect();
+    }
+
+    public override void OnJoinedRoom()
+    {
+        base.OnJoinedRoom();
+        _playerList = PhotonNetwork.PlayerList;
+        OnEnteredTheRoom?.Invoke();
+    }
+
+    public override void OnRoomListUpdate(List<RoomInfo> roomList)
+    {
+        _roomList = roomList;
+        foreach (var info in roomList)
+        {
+            LogFeedback(info.Name);
+        }
+        Debug.Log($"OnRoomListUpdate {_roomList.Count}");
     }
 }
