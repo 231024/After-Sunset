@@ -9,4 +9,6 @@
     public static readonly string ANIMATION_SPEED = $"speed";
     public static readonly string ANIMATION_DIED = $"died";
     public static readonly string ANIMATION_STATE_MOVE = $"statemove";
+
+    public static readonly string DEFAULT_SCENE = "Game";
 }

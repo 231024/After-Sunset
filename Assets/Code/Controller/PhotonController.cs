@@ -96,6 +96,11 @@ public class PhotonController : MonoBehaviourPunCallbacks
         PhotonNetwork.JoinRoom(roomName);
     }
 
+    public void EnterTheGame(string gameScene)
+    {
+        PhotonNetwork.LoadLevel(gameScene);
+    }
+
     private void LogFeedback(string message)
     {
         OnPublishedStatusProcess?.Invoke(message);
@@ -114,11 +119,6 @@ public class PhotonController : MonoBehaviourPunCallbacks
         {
             SceneManager.LoadScene(LOADING_LOBBY_SCENE);
         }
-    }
-
-    public override void OnCreatedRoom()
-    {
-        
     }
 
     public override void OnLeftRoom()

@@ -28,6 +28,10 @@ public class RoomInfoWindowManager: IStartable, IDisposable
         _photonController.OnEnteredTheRoom += Init;
         _homeLobbyView.ButtonCloseRoom.onClick.AddListener(SetClosedRoom);
         _homeLobbyView.ButtonLeaveRoom.onClick.AddListener(LeaveRoom);
+        _homeLobbyView.ButtonStart.onClick.AddListener((() =>
+        {
+            _photonController.EnterTheGame(GameConstants.DEFAULT_SCENE);
+        }));
     }
 
     private void Init()
@@ -56,5 +60,11 @@ public class RoomInfoWindowManager: IStartable, IDisposable
     public void Dispose()
     {
         _photonController.OnEnteredTheRoom -= Init;
+        _homeLobbyView.ButtonCloseRoom.onClick.RemoveListener(SetClosedRoom);
+        _homeLobbyView.ButtonLeaveRoom.onClick.RemoveListener(LeaveRoom);
+        _homeLobbyView.ButtonStart.onClick.RemoveListener((() =>
+        {
+            _photonController.EnterTheGame(GameConstants.DEFAULT_SCENE);
+        }));
     }
 }
