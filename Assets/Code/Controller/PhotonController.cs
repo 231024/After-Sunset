@@ -67,12 +67,7 @@ public class PhotonController : MonoBehaviourPunCallbacks
 
     public void CreateRoom(string roomName, float maxPlayers, bool privacy)
     {
-        var option = new RoomOptions
-        {
-            IsOpen = privacy,
-            MaxPlayers = Convert.ToInt32(maxPlayers)
-        };
-        PhotonNetwork.CreateRoom(roomName, option);
+        PhotonNetwork.JoinRandomOrCreateRoom();
     }
 
     public string GetCurrentRoom()
