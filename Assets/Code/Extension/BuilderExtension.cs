@@ -1,6 +1,8 @@
 ﻿using System;
+using Photon.Pun;
 using UnityEngine;
 using Object = UnityEngine.Object;
+using Random = UnityEngine.Random;
 
 
 public static class BuilderExtension
@@ -40,9 +42,10 @@ public static class BuilderExtension
             return gameObject;
         }
         
-        public static GameObject AddUnit(this GameObject gameObject, CharacterData character)
+        public static GameObject AddUnit(this GameObject gameObject)
         {
-            gameObject = Object.Instantiate(character.Player, character.TransformSpawn.position, Quaternion.identity, gameObject.transform);
+            gameObject = PhotonNetwork.Instantiate(GameConstants.PLAYER, 
+                new Vector3(Random.Range(-6.0f, 6.0f), 0.0f, Random.Range(-6.0f, 6.0f)), Quaternion.identity);
             return gameObject;
         }
 

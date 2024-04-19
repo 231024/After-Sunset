@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Photon.Pun;
+using UnityEngine;
 
 public sealed class PlayerFactory : IPlayerFactory
 {
@@ -11,7 +12,7 @@ public sealed class PlayerFactory : IPlayerFactory
 
     public Transform CreatePlayer()
     {
-        return new GameObject(GameConstants.PLAYER).AddUnit(_characterData).
+        return new GameObject(GameConstants.PLAYER).AddUnit().
             AddRigidbody(_characterData.Mass, _characterData.AngularDrag, _characterData.IsGravity, _characterData.IsFreeze).transform;
     }
 }
