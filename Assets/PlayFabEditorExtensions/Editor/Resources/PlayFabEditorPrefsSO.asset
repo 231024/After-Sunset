@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: PlayFabEditorPrefsSO
   m_EditorClassIdentifier: 
   DevAccountEmail: sunriseq26@gmail.com
-  DevAccountToken: 7d1ujxc765psgt79ejajd7ioh7dnkha847qgi6oeu4qfud4f5fn1hm7n1y1yedqnpgd4ggi7u1r59a463fh6dht5w3hwfd7ac9ximmkeghpadyqdz1n8e191pu5ohxwssd1ozt54433o7n43otcie51myia6mmgis7ybtr59sp1mdr5hyfwgja17ezc4pzegnxmtk85z
+  DevAccountToken: mbnbuhmsac7qux8r591mfmu8eh3ephiyfcmihzk8bur3mrm798tn6yi3cdptxbf4rzxffqr541dgzcgqx43oegpannknidzfmdgkwnakymafr9guyfg5u7r8i6irrxibjcig9uipc4ewfj8fwz89t7b7pwxuj1n7pknq3bunbcn133j59sx6s1t6p4oa1kgoh6ni3p6n
   AadAuthorization: 
-  SelectedStudio: EXPOsition
+  SelectedStudio: 
   SdkPath: Assets/PlayFabSDK
   EdExPath: 
   LocalCloudScriptPath: 
