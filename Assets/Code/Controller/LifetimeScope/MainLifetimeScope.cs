@@ -10,8 +10,8 @@ internal sealed class MainLifetimeScope : LifetimeScope
 	{
 		_view = GetComponent<MainGeneralViews>();
 
-		var options = builder.RegisterMessagePipe();
-		builder.RegisterMessageBroker<string, string>(options);
+		//var options = builder.RegisterMessagePipe();
+		//builder.RegisterMessageBroker<string, string>(options);
 		builder.RegisterComponent(_view);
 
 		new BootstrapInitialization(builder);

@@ -38,8 +38,8 @@ internal class AccountDataWindowBase : IStartable, IDisposable
 
     [Inject] protected MainGeneralViews _mainGeneralViews;
     [Inject] protected PhotonController _photonController;
-    // [Inject] protected readonly ISubscriber<string, string> _subscriber;
-    // protected IDisposable _subscription;
+    [Inject] protected readonly ISubscriber<string, string> _subscriber;
+    protected IDisposable _subscription;
 
     public AccountDataWindowBase(MainGeneralViews mainGeneralViews, 
         PhotonController photonController)
@@ -67,7 +67,7 @@ internal class AccountDataWindowBase : IStartable, IDisposable
         _passwordField.onValueChanged.AddListener(UpdatePassword);
 
         var d = DisposableBag.CreateBuilder();
-        //_subscriber.Subscribe(UIConstants.TEXT_STATUS, TextStatusReceived).AddTo(d);
+        _subscriber.Subscribe(UIConstants.TEXT_STATUS, TextStatusReceived).AddTo(d);
         _photonController.OnPublishedStatusProcess += TextStatusReceived;        
     }
     
@@ -76,7 +76,7 @@ internal class AccountDataWindowBase : IStartable, IDisposable
         _usernameField.onValueChanged.RemoveListener(UpdateUsername);
         _passwordField.onValueChanged.RemoveListener(UpdatePassword);
         _photonController.OnPublishedStatusProcess -= TextStatusReceived;
-        //_subscription?.Dispose();
+        _subscription?.Dispose();
     }
 
     private void TextStatusReceived(string text)
