@@ -45,8 +45,14 @@ internal sealed class LobbyWindowManager : IStartable, IDisposable
         _buttonConnectRoom.onClick.AddListener(ConnectToRoom);
         _buttonCloseSettingMenu.onClick.AddListener(CloseSettingMenu);
         _photonController.OnEnteredTheRoom += OpenRoomInfoPanel;
+        _listRooomPanelView.RoomNameInputField.onValueChanged.AddListener(ChangeRoomNameText);
 
         OpenRoomListPanel();
+    }
+
+    public void ChangeRoomNameText(string name)
+    {
+        _roomName = name;
     }
 
     public void OpenRoomListPanel()
@@ -91,7 +97,7 @@ internal sealed class LobbyWindowManager : IStartable, IDisposable
 
     private void ConnectToRoom()
     {
-        _photonController.SetNameForJoiningRoom(_listRooomPanelView.RoomNameInputField.text);
+        _photonController.SetNameForJoiningRoom(_roomName);
         //OpenRoomInfoPanel();
     }
 
@@ -112,7 +118,7 @@ internal sealed class LobbyWindowManager : IStartable, IDisposable
                 view.LabelMapName.text = UIConstants.DEFAULT_MAP_NAME;
                 view.InfoRoomItemButton.onClick.AddListener((() =>
                 {
-                    _photonController.SetNameForJoiningRoom(roomInfo.Name);
+                    _photonController.SetNameForJoiningRoom(_roomName);
                 }));
             }
     }
@@ -124,5 +130,6 @@ internal sealed class LobbyWindowManager : IStartable, IDisposable
         _buttonConnectRoom.onClick.RemoveListener(OpenRoomInfoPanel);
         _buttonCloseSettingMenu.onClick.RemoveListener(CloseSettingMenu);
         _photonController.OnEnteredTheRoom -= OpenRoomInfoPanel;
+        _listRooomPanelView.RoomNameInputField.onValueChanged.RemoveListener(ChangeRoomNameText);
     }
 }
