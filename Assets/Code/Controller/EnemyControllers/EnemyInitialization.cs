@@ -56,10 +56,11 @@ internal sealed class EnemyInitialization : IInitialization, IFixedExecute
         spawnPosition.y = spawnPoint.y;
         var enemy = _enemyFactory.CreateEnemy(enemyInfo.Type, spawnPosition);
 
-        enemy.Unit.SetPatrolZone(_data);
+        var enemyComponent = enemy.GetComponent<IEnemy>();
+        enemyComponent.Unit.SetPatrolZone(_data);
         
-        _enemy.AddUnit(enemy);
-        _enemies.Add(enemy);
+        _enemy.AddUnit(enemyComponent);
+        _enemies.Add(enemyComponent);
     }
 
     public IMove GetMoveEnemies()

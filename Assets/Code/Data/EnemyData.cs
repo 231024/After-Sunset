@@ -34,11 +34,11 @@ public sealed class EnemyData : ScriptableObject
     public struct EnemyInfo
     {
         public EnemyType Type;
-        public EnemyProvider EnemyPrefab;
+        public string EnemyPrefab;
         public float Health;
     }
 
-    public EnemyProvider GetEnemy(EnemyType type)
+    public string GetEnemy(EnemyType type)
     {
         var enemyInfo = _enemyInfos.First(info => info.Type == type);
         return enemyInfo.EnemyPrefab;

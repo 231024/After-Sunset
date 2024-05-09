@@ -3,5 +3,5 @@
 public interface IEnemyFactory
 {
     public EnemyData Data { get; }
-    IEnemy CreateEnemy(EnemyType type, Vector3 spawnPosition);
+    GameObject CreateEnemy(EnemyType type, Vector3 spawnPosition);
 }

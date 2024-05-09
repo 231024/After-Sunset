@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -13,12 +14,16 @@ public class RoomInfoWindowManager: IStartable, IDisposable
     private Transform _parentContent;
     private TMP_Text _labelRoomName;
     
+    private List<GameObject> _itemPlayerInfos;
+    
     [Inject] private LobbyGeneralViews _lobbyGeneralViews;
     [Inject] private PhotonController _photonController;
     [Inject] private LobbyWindowManager _lobbyWindowManager;
     
     public void Start()
     {
+        _itemPlayerInfos = new List<GameObject>();
+        
         _homeLobbyView = _lobbyGeneralViews.HomeLobbyViewPanel;
 
         _labelRoomName = _homeLobbyView.InputFieldRoomName;
@@ -36,13 +41,19 @@ public class RoomInfoWindowManager: IStartable, IDisposable
 
     private void Init()
     {
+        foreach (var itemPlayerInfo in _itemPlayerInfos)
+        {
+            GameObject.Destroy(itemPlayerInfo);
+        }
+        _itemPlayerInfos?.Clear();
         _labelRoomName.text = _photonController.GetCurrentRoom();
         var prefab = Resources.Load<GameObject>(UIConstants.INFO_PLAYER_NAME_ITEM_PREFAB);
 
         foreach (var player in _photonController.PlayerList)
         {
-            var go = Object.Instantiate(prefab, _parentContent).
-                GetComponent<InfoPlayerItemView>().LabelPlayerName.text = player.NickName;
+            var go = GameObject.Instantiate(prefab, _parentContent);
+            go.GetComponent<InfoPlayerItemView>().LabelPlayerName.text = player.NickName;
+            _itemPlayerInfos.Add(go);
         }
     }
 

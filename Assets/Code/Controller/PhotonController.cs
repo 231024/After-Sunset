@@ -14,7 +14,7 @@ public class PhotonController : MonoBehaviourPunCallbacks
     [SerializeField] private ServerSettings _serverSettings; 
     
     private TMP_Text _textProcess;
-    private List<RoomInfo> _roomList;
+    private Dictionary<string, RoomInfo> _cachedRoomList;
     private Photon.Realtime.Player[] _playerList;
 
     public Action<string> OnPublishedStatusProcess;
@@ -26,7 +26,7 @@ public class PhotonController : MonoBehaviourPunCallbacks
     private string _nickname;
 
     public string Nickname => _nickname;
-    public List<RoomInfo> RoomList => _roomList;
+    public Dictionary<string, RoomInfo> CachedRoomList => _cachedRoomList;
     public Photon.Realtime.Player[] PlayerList => _playerList;
 
     [Inject] private readonly IPublisher<string, string> _publisher;
@@ -38,7 +38,7 @@ public class PhotonController : MonoBehaviourPunCallbacks
 
     private void Start()
     {
-        _roomList = new List<RoomInfo>();
+        _cachedRoomList = new Dictionary<string, RoomInfo>();
         _playerList = Array.Empty<Photon.Realtime.Player>();
         Connect();
     }
@@ -69,10 +69,10 @@ public class PhotonController : MonoBehaviourPunCallbacks
     {
         var option = new RoomOptions
         {
-            IsOpen = privacy,
+            IsVisible = privacy,
             MaxPlayers = Convert.ToInt32(maxPlayers)
         };
-        PhotonNetwork.CreateRoom(roomName, option);
+        PhotonNetwork.JoinOrCreateRoom(roomName, option, null);
     }
 
     public string GetCurrentRoom()
@@ -93,6 +93,7 @@ public class PhotonController : MonoBehaviourPunCallbacks
 
     public void SetNameForJoiningRoom(string roomName)
     {
+        Debug.LogWarning($"[PhotonController] SetNameForJoiningRoom - {roomName}");
         PhotonNetwork.JoinRoom(roomName);
     }
 
@@ -114,11 +115,16 @@ public class PhotonController : MonoBehaviourPunCallbacks
 
     public override void OnJoinedLobby()
     {
-        Debug.Log($"OnJoinedLobby");
+        _cachedRoomList.Clear();
         if (PhotonNetwork.IsConnected && PhotonNetwork.InLobby)
         {
             SceneManager.LoadScene(LOADING_LOBBY_SCENE);
         }
+    }
+    
+    public override void OnLeftLobby()
+    {
+        _cachedRoomList.Clear();
     }
 
     public override void OnLeftRoom()
@@ -134,13 +140,29 @@ public class PhotonController : MonoBehaviourPunCallbacks
         OnEnteredTheRoom?.Invoke();
     }
 
+    private void UpdateCachedRoomList(List<RoomInfo> roomList)
+    {
+        for(int i=0; i<roomList.Count; i++)
+        {
+            RoomInfo info = roomList[i];
+            if (info.RemovedFromList)
+            {
+                _cachedRoomList.Remove(info.Name);
+            }
+            else
+            {
+                _cachedRoomList[info.Name] = info;
+            }
+        }
+    }
+
     public override void OnRoomListUpdate(List<RoomInfo> roomList)
     {
-        _roomList = roomList;
-        foreach (var info in roomList)
-        {
-            LogFeedback(info.Name);
-        }
-        Debug.Log($"OnRoomListUpdate {_roomList.Count}");
+        UpdateCachedRoomList(roomList);
+    }
+    
+    public override void OnDisconnected(DisconnectCause cause)
+    {
+        _cachedRoomList.Clear();
     }
 }

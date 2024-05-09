@@ -1,4 +1,5 @@
-﻿using Unity.VisualScripting;
+﻿using Photon.Pun;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -11,9 +12,9 @@ public sealed class EnemyFactory : IEnemyFactory
         Data = data;
     }
         
-    public IEnemy CreateEnemy(EnemyType type, Vector3 spawnPosition)
+    public GameObject CreateEnemy(EnemyType type, Vector3 spawnPosition)
     {
         var enemyProvider = Data.GetEnemy(type);
-        return Object.Instantiate(enemyProvider, spawnPosition, Quaternion.identity);
+        return PhotonNetwork.Instantiate(enemyProvider, spawnPosition, Quaternion.identity);
     }
 }
