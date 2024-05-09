@@ -14,13 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _enemyInfos:
   - Type: 1
-    EnemyPrefab: {fileID: 6213606267524102678, guid: 63864ee6e3450ce48a62040514b0f684, type: 3}
+    EnemyPrefab: ZombieSmall
     Health: 1
   - Type: 2
-    EnemyPrefab: {fileID: 6213606267524102678, guid: e08fa7b2086d64744925cc337d871558, type: 3}
+    EnemyPrefab: Zombie
     Health: 2
   - Type: 3
-    EnemyPrefab: {fileID: 6213606267524102678, guid: f637c695c2e31df42beb6c23c69ada7c, type: 3}
+    EnemyPrefab: ZombieBig
     Health: 3
   _spawnDelay: 500
   _spawnInitializationCount: 15

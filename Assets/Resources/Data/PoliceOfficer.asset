@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e7728bc1a61944aa9e60afe84263fd14, type: 3}
   m_Name: PoliceOfficer
   m_EditorClassIdentifier: 
-  Player: {fileID: 3960971418310363289, guid: 900099c85eb00dc40ac1ded77bbc65cd, type: 3}
+  Player: {fileID: 3960971418310363289, guid: 7ceb0b144e2dc0c4fa70d9a97d804e34, type: 3}
   _transformSpawn: {fileID: 6356817762478361724, guid: 8ac2025263a89fd48b0f835dfebfb538, type: 3}
   _speed: 500
   _mouseSensitivity: 800

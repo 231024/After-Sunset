@@ -1,10 +1,9 @@
 ﻿using System;
-using TMPro;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using VContainer;
 using VContainer.Unity;
-using Object = UnityEngine.Object;
 
 internal sealed class LobbyWindowManager : IStartable, IDisposable
 {
@@ -16,6 +15,8 @@ internal sealed class LobbyWindowManager : IStartable, IDisposable
     private string _roomName;
     private float _amountMaxPlayers;
     private bool _isWasListRoomWindow;
+
+    private List<GameObject> _itemRoomInfos;
     
     private RoomListPanelView _listRooomPanelView;
     private HomeLobbyView _homeLobbyPanelView;
@@ -27,6 +28,7 @@ internal sealed class LobbyWindowManager : IStartable, IDisposable
     
     public void Start()
     {
+        _itemRoomInfos = new List<GameObject>();
         _listRooomPanelView = _lobbyGeneralViews.RoomListPanel;
         _homeLobbyPanelView = _lobbyGeneralViews.HomeLobbyViewPanel;
         _settingsMenuView = _lobbyGeneralViews.SettingsMenuView;
@@ -45,8 +47,15 @@ internal sealed class LobbyWindowManager : IStartable, IDisposable
         _buttonConnectRoom.onClick.AddListener(ConnectToRoom);
         _buttonCloseSettingMenu.onClick.AddListener(CloseSettingMenu);
         _photonController.OnEnteredTheRoom += OpenRoomInfoPanel;
+        _listRooomPanelView.RoomNameInputField.onValueChanged.AddListener(ChangeRoomNameText);
 
         OpenRoomListPanel();
+    }
+
+    public void ChangeRoomNameText(string name)
+    {
+        _roomName = name;
+        Debug.LogWarning($"ChangeRoomNameText - {_roomName}");
     }
 
     public void OpenRoomListPanel()
@@ -91,29 +100,40 @@ internal sealed class LobbyWindowManager : IStartable, IDisposable
 
     private void ConnectToRoom()
     {
-        _photonController.SetNameForJoiningRoom(_listRooomPanelView.RoomNameInputField.text);
+        Debug.LogWarning($"ConnectToRoom - {_roomName}");
+        _photonController.SetNameForJoiningRoom(_roomName);
         //OpenRoomInfoPanel();
     }
 
     private void CreateItemInfoRooms()
     {
+        foreach (var itemRoomInfo in _itemRoomInfos)
+        {
+            GameObject.Destroy(itemRoomInfo);
+        }
+        _itemRoomInfos?.Clear();
+        
         var roomListPanel = _lobbyGeneralViews.RoomListPanel;
-        Debug.Log($"CreateItemInfoRooms - {_photonController.RoomList.Count}");
+        Debug.Log($"CreateItemInfoRooms - {_photonController.CachedRoomList.Count}");
         var prefab = Resources.Load<GameObject>(UIConstants.INFO_ROOM_ITEM_PREFAB);
 
-        if (_photonController.RoomList != null)
-            foreach (var roomInfo in _photonController.RoomList)
+        if (_photonController.CachedRoomList != null)
+            foreach (var roomInfo in _photonController.CachedRoomList)
             {
-                var itemRoomInfo =Object.Instantiate(prefab, 
-                    roomListPanel.ParentTransformContent);
-                var view = itemRoomInfo.GetComponent<InfoRoomItemView>();
-                view.LabelRoomName.text = roomInfo.Name;
-                view.LabelAmountPlayers.text = roomInfo.PlayerCount.ToString();
-                view.LabelMapName.text = UIConstants.DEFAULT_MAP_NAME;
-                view.InfoRoomItemButton.onClick.AddListener((() =>
+                if (roomInfo.Value.IsVisible)
                 {
-                    _photonController.SetNameForJoiningRoom(roomInfo.Name);
-                }));
+                    var itemRoomInfo = GameObject.Instantiate(prefab, 
+                        roomListPanel.ParentTransformContent);
+                    var view = itemRoomInfo.GetComponent<InfoRoomItemView>();
+                    view.LabelRoomName.text = roomInfo.Value.Name;
+                    view.LabelAmountPlayers.text = roomInfo.Value.PlayerCount.ToString();
+                    view.LabelMapName.text = UIConstants.DEFAULT_MAP_NAME;
+                    view.InfoRoomItemButton.onClick.AddListener((() =>
+                    {
+                        _photonController.SetNameForJoiningRoom(view.LabelRoomName.text);
+                    }));
+                    _itemRoomInfos?.Add(itemRoomInfo);
+                }
             }
     }
 
@@ -124,5 +144,6 @@ internal sealed class LobbyWindowManager : IStartable, IDisposable
         _buttonConnectRoom.onClick.RemoveListener(OpenRoomInfoPanel);
         _buttonCloseSettingMenu.onClick.RemoveListener(CloseSettingMenu);
         _photonController.OnEnteredTheRoom -= OpenRoomInfoPanel;
+        _listRooomPanelView.RoomNameInputField.onValueChanged.RemoveListener(ChangeRoomNameText);
     }
 }
