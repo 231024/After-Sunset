@@ -105,7 +105,6 @@ public class PhotonController : MonoBehaviourPunCallbacks
     private void LogFeedback(string message)
     {
         OnPublishedStatusProcess?.Invoke(message);
-        Debug.Log(message);
     }
 
     public override void OnConnectedToMaster()
